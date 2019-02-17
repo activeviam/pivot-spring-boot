@@ -1,0 +1,21 @@
+# Spring MVC dispatcher servlet path. Needs to be different than CXF's to enable/disable Actuator endpoints access (/info, /health, ...)
+server.servlet-path: /
+
+## http://cxf.apache.org/docs/springboot.html#SpringBoot-SpringBootCXFJAX-RSStarter
+cxf:
+  path: /api # CXFServlet URL pattern
+  servlet:
+    init: /webservices
+  jaxrs:
+    server:
+      path: pivot
+#  jaxrs:
+#    component-scan: true
+
+
+
+schema:
+  printer: true
+
+file:
+  trades: data/trades.csv
