@@ -1,5 +1,6 @@
 package com.sbr.pivotspringboot;
 
+import com.quartetfs.biz.xmla.servlet.pivot.impl.ActivePivotXmlaServlet;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,16 +10,37 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class PivotSpringbootApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PivotSpringbootApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PivotSpringbootApplication.class, args);
+    }
 
-	/**
-	 * Apparently mandatory to allow calls as raised on github
-	 * https://github.com/spring-projects/spring-boot/issues/15373
-	 *
-	 * However appears it to work without it?!?!
-	 */
+    /**
+     * Special beans to make AP work in SpringBoot
+     *
+     */
+
+    /**
+     * Register the CXF servlet
+     */
+    @Bean
+    public ServletRegistrationBean cxfServletRegistrationBean() {
+        return new ServletRegistrationBean(new CXFServlet(), "/api/*");
+    }
+
+    /**
+     * Register the XMLA servlet
+     */
+    @Bean
+    public ServletRegistrationBean xmlaServletRegistrationBean() {
+        return new ServletRegistrationBean(new ActivePivotXmlaServlet(), "/xmla/*");
+    }
+
+    /**
+     * Apparently mandatory to allow calls as raised on github
+     * https://github.com/spring-projects/spring-boot/issues/15373
+     *
+     * However appears it to work without it?!?!
+     */
 //	@Bean
 //	public DispatcherServletRegistrationBean dispatcherServletRegistration(
 //			DispatcherServlet dispatcherServlet,
@@ -30,13 +52,5 @@ public class PivotSpringbootApplication {
 //		multipartConfig.ifAvailable(registration::setMultipartConfig);
 //		return registration;
 //	}
-
-	/**
-	 * Register the CXF servlet
-	 */
-	@Bean
-	public ServletRegistrationBean servletRegistrationBean(){
-		return new ServletRegistrationBean(new CXFServlet(),"/api/*");
-	}
 
 }
