@@ -16,9 +16,11 @@ import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
 import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import static com.sbr.pivotspringboot.activepivot.StoreAndFieldConstants.*;
 
+@Configuration
 public class PivotManager implements IActivePivotManagerDescriptionConfig {
 
     /* *********************/
