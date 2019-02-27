@@ -11,9 +11,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.context.annotation.Bean;
 
 public class PivotCorsFilterSecurityConfig extends ACorsFilterConfig {
@@ -33,12 +30,6 @@ public class PivotCorsFilterSecurityConfig extends ACorsFilterConfig {
 			public final void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 					throws ServletException, IOException {
 
-				if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)) {
-					throw new ServletException("OncePerRequestFilter just supports HTTP requests");
-				}
-				HttpServletRequest httpRequest = (HttpServletRequest) request;
-				HttpServletResponse httpResponse = (HttpServletResponse) response;
-
 				boolean hasAlreadyFilteredAttribute = request.getAttribute(ALREADY_FILTERED_ATTRIBUTE) != null;
 
 				if (hasAlreadyFilteredAttribute) {
@@ -47,7 +38,7 @@ public class PivotCorsFilterSecurityConfig extends ACorsFilterConfig {
 					// Do invoke this filter...
 					request.setAttribute(ALREADY_FILTERED_ATTRIBUTE, Boolean.TRUE);
 					try {
-						super.doFilter(httpRequest, httpResponse, filterChain);
+						super.doFilter(request, response, filterChain);
 					} finally {
 						// Remove the "already filtered" request attribute for this request.
 						request.removeAttribute(ALREADY_FILTERED_ATTRIBUTE);
