@@ -24,7 +24,7 @@ public class PivotSpringbootApplication {
      */
     @Bean
     public ServletRegistrationBean cxfServletRegistrationBean() {
-        return new ServletRegistrationBean(new CXFServlet(), "/api/*");
+        return new ServletRegistrationBean(new CXFServlet(), "/*");
     }
 
     /**
