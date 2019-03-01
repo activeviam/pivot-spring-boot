@@ -8,6 +8,7 @@ import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryMonitoringService;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
+import com.qfs.server.cfg.i18n.impl.LocalI18nConfig;
 import com.qfs.server.cfg.impl.*;
 import com.qfs.service.store.impl.NoSecurityDatastoreServiceConfig;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
@@ -16,6 +17,7 @@ import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Spring configuration of the ActivePivot Application services
@@ -27,6 +29,7 @@ import org.springframework.context.annotation.*;
         "classpath:jwt.properties",
         "classpath:content.service.properties"
 })
+@EnableWebMvc
 @Configuration
 @Import(value = {
         // Core stuff
@@ -45,6 +48,8 @@ import org.springframework.context.annotation.*;
         ActivePivotWebServicesConfig.class,
         ActivePivotXmlaServletConfig.class,
         ActivePivotRemotingServicesConfig.class,
+
+        LocalI18nConfig.class,
 
         // Custom stuff
         DatastoreDescriptionConfig.class,
