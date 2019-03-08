@@ -52,12 +52,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         LocalI18nConfig.class,
 
         // Custom stuff
-        DatastoreDescriptionConfig.class,
-        LocalContentServiceConfig.class,
-        SecurityConfig.class,
         PivotCorsFilterSecurityConfig.class,
-        PivotManager.class,
-        SourceConfig.class
 })
 public class PivotConfig {
 
