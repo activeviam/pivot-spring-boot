@@ -9,6 +9,7 @@ import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.multiversion.IEpochManagementPolicy;
 import com.qfs.server.cfg.IDatastoreDescriptionConfig;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -18,6 +19,7 @@ import static com.qfs.literal.ILiteralType.STRING;
 import static com.qfs.literal.ILiteralType.LOCAL_DATE;
 import static com.sbr.pivotspringboot.activepivot.StoreAndFieldConstants.*;
 
+@Configuration
 public class DatastoreDescriptionConfig implements IDatastoreDescriptionConfig {
 
     public static IStoreDescription createTradesStoreDescription() {

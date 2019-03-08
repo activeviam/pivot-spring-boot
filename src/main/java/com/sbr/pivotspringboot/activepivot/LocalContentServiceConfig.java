@@ -6,9 +6,11 @@ import com.qfs.pivot.content.impl.ActivePivotContentServiceBuilder;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import com.qfs.util.impl.QfsProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
+@Configuration
 public class LocalContentServiceConfig implements IActivePivotContentServiceConfig {
 
     @Override
