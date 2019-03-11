@@ -1,4 +1,4 @@
-package com.sbr.pivotspringboot;
+package com.activeviam.apps.pivotspringboot;
 
 import org.junit.Before;
 import org.junit.Test;

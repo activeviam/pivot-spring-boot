@@ -1,4 +1,4 @@
-package com.sbr.pivotspringboot;
+package com.activeviam.apps.pivotspringboot;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.SpringApplication;

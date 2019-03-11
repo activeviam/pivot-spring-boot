@@ -1,4 +1,4 @@
-package com.sbr.pivotspringboot.activepivot;
+package com.activeviam.apps.pivotspringboot.activepivot;
 
 import com.qfs.security.cfg.impl.ACorsFilterConfig;
 import com.qfs.security.impl.SpringCorsFilter;

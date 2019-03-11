@@ -1,6 +1,5 @@
-package com.sbr.pivotspringboot.activepivot;
+package com.activeviam.apps.pivotspringboot.activepivot;
 
-import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.csv.*;
 import com.qfs.msg.csv.filesystem.impl.FileSystemCSVTopicFactory;
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,8 +22,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.sbr.pivotspringboot.activepivot.StoreAndFieldConstants.TRADES_STORE_NAME;
 
 @Configuration
 public class SourceConfig {
@@ -61,7 +57,7 @@ public class SourceConfig {
         final CSVSource<Path> csvSource = new CSVSource<>();
 
 
-        final List<String> tradesColumns = schemaMetadata.getFields(TRADES_STORE_NAME);
+        final List<String> tradesColumns = schemaMetadata.getFields(StoreAndFieldConstants.TRADES_STORE_NAME);
         final ICSVTopic<Path> tradesTopic = csvTopicFactory.createTopic(TRADES_TOPIC, env.getProperty("file.trades"),
                 createParserConfig(tradesColumns.size(), tradesColumns));
         csvSource.addTopic(tradesTopic);
@@ -87,7 +83,7 @@ public class SourceConfig {
     @Bean
     public Void initialLoad() {
         final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
-        csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, TRADES_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
 
         // do the transactions
         final long before = System.nanoTime();

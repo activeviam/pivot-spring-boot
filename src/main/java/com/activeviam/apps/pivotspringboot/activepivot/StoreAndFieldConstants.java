@@ -1,4 +1,4 @@
-package com.sbr.pivotspringboot.activepivot;
+package com.activeviam.apps.pivotspringboot.activepivot;
 
 public class StoreAndFieldConstants {
 
