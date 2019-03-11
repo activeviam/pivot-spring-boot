@@ -1,4 +1,4 @@
-package com.sbr.pivotspringboot.activepivot;
+package com.activeviam.apps.pivotspringboot.activepivot;
 
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
@@ -17,8 +17,6 @@ import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static com.sbr.pivotspringboot.activepivot.StoreAndFieldConstants.*;
 
 @Configuration
 public class PivotManager implements IActivePivotManagerDescriptionConfig {
@@ -64,7 +62,7 @@ public class PivotManager implements IActivePivotManagerDescriptionConfig {
     public static ISelectionDescription createSchemaSelectionDescription(
             final IDatastoreSchemaDescription datastoreDescription) {
         return StartBuilding.selection(datastoreDescription)
-                .fromBaseStore(TRADES_STORE_NAME)
+                .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
                 .withAllFields()
                 .build();
     }
@@ -115,11 +113,11 @@ public class PivotManager implements IActivePivotManagerDescriptionConfig {
 
         return builder
                 .withSingleLevelDimensions(
-                        TRADES__TRADEID
+                        StoreAndFieldConstants.TRADES__TRADEID
                 )
-                .withDimension(ASOFDATE)
+                .withDimension(StoreAndFieldConstants.ASOFDATE)
                 .withType(IDimension.DimensionType.TIME)
-                .withHierarchy(ASOFDATE).slicing()
+                .withHierarchy(StoreAndFieldConstants.ASOFDATE).slicing()
                 .withLevelOfSameName()
                 .withType(ILevelInfo.LevelType.TIME).withComparator(ReverseOrderComparator.type)
                 ;
@@ -129,7 +127,7 @@ public class PivotManager implements IActivePivotManagerDescriptionConfig {
     public static IHasAtLeastOneMeasure measures(final ICanStartBuildingMeasures builder) {
         return builder
                 // Actual measures
-                .withAggregatedMeasure().sum(TRADES__NOTIONAL).withName(TRADES__NOTIONAL).withFormatter(DOUBLE_FORMATTER)
+                .withAggregatedMeasure().sum(StoreAndFieldConstants.TRADES__NOTIONAL).withName(StoreAndFieldConstants.TRADES__NOTIONAL).withFormatter(DOUBLE_FORMATTER)
                 ;
     }
 

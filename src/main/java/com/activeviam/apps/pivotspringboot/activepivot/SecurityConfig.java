@@ -1,4 +1,4 @@
-package com.sbr.pivotspringboot.activepivot;
+package com.activeviam.apps.pivotspringboot.activepivot;
 
 import com.qfs.content.service.IContentService;
 import com.qfs.jwt.impl.JwtFilter;

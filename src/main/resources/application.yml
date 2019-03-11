@@ -5,7 +5,7 @@ schema:
   printer: true
 
 file:
-  trades: data/trades.csv
+  trades: "data/trades.csv"
 
 management:
   endpoints:

@@ -1,12 +1,10 @@
-package com.sbr.pivotspringboot.activepivot;
+package com.activeviam.apps.pivotspringboot.activepivot;
 
 import com.qfs.desc.IDatastoreSchemaDescription;
-import com.qfs.desc.IDatastoreSchemaDescriptionPostProcessor;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
-import com.qfs.multiversion.IEpochManagementPolicy;
 import com.qfs.server.cfg.IDatastoreDescriptionConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,16 +15,15 @@ import java.util.LinkedList;
 import static com.qfs.literal.ILiteralType.DOUBLE;
 import static com.qfs.literal.ILiteralType.STRING;
 import static com.qfs.literal.ILiteralType.LOCAL_DATE;
-import static com.sbr.pivotspringboot.activepivot.StoreAndFieldConstants.*;
 
 @Configuration
 public class DatastoreDescriptionConfig implements IDatastoreDescriptionConfig {
 
     public static IStoreDescription createTradesStoreDescription() {
-        return new StoreDescriptionBuilder().withStoreName(TRADES_STORE_NAME)
-                .withField(ASOFDATE, LOCAL_DATE).asKeyField()
-                .withField(TRADES__TRADEID, STRING).asKeyField()
-                .withField(TRADES__NOTIONAL, DOUBLE)
+        return new StoreDescriptionBuilder().withStoreName(StoreAndFieldConstants.TRADES_STORE_NAME)
+                .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE).asKeyField()
+                .withField(StoreAndFieldConstants.TRADES__TRADEID, STRING).asKeyField()
+                .withField(StoreAndFieldConstants.TRADES__NOTIONAL, DOUBLE)
                 .onDuplicateKeyWithinTransaction().logException()
                 .build();
     }
