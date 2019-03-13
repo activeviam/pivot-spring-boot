@@ -86,7 +86,7 @@ public class PivotManager implements IActivePivotManagerDescriptionConfig {
                 .withAlias("Count")
                 .withFormatter(INT_FORMATTER)
 
-                .withMeasures(PivotManager::measures)
+                .withMeasures(Measures::build)
                 .withDimensions(PivotManager::dimensions)
                 // Aggregate provider
                 .withAggregateProvider()
@@ -123,13 +123,5 @@ public class PivotManager implements IActivePivotManagerDescriptionConfig {
                 ;
 
     }
-
-    public static IHasAtLeastOneMeasure measures(final ICanStartBuildingMeasures builder) {
-        return builder
-                // Actual measures
-                .withAggregatedMeasure().sum(StoreAndFieldConstants.TRADES__NOTIONAL).withName(StoreAndFieldConstants.TRADES__NOTIONAL).withFormatter(DOUBLE_FORMATTER)
-                ;
-    }
-
 
 }
