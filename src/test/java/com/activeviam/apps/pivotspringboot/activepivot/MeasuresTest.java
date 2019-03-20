@@ -93,7 +93,7 @@ public class MeasuresTest {
         SimpleQueryableCubeFoundry.executeMdxQuery(manager, "SELECT" +
                 "  [Measures].[Notional] ON COLUMNS" +
                 "  FROM [Cube]" +
-                "  WHERE [TradeID].[TradeId].[TradeId].[All].[AllMember].[T1]")
+                "  WHERE [TradeID].[TradeID].[ALL].[AllMember].[T1]")
                 .getTester()
                 .hasOnlyOneCell()
                 .containingFormattedValue("100");
