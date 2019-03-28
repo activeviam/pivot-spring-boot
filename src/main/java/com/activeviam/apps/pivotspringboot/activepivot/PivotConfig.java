@@ -49,8 +49,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         ActivePivotXmlaServletConfig.class,
         ActivePivotRemotingServicesConfig.class,
 
- //   Commented out for now because of https://github.com/activeviam/ps-pivot-springboot/issues/6
- //       LocalI18nConfig.class,
+        CustomI18nConfig.class,
 
         // Custom stuff
         PivotCorsFilterSecurityConfig.class,
