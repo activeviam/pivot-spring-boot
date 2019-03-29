@@ -149,28 +149,18 @@ public class CustomI18nConfig {
 		//File root = QfsFiles.getDirectory(languageFolder).toFile();
 
 		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+		LOGGER.info("Scanning for languages in: " + languageFolder);
 		Resource[] resources = resolver.getResources(languageFolder + "/*");
+		LOGGER.info("Found " + resources.length + " matching resources");
 		for (Resource resource : resources) {
-			if (resource.isFile()) {
-				String name = resource.getFile().getName();
-				if (contentService.exists(name)) {
-					contentService.remove(name);
-				}
-				contentService.createFile(name, read(resource.getInputStream()), Collections.singletonList(ROLE_ROOT), Collections.singletonList(ROLE_ROOT), false);
+			LOGGER.fine(resource.getDescription());
+			String name = resource.getFilename();
+			LOGGER.info("Found language file " + name);
+			if (contentService.exists(name)) {
+				contentService.remove(name);
 			}
+			contentService.createFile(name, read(resource.getInputStream()), Collections.singletonList(ROLE_ROOT), Collections.singletonList(ROLE_ROOT), false);
 		}
-
-
-//		for (File file : root.listFiles()) {
-//			if (!file.isDirectory()) {
-//				String name = file.getName();
-//				if (contentService.exists(name)) {
-//					contentService.remove(name);
-//				}
-//
-//				contentService.createFile(name, read(file), Collections.singletonList(ROLE_ROOT), Collections.singletonList(ROLE_ROOT), false);
-//			}
-//		}
 	}
 
 	protected static String read(InputStream stream) throws IOException {
