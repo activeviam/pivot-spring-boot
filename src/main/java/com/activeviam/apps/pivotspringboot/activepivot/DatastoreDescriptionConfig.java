@@ -24,7 +24,6 @@ public class DatastoreDescriptionConfig implements IDatastoreDescriptionConfig {
                 .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE).asKeyField()
                 .withField(StoreAndFieldConstants.TRADES__TRADEID, STRING).asKeyField()
                 .withField(StoreAndFieldConstants.TRADES__NOTIONAL, DOUBLE)
-                .onDuplicateKeyWithinTransaction().logException()
                 .build();
     }
 

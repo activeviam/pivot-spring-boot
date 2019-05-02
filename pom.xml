@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<activePivotVersion>5.7.8</activePivotVersion>
+		<activePivotVersion>5.8.0-jdk8</activePivotVersion>
 	</properties>
 
 	<dependencies>

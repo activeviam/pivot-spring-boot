@@ -1,14 +1,11 @@
 package com.activeviam.apps.pivotspringboot.activepivot;
 
 
-
 import com.qfs.content.cfg.impl.ContentServerResourceServerConfig;
 import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
-import com.qfs.pivot.monitoring.impl.MemoryMonitoringService;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
-import com.qfs.server.cfg.i18n.impl.LocalI18nConfig;
 import com.qfs.server.cfg.impl.*;
 import com.qfs.service.store.impl.NoSecurityDatastoreServiceConfig;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
@@ -110,12 +107,6 @@ public class PivotConfig {
                         apCSConfig.activePivotContentService(),
                         apConfig.activePivotManager()));
     }
-
-    @Bean
-    public JMXEnabler JMXDirectMemoryMonitoringEnabler() {
-        return new JMXEnabler(new MemoryMonitoringService(datastoreConfig.datastore()));
-    }
-
 
     /**
      *
