@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="80" src="https://github.com/activeviam/ps-pivot-springboot/blob/master/activeviam.svg" />
+  <img width="80" src="https://github.com/activeviam/ps-pivot-springboot/blob/5.8-jdk8/activeviam.svg" />
 </p>
 <h1 align="center">Pivot Spring Boot</h1>
 <p align="center">A minimalist ActivePivot project built with Spring Boot for you to edit, customise and use as a base for you ActivePivot projects</p>
