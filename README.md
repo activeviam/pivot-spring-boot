@@ -22,7 +22,10 @@ Clone or download this repository and run `mvn clean install`.
 This will generate a jar file, which can be run using standard java commands.
 
 ## 💻 Usage
-- Excel: you can connect to the cube from Excel, by connecting to an 'Analysis Services' source. The default URL `http://localhost:9090/xmla` t
+The project contains, out of the box, an extremely simple datastore schema and small Trades.csv file. This file you can find in `src/main/resources/data`. NB: if running as a jar file then this file might not be found, you will need to explicitly point to it.
+
+- Excel: you can connect to the cube from Excel, by connecting to an 'Analysis Services' source. The default URL to use when running locally is `http://localhost:9090/xmla`
+- ActiveUI, ActiveViam's user interface for exploring the cube, will be available from `http://localhost:9090/ui`
 
 The default security credentials are `admin:admin`, but can be modified in the `SecurityConfig` class (we use Spring Security)
 

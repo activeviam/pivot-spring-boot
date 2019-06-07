@@ -40,6 +40,8 @@ public class PivotSpringbootApplication implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/content/env*.js")
 				.addResourceLocations("classpath:/static/content/");
+		registry.addResourceHandler("/ui/env*.js")
+				.addResourceLocations("classpath:/static/activeui/");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
 

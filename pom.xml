@@ -16,6 +16,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<activePivotVersion>5.8.1-jdk8</activePivotVersion>
+		<activeui.version>4.2.11</activeui.version>
+		<content-server-ui.version>1.0.1</content-server-ui.version>
 	</properties>
 
 	<dependencies>
@@ -63,11 +65,19 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+
 		<!-- Embedded content server UI -->
 		<dependency>
 			<groupId>com.activeviam.tech</groupId>
 			<artifactId>content-server-ui</artifactId>
-			<version>1.1.1</version>
+			<version>${content-server-ui.version}</version>
+		</dependency>
+
+		<!-- Embedded ActiveUI -->
+		<dependency>
+			<groupId>com.activeviam.activeui</groupId>
+			<artifactId>activeui</artifactId>
+			<version>${activeui.version}</version>
 		</dependency>
 
 
