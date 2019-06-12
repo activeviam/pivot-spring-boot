@@ -17,7 +17,7 @@
 		<java.version>1.8</java.version>
 		<activePivotVersion>5.8.1-jdk8</activePivotVersion>
 		<activeui.version>4.2.11</activeui.version>
-		<content-server-ui.version>1.0.1</content-server-ui.version>
+		<content-server-ui.version>1.1.1</content-server-ui.version>
 	</properties>
 
 	<dependencies>
@@ -78,6 +78,18 @@
 			<groupId>com.activeviam.activeui</groupId>
 			<artifactId>activeui</artifactId>
 			<version>${activeui.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
 		</dependency>
 
 

@@ -42,6 +42,13 @@ public class PivotSpringbootApplication implements WebMvcConfigurer {
 				.addResourceLocations("classpath:/static/content/");
 		registry.addResourceHandler("/ui/env*.js")
 				.addResourceLocations("classpath:/static/activeui/");
+
+		// Swagger stuff
+		registry.addResourceHandler("swagger-ui.html")
+				.addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**")
+				.addResourceLocations("classpath:/META-INF/resources/webjars/");
+
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
 
