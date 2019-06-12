@@ -1,3 +1,3 @@
 window.env = {
-	serverUrl: "http://localhost:9090"
+	serverUrl: window.location.href.split('/content')[0]
 };
