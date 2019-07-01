@@ -1,5 +1,6 @@
 package com.activeviam.apps.pivotspringboot.activepivot;
 
+import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.csv.*;
 import com.qfs.msg.csv.filesystem.impl.FileSystemCSVTopicFactory;
@@ -106,10 +107,11 @@ public class SourceConfig {
     }
     private void printStoreSizes() {
         // add some logging
-//        if (Boolean.parseBoolean(env.getProperty("schema.printer", "true"))) {
-//            // display the graph
-//            new JungSchemaPrinter(false).print("Datastore", datastore);
-//        }
+        if (Boolean.parseBoolean(env.getProperty("schema.printer", "true"))) {
+            // display the graph
+        	System.setProperty("java.awt.headless", "false");
+            new JungSchemaPrinter(false).print("Datastore", datastore);
+        }
 
         // Print stop watch profiling
         StopWatch.get().printTimings();
