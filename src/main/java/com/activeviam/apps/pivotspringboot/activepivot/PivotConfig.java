@@ -2,7 +2,6 @@ package com.activeviam.apps.pivotspringboot.activepivot;
 
 
 import com.qfs.content.cfg.impl.ContentServerResourceServerConfig;
-import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
@@ -29,15 +28,15 @@ import org.springframework.context.annotation.*;
 @Import(value = {
         // Core stuff
         ActivePivotWebMvcConfigurer.class,
-        CustomCorsConfigProvider.class,
+        CustomCorsConfiguration.class,
         ActivePivotConfig.class,
         DatastoreConfig.class,
         NoSecurityDatastoreServiceConfig.class,
         FullAccessBranchPermissionsManagerConfig.class,
 
         ActivePivotServicesConfig.class,
-        ActivePivotWebSocketServicesConfig.class,
-        ContentServerWebSocketServicesConfig.class,
+        CustomWebSocketServicesConfig.class,
+        CustomContentServerWebSocketServicesConfig.class,
         ContentServerResourceServerConfig.class,
         ActiveViamRestServicesConfig.class,
         JwtConfig.class,

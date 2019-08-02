@@ -6,24 +6,9 @@
  */
 package com.activeviam.apps.pivotspringboot.activepivot;
 
-import com.google.common.collect.ImmutableList;
-import com.qfs.security.impl.SpringCorsFilter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.*;
-
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.core.HttpHeaders;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.qfs.QfsWebUtils.url;
-import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
 
 /**
  * @author ActiveViam
@@ -40,5 +25,7 @@ public class ActivePivotWebMvcConfigurer implements WebMvcConfigurer {
 				.addResourceLocations("classpath:/static/activeui/");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
+
+
 
 }

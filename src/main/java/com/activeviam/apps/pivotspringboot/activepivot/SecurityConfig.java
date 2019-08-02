@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @EnableGlobalAuthentication
-@EnableWebSecurity( debug = true )
+@EnableWebSecurity( debug = false )
 @Configuration
 public class SecurityConfig {
 

@@ -6,16 +6,14 @@
  */
 package com.activeviam.apps.pivotspringboot.activepivot;
 
-import com.qfs.server.cfg.impl.ActivePivotWebSocketServicesConfig;
-import org.springframework.context.annotation.Configuration;
+import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 
 import java.util.List;
 
 /**
  * @author ActiveViam
  */
-@Configuration
-public class CustomWebSocketServicesConfig extends ActivePivotWebSocketServicesConfig {
+public class CustomContentServerWebSocketServicesConfig extends ContentServerWebSocketServicesConfig {
 
 	// This method would normally get a bean of type ICorsFilterConfig to then get the allowed origins.
 	// We are not using ICorsFilterConfig (ACorsFilterConfig) anymore, so we need to provide the allowed origins in a different way
@@ -24,4 +22,5 @@ public class CustomWebSocketServicesConfig extends ActivePivotWebSocketServicesC
 		final List<String> origins = CustomCorsConfiguration.getAllowedOrigins();
 		return origins.toArray(new String[origins.size()]);
 	}
+
 }
