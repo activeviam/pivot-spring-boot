@@ -1,10 +1,10 @@
 package com.activeviam.apps.pivotspringboot.activepivot;
 
+import com.google.common.collect.ImmutableList;
 import com.qfs.content.service.IContentService;
 import com.qfs.jwt.impl.JwtFilter;
 import com.qfs.jwt.service.IJwtService;
-import com.qfs.jwt.service.impl.JwtService;
-import com.qfs.security.cfg.ICorsFilterConfig;
+
 import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -32,18 +33,21 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.Filter;
 import java.util.Arrays;
 
 import static com.qfs.QfsWebUtils.url;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
 
-import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @EnableGlobalAuthentication
-@EnableWebSecurity
+@EnableWebSecurity( debug = true )
 @Configuration
 public class SecurityConfig {
 
@@ -160,14 +164,12 @@ public class SecurityConfig {
 
         @Override
         protected final void configure(final HttpSecurity http) throws Exception {
-            final Filter corsFilter = context.getBean(ICorsFilterConfig.class).corsFilter();
             final JwtFilter jwtFilter = context.getBean(JwtFilter.class);
 
             http
                     // As of Spring Security 4.0, CSRF protection is enabled by default.
                     .csrf().disable()
-                    // Configure CORS
-                    .addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class)
+                    .cors().and()
                     // To Allow authentication with JW ( Needed for Active UI )
                     .addFilterAfter(jwtFilter, SecurityContextPersistenceFilter.class);
 
@@ -229,7 +231,6 @@ public class SecurityConfig {
         protected void doConfigure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
                     // The order of the matchers matters
-                    .antMatchers(HttpMethod.OPTIONS, REST_API_URL_PREFIX + "/**").permitAll()
                     // The REST ping service is temporarily authenticated (see PIVOT-3149)
                     .antMatchers(url(REST_API_URL_PREFIX, PING_SUFFIX)).hasAnyAuthority(ROLE_ADMIN)
                     // REST services
