@@ -7,6 +7,8 @@
 package com.activeviam.apps.pivotspringboot.activepivot;
 
 import com.google.common.collect.ImmutableList;
+import com.qfs.security.cfg.impl.ACorsFilterConfig;
+import org.apache.http.protocol.HTTP;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +29,7 @@ public class CustomCorsConfiguration {
 		return ImmutableList.of(CorsConfiguration.ALL);
 	}
 
-	// Global cors configuration used by SpringMVC
+	// Global CORS configuration used by SpringMVC
 	// This is almost the same as in ACorsFilterConfig but note that we don't allow ORIGIN and let it be handled elsewhere
 	// and we have a couple of additional headers
 	// See this: https://github.com/spring-projects/spring-boot/issues/5834#issuecomment-296370088
@@ -37,8 +39,9 @@ public class CustomCorsConfiguration {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(getAllowedOrigins());
-		// NOTE: we don't allow ORIGIN! It is taken care by SpringMVC
-		// meaning we don't need this piece of code in the security config: http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+		// NOTE: we don't allow ORIGIN! It is taken care of by SpringMVC
+		// meaning we don't need this piece of code in the security config:
+		// http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 		configuration.setAllowedMethods(ImmutableList.of(
 				HttpMethod.GET.name(),
 				HttpMethod.POST.name(),
@@ -54,8 +57,8 @@ public class CustomCorsConfiguration {
 				HttpHeaders.CONTENT_TYPE,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS,
-				HttpHeaders.AUTHORIZATION,
 				HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+				HttpHeaders.AUTHORIZATION,
 				HttpHeaders.CACHE_CONTROL,
 				"X-ActiveUI-Version",
 				"X-Requested-With"));

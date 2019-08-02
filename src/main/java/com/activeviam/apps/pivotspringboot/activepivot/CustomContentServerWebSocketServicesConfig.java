@@ -7,12 +7,14 @@
 package com.activeviam.apps.pivotspringboot.activepivot;
 
 import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 /**
  * @author ActiveViam
  */
+@Configuration
 public class CustomContentServerWebSocketServicesConfig extends ContentServerWebSocketServicesConfig {
 
 	// This method would normally get a bean of type ICorsFilterConfig to then get the allowed origins.
@@ -22,5 +24,4 @@ public class CustomContentServerWebSocketServicesConfig extends ContentServerWeb
 		final List<String> origins = CustomCorsConfiguration.getAllowedOrigins();
 		return origins.toArray(new String[origins.size()]);
 	}
-
 }
