@@ -6,9 +6,8 @@
  */
 package com.activeviam.apps.pivotspringboot.activepivot;
 
-import com.google.common.collect.ImmutableList;
-import com.qfs.security.cfg.impl.ACorsFilterConfig;
-import org.apache.http.protocol.HTTP;
+import com.activeviam.collections.impl.Immutable;
+import com.qfs.security.cfg.ICorsFilterConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -16,17 +15,28 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import javax.servlet.Filter;
+import javax.servlet.ServletException;
 import java.util.List;
 
 /**
  * @author ActiveViam
  */
 @Configuration
-public class CustomCorsConfiguration {
+public class CorsFilterConfiguration implements ICorsFilterConfig {
 
 	// This method is here so it can be used to configure websockets as well
-	public static List<String> getAllowedOrigins() {
-		return ImmutableList.of(CorsConfiguration.ALL);
+	@Override
+	public List<String> getAllowedOrigins() {
+		return Immutable.list(CorsConfiguration.ALL).toList();
+	}
+
+	@Bean
+	@Override
+	public Filter corsFilter() throws ServletException {
+		return new CorsFilter(corsConfigurationSource());
 	}
 
 	// Global CORS configuration used by SpringMVC
@@ -37,21 +47,21 @@ public class CustomCorsConfiguration {
 	// http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
+		org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
 		configuration.setAllowedOrigins(getAllowedOrigins());
 		// NOTE: we don't allow ORIGIN! It is taken care of by SpringMVC
 		// meaning we don't need this piece of code in the security config:
 		// http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-		configuration.setAllowedMethods(ImmutableList.of(
+		configuration.setAllowedMethods(Immutable.list(
 				HttpMethod.GET.name(),
 				HttpMethod.POST.name(),
 				HttpMethod.PUT.name(),
 				HttpMethod.DELETE.name(),
 				HttpMethod.PATCH.name(),
-				HttpMethod.HEAD.name()));
+				HttpMethod.HEAD.name()).toList());
 		configuration.setAllowCredentials(true);
-		configuration.setExposedHeaders(ImmutableList.of(HttpHeaders.LOCATION));
-		configuration.setAllowedHeaders(ImmutableList.of(
+		configuration.setExposedHeaders(Immutable.list(HttpHeaders.LOCATION).toList());
+		configuration.setAllowedHeaders(Immutable.list(
 				HttpHeaders.ORIGIN,
 				HttpHeaders.ACCEPT,
 				HttpHeaders.CONTENT_TYPE,
@@ -61,7 +71,7 @@ public class CustomCorsConfiguration {
 				HttpHeaders.AUTHORIZATION,
 				HttpHeaders.CACHE_CONTROL,
 				"X-ActiveUI-Version",
-				"X-Requested-With"));
+				"X-Requested-With").toList());
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		// This is for any path

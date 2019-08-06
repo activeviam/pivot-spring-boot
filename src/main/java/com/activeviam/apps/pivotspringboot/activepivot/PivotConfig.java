@@ -28,15 +28,13 @@ import org.springframework.context.annotation.*;
 @Import(value = {
         // Core stuff
         ActivePivotWebMvcConfigurer.class,
-        CustomCorsConfiguration.class,
+        CorsFilterConfiguration.class,
         ActivePivotConfig.class,
         DatastoreConfig.class,
         NoSecurityDatastoreServiceConfig.class,
         FullAccessBranchPermissionsManagerConfig.class,
 
         ActivePivotServicesConfig.class,
-        CustomWebSocketServicesConfig.class,
-        CustomContentServerWebSocketServicesConfig.class,
         ContentServerResourceServerConfig.class,
         ActiveViamRestServicesConfig.class,
         JwtConfig.class,
