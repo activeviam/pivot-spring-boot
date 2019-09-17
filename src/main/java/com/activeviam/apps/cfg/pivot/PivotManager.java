@@ -85,7 +85,7 @@ public class PivotManager implements IActivePivotManagerDescriptionConfig {
                 .withAlias("Count")
                 .withFormatter(INT_FORMATTER)
 
-                .withMeasures(Measures::build)
+                .withCalculations(Measures::build)
                 .withDimensions(PivotManager::dimensions)
                 // Aggregate provider
                 .withAggregateProvider()
