@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.servlet.MultipartConfigElement;
 
 @SpringBootApplication
-public class PivotSpringbootApplication implements WebMvcConfigurer {
+public class PivotSpringbootApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(PivotSpringbootApplication.class, args);
@@ -35,14 +35,4 @@ public class PivotSpringbootApplication implements WebMvcConfigurer {
 		multipartConfig.ifAvailable(registration::setMultipartConfig);
 		return registration;
 	}
-
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/content/env*.js")
-				.addResourceLocations("classpath:/static/content/");
-		registry.addResourceHandler("/ui/env*.js")
-				.addResourceLocations("classpath:/static/activeui/");
-		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-	}
-
 }

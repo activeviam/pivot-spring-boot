@@ -14,7 +14,6 @@ import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Spring configuration of the ActivePivot Application services
@@ -26,10 +25,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         "classpath:jwt.properties",
         "classpath:content.service.properties"
 })
-@EnableWebMvc
 @Configuration
 @Import(value = {
         // Core stuff
+        ActivePivotWebMvcConfigurer.class,
+        CorsFilterConfiguration.class,
         ActivePivotConfig.class,
         DatastoreConfig.class,
         NoSecurityDatastoreServiceConfig.class,
@@ -49,7 +49,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         CustomI18nConfig.class,
 
         // Custom stuff
-        PivotCorsFilterSecurityConfig.class,
+        //PivotCorsFilterSecurityConfig.class,
 })
 public class PivotConfig {
 
