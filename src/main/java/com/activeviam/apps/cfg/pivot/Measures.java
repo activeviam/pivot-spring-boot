@@ -1,9 +1,9 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg.pivot;
 
 import com.activeviam.desc.build.ICanStartBuildingMeasures;
 import com.activeviam.desc.build.IHasAtLeastOneMeasure;
 
-import static com.activeviam.apps.pivotspringboot.activepivot.StoreAndFieldConstants.TRADES__NOTIONAL;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES__NOTIONAL;
 
 public class Measures {
 

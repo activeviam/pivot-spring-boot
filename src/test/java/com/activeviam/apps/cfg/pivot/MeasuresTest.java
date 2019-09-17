@@ -1,4 +1,4 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg.pivot;
 
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.Registrations;
@@ -18,9 +18,9 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static com.activeviam.apps.pivotspringboot.activepivot.DatastoreDescriptionConfig.createTradesStoreDescription;
-import static com.activeviam.apps.pivotspringboot.activepivot.PivotManager.*;
-import static com.activeviam.apps.pivotspringboot.activepivot.StoreAndFieldConstants.TRADES_STORE_NAME;
+import static com.activeviam.apps.cfg.DatastoreDescriptionConfig.createTradesStoreDescription;
+import static com.activeviam.apps.cfg.pivot.PivotManager.*;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
 
 public class MeasuresTest {
 

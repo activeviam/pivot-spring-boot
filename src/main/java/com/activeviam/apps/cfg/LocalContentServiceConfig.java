@@ -1,4 +1,4 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg;
 
 import com.qfs.content.service.IContentService;
 import com.qfs.pivot.content.IActivePivotContentService;

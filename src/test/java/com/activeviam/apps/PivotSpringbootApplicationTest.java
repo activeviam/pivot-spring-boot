@@ -1,4 +1,4 @@
-package com.activeviam.apps.pivotspringboot;
+package com.activeviam.apps;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class PivotSpringbootApplicationTests {
+@SpringBootTest(classes = PivotSpringBootApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+public class PivotSpringbootApplicationTest {
 
 	@LocalServerPort
 	private int port;
@@ -29,12 +29,6 @@ public class PivotSpringbootApplicationTests {
 
 	@Test
 	public void contextLoads() {
-	}
-
-	@Test
-	public void helloController() {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/hello",
-				String.class)).contains("Hello from ActivePivotSpringBoot!");
 	}
 
 	@Test

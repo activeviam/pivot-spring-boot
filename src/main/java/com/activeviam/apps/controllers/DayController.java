@@ -1,10 +1,10 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.controllers;
 
+import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.store.IDatastore;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

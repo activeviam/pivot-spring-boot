@@ -1,4 +1,4 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg;
 
 import com.google.common.collect.ImmutableList;
 import com.qfs.content.service.IContentService;

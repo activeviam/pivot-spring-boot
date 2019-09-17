@@ -1,5 +1,6 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg;
 
+import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;

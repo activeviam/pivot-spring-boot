@@ -4,7 +4,7 @@
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg;
 
 import com.activeviam.collections.impl.Immutable;
 import com.qfs.security.cfg.ICorsFilterConfig;
@@ -25,7 +25,7 @@ import java.util.List;
  * @author ActiveViam
  */
 @Configuration
-public class CorsFilterConfiguration implements ICorsFilterConfig {
+public class CorsFilterConfig implements ICorsFilterConfig {
 
 	// This method is here so it can be used to configure websockets as well
 	@Override

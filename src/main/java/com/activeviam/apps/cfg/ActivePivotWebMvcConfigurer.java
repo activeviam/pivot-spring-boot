@@ -4,7 +4,7 @@
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -25,7 +25,5 @@ public class ActivePivotWebMvcConfigurer implements WebMvcConfigurer {
 				.addResourceLocations("classpath:/static/activeui/");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
-
-
 
 }

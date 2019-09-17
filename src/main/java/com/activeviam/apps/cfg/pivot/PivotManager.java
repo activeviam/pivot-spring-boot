@@ -1,10 +1,9 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg.pivot;
 
+import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
-import com.activeviam.desc.build.ICanStartBuildingMeasures;
 import com.activeviam.desc.build.ICubeDescriptionBuilder;
-import com.activeviam.desc.build.IHasAtLeastOneMeasure;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;

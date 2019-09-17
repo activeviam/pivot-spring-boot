@@ -1,4 +1,4 @@
-package com.activeviam.apps.pivotspringboot;
+package com.activeviam.apps.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +9,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String index() {
-        return "Hello from ActivePivotSpringBoot!";
+        return "Hello from Pivot Spring Boot!";
     }
 }

@@ -1,4 +1,4 @@
-package com.activeviam.apps.pivotspringboot.activepivot;
+package com.activeviam.apps.cfg;
 
 import com.qfs.server.cfg.impl.ASpringResourceServerConfig;
 import com.qfs.util.impl.QfsArrays;
