@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.5.RELEASE</version>
+		<version>2.1.7.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.activeviam.apps</groupId>
@@ -15,8 +15,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<activePivotVersion>5.8.1-jdk8</activePivotVersion>
-		<activeui.version>4.2.11</activeui.version>
+		<activePivotVersion>5.8.3-jdk8</activePivotVersion>
+		<activeui.version>4.3.0</activeui.version>
 		<content-server-ui.version>1.1.1</content-server-ui.version>
 	</properties>
 
@@ -79,8 +79,6 @@
 			<artifactId>activeui</artifactId>
 			<version>${activeui.version}</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
