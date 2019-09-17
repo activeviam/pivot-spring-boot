@@ -36,6 +36,7 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -171,7 +172,7 @@ public class SecurityConfig {
                     .csrf().disable()
                     .cors().and()
                     // To Allow authentication with JW ( Needed for Active UI )
-                    .addFilterAfter(jwtFilter, SecurityContextPersistenceFilter.class);
+                    .addFilterAfter(jwtFilter, CorsFilter.class);
 
             if (logout) {
                 // Configure logout URL
