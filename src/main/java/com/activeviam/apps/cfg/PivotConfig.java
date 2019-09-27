@@ -2,13 +2,11 @@ package com.activeviam.apps.cfg;
 
 
 import com.activeviam.apps.cfg.pivot.PivotManager;
-import com.qfs.content.cfg.impl.ContentServerResourceServerConfigV2;
-import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
-import com.qfs.server.cfg.impl.*;
-import com.qfs.service.store.impl.NoSecurityDatastoreServiceConfig;
+import com.qfs.server.cfg.impl.ActivePivotConfig;
+import com.qfs.server.cfg.impl.ActivePivotServicesConfig;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;

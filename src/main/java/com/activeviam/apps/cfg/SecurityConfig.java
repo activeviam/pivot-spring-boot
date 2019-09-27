@@ -1,10 +1,8 @@
 package com.activeviam.apps.cfg;
 
-import com.google.common.collect.ImmutableList;
 import com.qfs.content.service.IContentService;
 import com.qfs.jwt.impl.JwtFilter;
 import com.qfs.jwt.service.IJwtService;
-
 import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
@@ -16,8 +14,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -32,10 +28,6 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
@@ -43,9 +35,6 @@ import java.util.Arrays;
 import static com.qfs.QfsWebUtils.url;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @EnableGlobalAuthentication
 @EnableWebSecurity( debug = false )
