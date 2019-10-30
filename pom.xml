@@ -65,6 +65,11 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-hikaricp</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
 
 		<!-- Embedded content server UI -->
 		<dependency>
@@ -79,6 +84,7 @@
 			<artifactId>activeui</artifactId>
 			<version>${activeui.version}</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
