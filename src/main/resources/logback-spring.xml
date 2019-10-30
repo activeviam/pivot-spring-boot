@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example LOGBACK Configuration File http://logback.qos.ch/manual/configuration.html -->
+<configuration debug="true">
+<!--    <conversionRule conversionWord="instance" converterClass="com.activeviam.apm.logging.impl.APMInstanceConverter" />-->
+<!--    <conversionRule conversionWord="user" converterClass="com.activeviam.apm.logging.impl.APMUserConverter" />-->
+<!--    <conversionRule conversionWord="thread" converterClass="com.activeviam.apm.logging.impl.APMThreadConverter" />-->
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
+<!--            <excludeMdcKeyName>user_name</excludeMdcKeyName>-->
+<!--            <excludeMdcKeyName>thread_name</excludeMdcKeyName>-->
+
+<!--            &lt;!&ndash; Append customised fields  &ndash;&gt;-->
+<!--            <provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">-->
+<!--                <pattern>-->
+<!--                    {-->
+<!--                    "user_name": "%user",-->
+<!--                    "thread_name": "%thread",-->
+<!--                    "instance_name": "%instance"-->
+<!--                    }-->
+<!--                </pattern>-->
+<!--            </provider>-->
+<!--        </encoder>-->
+    </appender>
+
+    <logger name="com.atlassian" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <!--
+        Apply the levels defined here to the JUL loggers.
+        Has to be called at the end, once all the loggers are defined
+    -->
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+</configuration>
