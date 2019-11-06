@@ -20,10 +20,6 @@ import org.springframework.context.annotation.*;
  * @author ActiveViam
  *
  */
-@PropertySource(value = {
-        "classpath:jwt.properties",
-        "classpath:content.service.properties"
-})
 @Configuration
 @Import(value = {
         ActivePivotWebMvcConfigurer.class,
