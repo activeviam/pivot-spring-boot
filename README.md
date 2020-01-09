@@ -13,7 +13,7 @@ This project is a starting point for your own projects and implementations. You 
 
 ## 📦 Installation
 #### Requirements
-- Java 8
+- Java 11
 - Maven 3
 - ActivePivot jar files (commercial software)
 - Running the application requires a license for the ActivePivot software.
