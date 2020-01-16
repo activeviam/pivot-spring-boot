@@ -32,6 +32,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
+import static com.activeviam.apps.cfg.ActiveUIResourceServerConfig.UI_NAMESPACE;
 import static com.qfs.QfsWebUtils.url;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
@@ -191,6 +192,21 @@ public class SecurityConfig {
         @Override
         protected void doConfigure(HttpSecurity http) throws Exception {
             String url = "/versions";
+            http
+                    .antMatcher(url + "/**").authorizeRequests()
+                    .antMatchers(url + "/**").permitAll()
+                    .and().httpBasic();
+        }
+    }
+
+    @Configuration
+    @Order(3)
+    // Must be done before ActivePivotSecurityConfigurer (because they match common URLs)
+    public static class UISecurityConfigurer extends AWebSecurityConfigurer {
+
+        @Override
+        protected void doConfigure(HttpSecurity http) throws Exception {
+            String url = "/" + UI_NAMESPACE;
             http
                     .antMatcher(url + "/**").authorizeRequests()
                     .antMatchers(url + "/**").permitAll()
