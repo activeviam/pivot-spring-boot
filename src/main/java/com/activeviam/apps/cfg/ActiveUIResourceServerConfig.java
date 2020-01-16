@@ -10,18 +10,18 @@ import java.util.Set;
 public class ActiveUIResourceServerConfig extends ASpringResourceServerConfig {
 
     /** The namespace of the ActiveUI web application */
-    public static final String NAMESPACE = "ui";
+    public static final String UI_NAMESPACE = "ui";
 
     /** Constructor */
     public ActiveUIResourceServerConfig() {
-        super("/" + NAMESPACE);
+        super("/" + UI_NAMESPACE);
     }
 
     @Override
     protected void registerRedirections(final ResourceRegistry registry) {
         super.registerRedirections(registry);
         // Redirect from the root to ActiveUI
-        registry.redirectTo(NAMESPACE + "/index.html", "/");
+        registry.redirectTo(UI_NAMESPACE + "/index.html", "/");
     }
 
     /**
