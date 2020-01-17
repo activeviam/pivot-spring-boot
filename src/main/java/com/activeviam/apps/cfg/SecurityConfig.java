@@ -3,6 +3,7 @@ package com.activeviam.apps.cfg;
 import com.qfs.content.service.IContentService;
 import com.qfs.jwt.impl.JwtFilter;
 import com.qfs.jwt.service.IJwtService;
+import com.qfs.pivot.servlet.impl.ContextValueFilter;
 import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
@@ -10,6 +11,7 @@ import com.quartetfs.biz.pivot.security.IAuthorityComparator;
 import com.quartetfs.biz.pivot.security.impl.AuthorityComparatorAdapter;
 import com.quartetfs.fwk.ordering.impl.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -118,6 +120,18 @@ public class SecurityConfig {
     public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
         auth.eraseCredentials(false)
                 .authenticationProvider(jwtConfig.jwtAuthenticationProvider());
+    }
+
+    /**
+     * Disable registering the context value filter, otherwise it is registered and applied twice.
+     * This is a servlet filter and is called upon every request. Going through the context value
+     * mechanism twice can massively slow down logging in (subsequent requests should be cached by the content server)
+     */
+    @Bean
+    public FilterRegistrationBean<ContextValueFilter> disableRegisteringContextValueFilter(final ContextValueFilter filter) {
+        final FilterRegistrationBean<ContextValueFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
 
     /**
