@@ -4,15 +4,19 @@ import com.qfs.content.service.IContentService;
 import com.qfs.pivot.content.IActivePivotContentService;
 import com.qfs.pivot.content.impl.ActivePivotContentServiceBuilder;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
-import com.qfs.util.impl.QfsProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import java.util.Properties;
 
 @Configuration
 public class LocalContentServiceConfig implements IActivePivotContentServiceConfig {
+
+    @Autowired
+    Environment env;
 
     @ConfigurationProperties(prefix = "content")
     @Bean
@@ -23,8 +27,7 @@ public class LocalContentServiceConfig implements IActivePivotContentServiceConf
     @Override
     @Bean
     public IContentService contentService() {
-        final IContentService contentService = activePivotContentService().getContentService().getUnderlying();
-        return contentService;
+        return activePivotContentService().getContentService().getUnderlying();
     }
 
     @Override
@@ -32,7 +35,9 @@ public class LocalContentServiceConfig implements IActivePivotContentServiceConf
     public IActivePivotContentService activePivotContentService() {
         final Properties hibernateProperties = contentServiceProperties();
         return new ActivePivotContentServiceBuilder()
-                .withPersistence(new org.hibernate.cfg.Configuration().addProperties(hibernateProperties)).withAudit()
-                .withoutCache().needInitialization(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_ADMIN).build();
+                .withPersistence(new org.hibernate.cfg.Configuration()
+                        .addProperties(hibernateProperties)).withAudit()
+                .withCacheForEntitlements(Long.parseLong(env.getProperty("contentServer.security.cache.entitlementsTTL" ,"3600")))
+                .needInitialization(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_ADMIN).build();
     }
 }
