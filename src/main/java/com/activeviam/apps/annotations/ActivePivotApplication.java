@@ -1,6 +1,6 @@
 package com.activeviam.apps.annotations;
 
-import com.qfs.content.cfg.impl.ContentServerResourceServerConfigV2;
+import com.qfs.content.cfg.impl.ContentServerResourceServerConfig;
 import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.server.cfg.i18n.impl.LocalI18nConfig;
 import com.qfs.server.cfg.impl.*;
@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
         ActivePivotServicesConfig.class,
         ActivePivotWebSocketServicesConfig.class,
         ContentServerWebSocketServicesConfig.class,
-        ContentServerResourceServerConfigV2.class,
+        ContentServerResourceServerConfig.class,
         ActiveViamRestServicesConfig.class,
         JwtConfig.class,
 

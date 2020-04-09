@@ -1,7 +1,7 @@
 package com.activeviam.apps;
 
 import com.activeviam.apps.annotations.ActivePivotApplication;
-import com.activeviam.apps.cfg.PivotConfig;
+import com.activeviam.apps.cfg.ApplicationConfig;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import javax.servlet.MultipartConfigElement;
 
 @ActivePivotApplication
-@Import(PivotConfig.class)
+@Import(ApplicationConfig.class)
 public class PivotSpringBootApplication {
 
     public static void main(String[] args) {
