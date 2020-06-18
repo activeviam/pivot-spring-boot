@@ -15,6 +15,7 @@ import com.qfs.util.timing.impl.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
 import java.nio.file.Path;
@@ -83,6 +84,7 @@ public class SourceConfig {
      */
 
     @Bean
+    @DependsOn("startManager")
     public Void initialLoad() {
         final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
         csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));

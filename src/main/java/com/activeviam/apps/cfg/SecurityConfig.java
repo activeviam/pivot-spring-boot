@@ -163,14 +163,6 @@ public class SecurityConfig implements ICorsConfig {
                 .authenticationProvider(jwtConfig.jwtAuthenticationProvider());
     }
 
-
-//    @Bean
-//    public FilterRegistrationBean<ContextValueFilter> disableRegisteringContextValueFilter(final ContextValueFilter filter) {
-//        final FilterRegistrationBean<ContextValueFilter> registration = new FilterRegistrationBean<>(filter);
-//        registration.setEnabled(false);
-//        return registration;
-//    }
-
     @Override
     public List<String> getAllowedOrigins() {
         return Collections.singletonList(CorsConfiguration.ALL);

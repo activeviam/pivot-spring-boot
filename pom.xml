@@ -15,9 +15,9 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<activePivotVersion>5.9.0-RC2</activePivotVersion>
-		<activeui.version>4.3.6</activeui.version>
-		<content-server-ui.version>1.1.2</content-server-ui.version>
+		<activePivotVersion>5.9.0</activePivotVersion>
+		<activeui.version>4.3.7</activeui.version>
+		<content-server-ui.version>2.0.0</content-server-ui.version>
 	</properties>
 
 	<dependencies>

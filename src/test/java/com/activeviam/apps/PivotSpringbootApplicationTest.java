@@ -33,7 +33,7 @@ public class PivotSpringbootApplicationTest {
 
 	@Test
 	public void activePivotPingReturnsPong() {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/pivot/rest/v4/ping",
+		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/pivot/rest/v5/ping",
 				String.class)).contains("pong");
 	}
 
