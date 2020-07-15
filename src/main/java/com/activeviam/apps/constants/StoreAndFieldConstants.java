@@ -7,6 +7,9 @@ public class StoreAndFieldConstants {
 
     /********************* Stores fields ***********************/
     public static final String ASOFDATE = "AsOfDate";
-    public static final String TRADES__TRADEID = "TradeID";
-    public static final String TRADES__NOTIONAL = "Notional";
+    public static final String ID = "ID";
+    public static final String VALUE_A = "A";
+    public static final String VALUE_B = "B";
+    public static final String VALUE_C = "C";
+    public static final String VECTOR = "Vector";
 }

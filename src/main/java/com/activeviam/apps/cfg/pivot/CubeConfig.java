@@ -57,8 +57,9 @@ public class CubeConfig {
 
         return builder
                 .withSingleLevelDimensions(
-                        StoreAndFieldConstants.TRADES__TRADEID
+                        StoreAndFieldConstants.ID
                 )
+
                 .withDimension(StoreAndFieldConstants.ASOFDATE)
                 .withType(IDimension.DimensionType.TIME)
                 .withHierarchy(StoreAndFieldConstants.ASOFDATE).slicing()
