@@ -57,7 +57,10 @@ public class CubeConfig {
 
         return builder
                 .withSingleLevelDimensions(
-                        StoreAndFieldConstants.ID
+                        StoreAndFieldConstants.ID,
+                        StoreAndFieldConstants.DESK,
+                        StoreAndFieldConstants.CITY,
+                        StoreAndFieldConstants.DIRECTION
                 )
 
                 .withDimension(StoreAndFieldConstants.ASOFDATE)

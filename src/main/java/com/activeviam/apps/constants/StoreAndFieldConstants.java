@@ -8,6 +8,9 @@ public class StoreAndFieldConstants {
     /********************* Stores fields ***********************/
     public static final String ASOFDATE = "AsOfDate";
     public static final String ID = "ID";
+    public static final String DESK = "Desk";
+    public static final String CITY = "City";
+    public static final String DIRECTION = "Direction";
     public static final String VALUE_A = "A";
     public static final String VALUE_B = "B";
     public static final String VALUE_C = "C";
