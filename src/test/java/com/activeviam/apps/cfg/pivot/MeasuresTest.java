@@ -1,6 +1,6 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.cfg.DatastoreDescriptionConfig;
+import com.activeviam.apps.cfg.DefaultSchema;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -8,6 +8,9 @@ import com.activeviam.copper.builders.impl.SimpleTransactionBuilder;
 import com.activeviam.copper.testing.CubeTester;
 import com.activeviam.copper.testing.CubeTesterBuilder;
 import com.activeviam.copper.testing.JUnitCubeTesterBuilder;
+import com.activeviam.tools.datastore.IConfigurableSchema;
+import com.activeviam.tools.datastore.IDatastoreConfigurator;
+import com.activeviam.tools.datastore.impl.DatastoreConfigurator;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
@@ -23,9 +26,17 @@ import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES__NOTIO
 
 public class MeasuresTest {
 
+    private static IDatastoreConfigurator configurator;
+
     @BeforeClass
     public static void setup() {
+
         CopperRegistrations.registerCopperPluginValues();
+        configurator = new DatastoreConfigurator();
+        IConfigurableSchema schema = new DefaultSchema();
+        schema.setConfigurator(configurator);
+        schema.createStores();
+        schema.createReferences();
     }
 
     @Rule
@@ -38,8 +49,7 @@ public class MeasuresTest {
      */
     /* {@codeBlock: TestMeasures.BuilderDefinition} */
     public static CubeTesterBuilder createTester() {
-        IDatastoreSchemaDescription datastoreDescription =
-                DatastoreDescriptionConfig.schemaDescription();
+        IDatastoreSchemaDescription datastoreDescription = configurator.buildSchemaDescription();
         ISelectionDescription selectionDescription = createSchemaSelectionDescription(datastoreDescription);
         IActivePivotInstanceDescription cubeDescription = StartBuilding.cube()
                 .withName("Cube")

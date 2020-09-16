@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
         ActivePivotWebMvcConfigurer.class,
         SecurityConfig.class,
         SourceConfig.class,
-        DatastoreDescriptionConfig.class,
+        DatastoreConfiguratorSetup.class,
         PivotManagerConfig.class,
         LocalContentServiceConfig.class,
         ActiveUIResourceServerConfig.class

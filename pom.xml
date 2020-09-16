@@ -18,6 +18,7 @@
         <activePivotVersion>5.9.1</activePivotVersion>
         <activeui.version>4.3.10</activeui.version>
         <content-server-ui.version>2.0.0</content-server-ui.version>
+        <dash.version>2.0.0-AP5.9-SNAPSHOT</dash.version>
     </properties>
 
     <dependencyManagement>
@@ -53,6 +54,13 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Tool dependencies -->
+        <dependency>
+            <groupId>com.activeviam.tools</groupId>
+            <artifactId>datastore-helper</artifactId>
+            <version>${dash.version}</version>
         </dependency>
 
         <!-- ActivePivot Dependencies -->

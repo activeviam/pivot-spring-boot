@@ -1,21 +1,14 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.cfg.DatastoreDescriptionConfig;
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.activeviam.builders.StartBuilding;
-import com.activeviam.desc.build.ICanBuildCubeDescription;
-import com.activeviam.desc.build.ICubeDescriptionBuilder;
-import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
+import com.activeviam.tools.datastore.IDatastoreConfigurator;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
-import com.quartetfs.biz.pivot.cube.dimension.IDimension;
-import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.biz.pivot.definitions.IActivePivotManagerDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
-import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -38,7 +31,7 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     public static final String NATIVE_MEASURES = "Native Measures";
 
     @Autowired
-    protected IDatastoreSchemaDescription datastoreDescription;
+    protected IDatastoreConfigurator configurator;
 
     @Override
     public IActivePivotManagerDescription userManagerDescription() {
@@ -49,6 +42,11 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
                 .withSelection(createSchemaSelectionDescription(userSchemaDescription()))
                 .withCube(createCubeDescription())
                 .build();
+    }
+
+    @Override
+    public IDatastoreSchemaDescription userSchemaDescription() {
+        return configurator.buildSchemaDescription();
     }
 
     /**
@@ -68,10 +66,4 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     public static IActivePivotInstanceDescription createCubeDescription() {
         return CubeConfig.configureCubeBuilder(StartBuilding.cube(CUBE_NAME)).build();
     }
-
-    @Override
-    public IDatastoreSchemaDescription userSchemaDescription() {
-        return DatastoreDescriptionConfig.schemaDescription();
-    }
-
 }
