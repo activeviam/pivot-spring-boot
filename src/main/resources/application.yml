@@ -31,7 +31,8 @@ content:
       maximumPoolSize: 10
       poolName: "content"
 
-# JWT properties
+# Properties used to configure the authentication based on JWT.
+# You can execute JwtUtil to generate new keys.
 qfs:
   jwt:
     key:
