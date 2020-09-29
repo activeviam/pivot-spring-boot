@@ -27,5 +27,5 @@ The project contains, out of the box, an extremely simple datastore schema and s
 - Excel: you can connect to the cube from Excel, by connecting to an 'Analysis Services' source. The default URL to use when running locally is `http://localhost:9090/xmla`
 - ActiveUI, ActiveViam's user interface for exploring the cube, will be available from `http://localhost:9090/ui`
 
-The default security credentials are `admin:admin`, but can be modified in the `SecurityConfig` class (we use Spring Security)
+The default security credentials are `admin:admin`, but can be modified in the `SecurityConfig` class (we use Spring Security). You should change this before going into production. You are also recommended to change the jwt key pair in `application.yaml`.
 
