@@ -1,0 +1,20 @@
+Index;Distribution;Cardinality;Indexed fields;Cacheline length;Average query time (in ms)
+MultiVersionColumnImprintsSecondaryRecordIndex;Random;1000;1;8;44.3
+MultiVersionColumnImprintsSecondaryRecordIndex;Random;1000;1;16;39.24
+MultiVersionColumnImprintsSecondaryRecordIndex;Random;1000;1;32;44.12
+MultiVersionColumnImprintsSecondaryRecordIndex;Random;1000;1;64;44.65
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Random;1000;1;8;30.77
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Random;1000;1;16;31.33
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Random;1000;1;32;37.75
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Random;1000;1;64;35.63
+
+Index;Distribution;Cardinality;Indexed fields;Cacheline length;Average query time (in ms)
+MultiVersionColumnImprintsSecondaryRecordIndex;Modulo;1000;1;8;23.36
+MultiVersionColumnImprintsSecondaryRecordIndex;Modulo;1000;1;16;16.13
+MultiVersionColumnImprintsSecondaryRecordIndex;Modulo;1000;1;32;13.58
+MultiVersionColumnImprintsSecondaryRecordIndex;Modulo;1000;1;64;13.83
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Modulo;1000;1;8;12.71
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Modulo;1000;1;16;10.63
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Modulo;1000;1;32;11.7
+MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;Modulo;1000;1;64;11.64
+

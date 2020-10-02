@@ -1,0 +1,27 @@
+Direct chunk type;Chunk size;Average read time (in ns)
+DirectChunkBits;65536;161893.0
+DirectChunkQuad;65536;197632.0
+DirectChunkHexa;65536;343445.0
+DirectChunkBytes;65536;282974.0
+DirectChunkShorts;65536;269881.0
+DirectChunkTriBytes;65536;301055.0
+DirectChunkInteger;65536;281981.0
+
+Direct chunk type;Chunk size;Average read time (in us)
+DirectChunkBits;1048576;2359.65
+DirectChunkQuad;1048576;3010.04
+DirectChunkHexa;1048576;4880.49
+DirectChunkBytes;1048576;4079.11
+DirectChunkShorts;1048576;4047.8
+DirectChunkTriBytes;1048576;4551.44
+DirectChunkInteger;1048576;3975.85
+
+Direct chunk type;Chunk size;Average read time (in us)
+DirectChunkBits;1048576;2277.59
+DirectChunkQuad;1048576;2817.27
+DirectChunkHexa;1048576;4890.63
+DirectChunkBytes;1048576;4166.11
+DirectChunkShorts;1048576;4169.59
+DirectChunkTriBytes;1048576;4765.19
+DirectChunkInteger;1048576;4062.95
+

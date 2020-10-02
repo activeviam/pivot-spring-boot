@@ -1,0 +1,30 @@
+Direct chunk type;Cardinality;Cachelines scanned (in %);Scan type;Average scan time (in us)
+DirectChunkBytes;100;1;Cachelines;338.55
+DirectChunkBytes;100;1;FullScan;6603.7
+
+Direct chunk type;Cardinality;Cachelines scanned (in %);Scan type;Average scan time (in us)
+DirectChunkBytes;100;10;Cachelines;1522.34
+DirectChunkBytes;100;10;FullScan;8077.09
+
+Direct chunk type;Cardinality;Cachelines scanned (in %);Scan type;Average scan time (in us)
+DirectChunkBytes;100;50;Cachelines;7414.92
+DirectChunkBytes;100;50;FullScan;9073.29
+
+Direct chunk type;Cardinality;Cachelines scanned (in %);Scan type;Average scan time (in us)
+DirectChunkBytes;100;100;Cachelines;13195.63
+DirectChunkBytes;100;100;FullScan;9703.99
+
+Direct chunk type;Cardinality;Cachelines scanned (in %);Scan type;Average scan time (in us)
+DirectChunkBytes;100;1;FullScan;6651.13
+DirectChunkBytes;100;1;Cachelines;735.87
+DirectChunkBytes;100;1;CompressedCachelines;164.18
+DirectChunkBytes;100;10;FullScan;6796.12
+DirectChunkBytes;100;10;Cachelines;1833.09
+DirectChunkBytes;100;10;CompressedCachelines;1201.14
+DirectChunkBytes;100;50;FullScan;9061.47
+DirectChunkBytes;100;50;Cachelines;7084.58
+DirectChunkBytes;100;50;CompressedCachelines;5800.08
+DirectChunkBytes;100;100;FullScan;9752.43
+DirectChunkBytes;100;100;Cachelines;13749.44
+DirectChunkBytes;100;100;CompressedCachelines;11601.54
+

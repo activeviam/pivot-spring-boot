@@ -1,0 +1,62 @@
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;25.22
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;23.67
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;28.9
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;30.54
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;22.57
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;23.17
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;14.76
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;6.59
+
+Index;Distribution;Cardinality;Average query time (in ms)
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;100;28.45
+
+Index;Distribution;Cardinality;Average query time (in ms)
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;1000000;28.4
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;10;61.72
+MultiVersionColumnImprintsIndex;Random;10;83.78
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;10;79.96
+FullScan;Random;100;31.72
+MultiVersionColumnImprintsIndex;Random;100;33.77
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;100;29.19
+FullScan;Random;1000000;59.13
+MultiVersionColumnImprintsIndex;Random;1000000;32.33
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;1000000;27.96
+FullScan;Modulo;10;43.21
+MultiVersionColumnImprintsIndex;Modulo;10;50.92
+MultiVersionColumnImprintsIndexWithoutRLECompression;Modulo;10;72.78
+FullScan;Modulo;100;32.01
+MultiVersionColumnImprintsIndex;Modulo;100;29.31
+MultiVersionColumnImprintsIndexWithoutRLECompression;Modulo;100;23.97
+FullScan;Modulo;1000000;9.74
+MultiVersionColumnImprintsIndex;Modulo;1000000;0.9
+MultiVersionColumnImprintsIndexWithoutRLECompression;Modulo;1000000;3.5
+
+Index;Distribution;Cardinality;Average query time (in ms)
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;100;26.77
+
+Index;Distribution;Cardinality;Average query time (in ms)
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;100;28.39
+
+Index;Distribution;Cardinality;Average query time (in ms)
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;100;29.76
+
+Index;Distribution;Cardinality;Average query time (in ms)
+FullScan;Random;100;47.3
+

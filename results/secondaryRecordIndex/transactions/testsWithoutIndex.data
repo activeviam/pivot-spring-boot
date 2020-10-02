@@ -1,0 +1,24 @@
+Scenario;Type;Commit;Timer (in ms);Heap Memory (in Mb);Direct Memory (in Mb);Target Store Size
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;1;4604;5552;2130;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;2;8842;6469;2131;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;3;8683;6466;2133;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;4;8598;6466;2134;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;5;8944;6466;2135;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;6;8828;6470;2137;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;7;8781;6470;2137;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;8;8626;6470;2137;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;9;8678;6470;2137;100
+EmptyThenRecreateTargetStore;MultiVersionColumnImprintsIndex;10;8721;6466;2137;100
+
+Scenario;Type;Commit;Timer (in ms);Heap Memory (in Mb);Direct Memory (in Mb);Target Store Size
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;1;1582;5715;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;2;2828;6224;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;3;2666;6269;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;4;2656;5578;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;5;2817;6715;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;6;3138;5804;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;7;3032;5238;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;8;3223;6374;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;9;3227;5800;2128;100
+CommitSingleFactOnTargetStore;MultiVersionColumnImprintsIndex;10;3072;5238;2128;100
+

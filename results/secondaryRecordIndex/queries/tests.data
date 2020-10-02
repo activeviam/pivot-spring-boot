@@ -1,0 +1,26 @@
+Index;Distribution;Cardinality;Average query time (in ms)
+MultiVersionLazyDeleteLinkedIndex;Random;10;16.67
+MultiVersionColumnImprintsIndex;Random;10;236.34
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;10;234.77
+MultiVersionLazyDeleteLinkedIndex;Random;100;12.89
+MultiVersionColumnImprintsIndex;Random;100;86.63
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;100;80.02
+MultiVersionLazyDeleteLinkedIndex;Random;1000000;0.25
+MultiVersionColumnImprintsIndex;Random;1000000;64.42
+MultiVersionColumnImprintsIndexWithoutRLECompression;Random;1000000;57.67
+MultiVersionLazyDeleteLinkedIndex;Modulo;10;15.35
+MultiVersionColumnImprintsIndex;Modulo;10;163.6
+MultiVersionColumnImprintsIndexWithoutRLECompression;Modulo;10;139.85
+MultiVersionLazyDeleteLinkedIndex;Modulo;100;12.0
+MultiVersionColumnImprintsIndex;Modulo;100;40.03
+MultiVersionColumnImprintsIndexWithoutRLECompression;Modulo;100;35.3
+MultiVersionLazyDeleteLinkedIndex;Modulo;1000000;0.08
+MultiVersionColumnImprintsIndex;Modulo;1000000;2.95
+MultiVersionColumnImprintsIndexWithoutRLECompression;Modulo;1000000;4.93
+FullScan;Random;10;66.86
+FullScan;Random;100;32.22
+FullScan;Random;1000000;97.15
+FullScan;Modulo;10;83.59
+FullScan;Modulo;100;33.23
+FullScan;Modulo;1000000;5.04
+
