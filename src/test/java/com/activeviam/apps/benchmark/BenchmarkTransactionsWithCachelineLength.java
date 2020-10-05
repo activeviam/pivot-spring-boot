@@ -33,7 +33,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 
 	static {
 		SUB_DIRECTORY_NAME += "cachelineLength/";
-		FILE_NAME = "tests";
+		FILE_NAME = "definitiveBench";
 
 		COLUMNS = new String[] {
 				"Scenario",
@@ -46,7 +46,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 				"Cacheline length"
 		};
 
-		BENCH_UNIQUE = true;
+		BENCH_UNIQUE = false;
 
 		NB_WARMUPS = 5;
 		NB_RUNS = 20; // number of commits
@@ -56,7 +56,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 
 		NB_PRODUCTS = 100; // target store size
 
-		DEFAULT_SCENARIO = SCENARIO.CommitSomeFactsOnBaseStore;
+		DEFAULT_SCENARIO = SCENARIO.EmptyThenRecreateTargetStore;
 
 		indexTypes.clear();
 		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndex.class);
@@ -70,7 +70,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 			6
 	};
 
-	protected int cachelineOrder;
+	protected final int cachelineOrder;
 
 	public BenchmarkTransactionsWithCachelineLength(
 			SCENARIO scenario,
@@ -152,6 +152,8 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 		// For each cacheline order
 		for (final int cachelineOrder : cachelineOrders) {
 			// Set cacheline order
+			// Set DEFAULT_CACHELINE_ORDER to public and non-final in
+			// AColumnImprintsSecondaryRecordIndexBase in order to set this variable here
 			AColumnImprintsSecondaryRecordIndexBase.DEFAULT_CACHELINE_ORDER = cachelineOrder;
 
 			// Start bench
@@ -200,6 +202,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 
 			// Add procedure result to file
 			addLine(
+					scenario,
 					indexName,
 					i + 1,
 					TimeUnit.NANOSECONDS.toMillis(benchProcedure.getTimerData()),

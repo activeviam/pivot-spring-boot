@@ -78,16 +78,16 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 	public static final int    LEFT_STANDARD_DEVIATION_GROUP_SIZE = 4;
 	public static final int    RIGHT_STANDARD_DEVIATION_GROUP_SIZE = 12;
 
-	public static final int    DEFAULT_INDEXED_FIELDS = 1;
+	public static int DEFAULT_INDEXED_FIELDS = 1;
 
-	public static final int    NB_TRADERS = 2000;
+	public static final int NB_TRADERS = 2000;
 
-	public static final int[]  cardinalities = new int[] {
-			//10,
+	public static final int[] cardinalities = new int[] {
+			10,
 			100,
 			1_000,
-			//10_000,
-			//100_000,
+			10_000,
+			100_000,
 			1_000_000
 	};
 	public static int DEFAULT_CARDINALITY = 1000;
@@ -113,17 +113,17 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 
 	public static final DISTRIBUTION[] distributions = new DISTRIBUTION[] {
 			DISTRIBUTION.random,
-			//DISTRIBUTION.linearIncreasing,
-			//DISTRIBUTION.nonUniformLinearIncreasing,
+			DISTRIBUTION.linearIncreasing,
+			DISTRIBUTION.nonUniformLinearIncreasing,
 			DISTRIBUTION.randomGrouped,
 			DISTRIBUTION.modulo
 	};
 	public static DISTRIBUTION DEFAULT_DISTRIBUTION = DISTRIBUTION.modulo;
 
-	protected int          cardinality;
-	protected DISTRIBUTION distribution;
-	protected int          indexedFields;
-	protected boolean      isIndex;
+	protected final int          cardinality;
+	protected final DISTRIBUTION distribution;
+	protected final int          indexedFields;
+	protected final boolean      isIndex;
 
 	public BenchmarkQueries(
 			DISTRIBUTION distribution,
@@ -162,7 +162,7 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 		// Initialize run counter
 		totalRuns = BENCH_UNIQUE
 				? indexTypes.size()
-				: cardinalities.length * distributions.length * indexTypes.size();
+				: cardinalities.length * distributions.length * indexTypes.size() * 3;
 		currentRun = 0;
 
 		// Benchmark
@@ -183,18 +183,25 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 		for (final DISTRIBUTION distribution : distributions) {
 			// For each cardinality
 			for (final int cardinality : cardinalities) {
-				benchForEachIndex(distribution, cardinality);
+				// For each number of indexed fields
+				for (int indexedFields = 1; indexedFields <= 3; ++indexedFields) {
+					benchForEachIndex(distribution, cardinality, indexedFields);
+				}
 			}
 		}
 	}
 
 	public static void benchUnique() {
 		// Bench for each index with defaults parameters
-		benchForEachIndex(DEFAULT_DISTRIBUTION, DEFAULT_CARDINALITY);
+		benchForEachIndex(DEFAULT_DISTRIBUTION, DEFAULT_CARDINALITY, DEFAULT_INDEXED_FIELDS);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void benchForEachIndex(final DISTRIBUTION distribution, final int cardinality) {
+	public static void benchForEachIndex(
+			final DISTRIBUTION distribution,
+			final int cardinality,
+			final int indexedFields) {
+
 		// For each index
 		for (final Class<?> indexType : indexTypes) {
 			// Set index
@@ -212,13 +219,14 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 			}
 
 			// Start bench
-			bench(distribution, cardinality, isIndex, indexName);
+			bench(distribution, cardinality, indexedFields, isIndex, indexName);
 		}
 	}
 
 	public static void bench(
 			final DISTRIBUTION distribution,
 			final int cardinality,
+			final int indexedFields,
 			final boolean isIndex,
 			final String indexName) {
 
@@ -228,7 +236,7 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 		BenchmarkQueries tests = new BenchmarkQueries(
 				distribution,
 				cardinality,
-				DEFAULT_INDEXED_FIELDS,
+				indexedFields,
 				isIndex,
 				indexName);
 

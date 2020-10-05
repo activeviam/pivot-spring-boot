@@ -131,7 +131,7 @@ public class BenchmarkTransactions extends ABenchmarkSecondaryRecordIndex {
 	};
 	public static SCENARIO DEFAULT_SCENARIO = SCENARIO.EmptyThenRecreateTargetStore;
 
-	public SCENARIO scenario;
+	public final SCENARIO scenario;
 
 	// Variables for branches
 
@@ -155,7 +155,7 @@ public class BenchmarkTransactions extends ABenchmarkSecondaryRecordIndex {
 		}
 	}
 
-	public Random randomBranchPolicySeed = new Random(0);
+	public final Random randomBranchPolicySeed = new Random(0);
 
 	public static final BRANCH_POLICY POLICY = BRANCH_POLICY.ordered;
 
@@ -336,6 +336,7 @@ public class BenchmarkTransactions extends ABenchmarkSecondaryRecordIndex {
 
 			// Add procedure result to file
 			addLine(
+					scenario,
 					indexName,
 					i + 1,
 					TimeUnit.NANOSECONDS.toMillis(benchProcedure.getTimerData()),

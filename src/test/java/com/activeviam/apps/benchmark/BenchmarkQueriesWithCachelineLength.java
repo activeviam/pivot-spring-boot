@@ -29,7 +29,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 
 	static {
 		SUB_DIRECTORY_NAME += "cachelineLength/";
-		FILE_NAME = "tests";
+		FILE_NAME = "definitiveBench";
 
 		COLUMNS = new String[] {
 				"Index",
@@ -40,16 +40,17 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 				"Average query time (in ms)"
 		};
 
-		BENCH_UNIQUE = true;
+		BENCH_UNIQUE = false;
 
 		NB_WARMUPS = 10;
 		NB_RUNS = 100;
 
 		STORE_SIZE = 20_000_000;
-		STORE_PARTITIONING = 1;
+		STORE_PARTITIONING = 8;
 
 		DEFAULT_CARDINALITY = 1000;
 		DEFAULT_DISTRIBUTION = DISTRIBUTION.modulo;
+		DEFAULT_INDEXED_FIELDS = 1;
 
 		indexTypes.clear();
 		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndex.class);
@@ -63,7 +64,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 			6
 	};
 
-	protected int cachelineOrder;
+	protected final int cachelineOrder;
 
 	public BenchmarkQueriesWithCachelineLength(
 			DISTRIBUTION distribution,
@@ -93,7 +94,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 		init();
 
 		// Initialize run counter
-		totalRuns = BENCH_UNIQUE ? 1 : cardinalities.length * distributions.length;
+		totalRuns = BENCH_UNIQUE ? 1 : cardinalities.length * distributions.length * 3;
 		totalRuns *= indexTypes.size() * cachelineOrders.length;
 		currentRun = 0;
 
@@ -115,18 +116,25 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 		for (final DISTRIBUTION distribution : distributions) {
 			// For each cardinality
 			for (final int cardinality : cardinalities) {
-				benchForEachIndex(distribution, cardinality);
+				// For each number of indexed fields
+				for (int indexedFields = 1; indexedFields <= 3; ++indexedFields) {
+					benchForEachIndex(distribution, cardinality, indexedFields);
+				}
 			}
 		}
 	}
 
 	public static void benchUnique() {
 		// Bench for each index with defaults parameters
-		benchForEachIndex(DEFAULT_DISTRIBUTION, DEFAULT_CARDINALITY);
+		benchForEachIndex(DEFAULT_DISTRIBUTION, DEFAULT_CARDINALITY, DEFAULT_INDEXED_FIELDS);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void benchForEachIndex(final DISTRIBUTION distribution, final int cardinality) {
+	public static void benchForEachIndex(
+			final DISTRIBUTION distribution,
+			final int cardinality,
+			final int indexedFields) {
+
 		// For each index
 		for (final Class<?> indexType : indexTypes) {
 			// Get index name
@@ -143,28 +151,32 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 					(Class<? extends IMultiVersionSecondaryRecordIndex>) indexType);
 
 			// Bench for each cacheline order
-			benchForEachCachelineOrder(distribution, cardinality, indexName);
+			benchForEachCachelineOrder(distribution, cardinality, indexedFields, indexName);
 		}
 	}
 
 	public static void benchForEachCachelineOrder(
 			final DISTRIBUTION distribution,
 			final int cardinality,
+			final int indexedFields,
 			final String indexName) {
 
 		// For each cacheline order
 		for (final int cachelineOrder : cachelineOrders) {
 			// Set cacheline order
+			// Set DEFAULT_CACHELINE_ORDER to public and non-final in
+			// AColumnImprintsSecondaryRecordIndexBase in order to set this variable here
 			AColumnImprintsSecondaryRecordIndexBase.DEFAULT_CACHELINE_ORDER = cachelineOrder;
 
 			// Start bench
-			bench(distribution, cardinality, indexName, cachelineOrder);
+			bench(distribution, cardinality, indexedFields, indexName, cachelineOrder);
 		}
 	}
 
 	public static void bench(
 			final DISTRIBUTION distribution,
 			final int cardinality,
+			final int indexedFields,
 			final String indexName,
 			final int cachelineOrder) {
 
@@ -174,7 +186,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 		BenchmarkQueriesWithCachelineLength tests = new BenchmarkQueriesWithCachelineLength(
 				distribution,
 				cardinality,
-				DEFAULT_INDEXED_FIELDS,
+				indexedFields,
 				indexName,
 				cachelineOrder);
 
