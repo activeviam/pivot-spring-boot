@@ -10,7 +10,6 @@ package com.activeviam.apps.benchmark;
 import com.qfs.index.impl.IndexManager;
 import com.qfs.index.impl.SecondaryIndexPartitionFactoryWithoutDictionary;
 import com.qfs.store.IMultiVersionSecondaryRecordIndex;
-import com.qfs.store.impl.AColumnImprintsSecondaryRecordIndexBase;
 import com.qfs.store.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
 import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
 import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
@@ -35,9 +34,9 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 				"Index",
 				"Distribution",
 				"Cardinality",
-				"Indexed fields",
-				"Cacheline length",
-				"Average query time (in ms)"
+				"Indexed Fields",
+				"Cacheline Length",
+				"Average Query Time (in ms)"
 		};
 
 		BENCH_UNIQUE = false;
@@ -125,7 +124,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 	}
 
 	public static void benchUnique() {
-		// Bench for each index with defaults parameters
+		// Bench for each index with default parameters
 		benchForEachIndex(DEFAULT_DISTRIBUTION, DEFAULT_CARDINALITY, DEFAULT_INDEXED_FIELDS);
 	}
 
@@ -166,7 +165,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 			// Set cacheline order
 			// Set DEFAULT_CACHELINE_ORDER to public and non-final in
 			// AColumnImprintsSecondaryRecordIndexBase in order to set this variable here
-			AColumnImprintsSecondaryRecordIndexBase.DEFAULT_CACHELINE_ORDER = cachelineOrder;
+			//FIXME AColumnImprintsSecondaryRecordIndexBase.DEFAULT_CACHELINE_ORDER = cachelineOrder;
 
 			// Start bench
 			bench(distribution, cardinality, indexedFields, indexName, cachelineOrder);

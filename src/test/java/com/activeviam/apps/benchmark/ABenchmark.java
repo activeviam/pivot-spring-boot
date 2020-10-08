@@ -7,6 +7,11 @@
 
 package com.activeviam.apps.benchmark;
 
+import com.qfs.condition.impl.BaseConditions;
+import com.qfs.store.IDatastore;
+import com.qfs.store.IStoreMetadata;
+import com.qfs.store.transaction.DatastoreTransactionException;
+import com.qfs.store.transaction.ITransactionManager;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 import java.io.FileWriter;
@@ -102,7 +107,7 @@ public abstract class ABenchmark {
 
 	protected abstract void teardown();
 
-	protected double executeAndGetAverageTimeInMicros(final IntConsumer proc) {
+	protected static double executeAndGetAverageTimeInMicros(final IntConsumer proc) {
 		// Get total time in nanos
 		final long totalTimeInNanos = executeAndGetTotalTimeInNanos(proc);
 
@@ -113,7 +118,7 @@ public abstract class ABenchmark {
 		return round(totalTime / NB_RUNS);
 	}
 
-	protected double executeAndGetAverageTimeInMillis(final IntConsumer proc) {
+	protected static double executeAndGetAverageTimeInMillis(final IntConsumer proc) {
 		// Get total time in nanos
 		final long totalTimeInNanos = executeAndGetTotalTimeInNanos(proc);
 
@@ -124,7 +129,7 @@ public abstract class ABenchmark {
 		return round(totalTime / NB_RUNS);
 	}
 
-	protected long executeAndGetTotalTimeInNanos(final IntConsumer proc) {
+	protected static long executeAndGetTotalTimeInNanos(final IntConsumer proc) {
 		// Get start time
 		final long preTime = System.nanoTime();
 
@@ -137,6 +142,57 @@ public abstract class ABenchmark {
 
 		// Return total time in nanos
 		return postTime - preTime;
+	}
+
+	// Methods to empty and stop the datastore
+
+	/**
+	 * Empties a datastore from all its data, force the discard of all of its versions, and then
+	 * stop it.
+	 *
+	 * @param datastore the datastore to stop
+	 */
+	public static void emptyAndStopDatastore(final IDatastore datastore) {
+		Throwable prevExc = null;
+		try {
+			emptyDatastore(datastore);
+		} catch (Throwable e) {
+			prevExc = e;
+		} finally {
+			// In any case, lets try to stop the datastore
+			try {
+				datastore.stop();
+			} catch (Throwable e) {
+				if (prevExc != null) {
+					e.addSuppressed(prevExc);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Empties a datastore from all its data, and force the discard of all of its versions.
+	 *
+	 * @param datastore the datastore to stop
+	 * @throws DatastoreTransactionException failure
+	 */
+	public static void emptyDatastore(final IDatastore datastore)
+			throws DatastoreTransactionException {
+
+		final ITransactionManager tm = datastore.getTransactionManager();
+		long epochId = -1;
+		for (final IStoreMetadata sm : datastore.getSchemaMetadata().getStoreGraph().values()) {
+			// One transaction per store in case of UW triggers
+			tm.startTransaction(sm.getName());
+			tm.removeWhere(sm.getName(), BaseConditions.TRUE);
+			epochId = tm.commitTransaction().getEpoch().getId();
+		}
+
+		// Release and discard all epochs
+		for (final String branch : datastore.getEpochManager().getBranches()) {
+			datastore.getEpochManager().releaseEpochs(branch, 0, epochId - 1);
+		}
+		datastore.getEpochManager().forceDiscardEpochs(node -> true);
 	}
 
 	// File data

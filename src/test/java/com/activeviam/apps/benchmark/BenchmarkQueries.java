@@ -52,8 +52,8 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 				"Index",
 				"Distribution",
 				"Cardinality",
-				"Indexed fields",
-				"Average query time (in ms)"
+				"Indexed Fields",
+				"Average Query Time (in ms)"
 		};
 
 		BENCH_UNIQUE = true;
@@ -192,7 +192,7 @@ public class BenchmarkQueries extends ABenchmarkSecondaryRecordIndex {
 	}
 
 	public static void benchUnique() {
-		// Bench for each index with defaults parameters
+		// Bench for each index with default parameters
 		benchForEachIndex(DEFAULT_DISTRIBUTION, DEFAULT_CARDINALITY, DEFAULT_INDEXED_FIELDS);
 	}
 

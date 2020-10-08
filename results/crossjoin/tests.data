@@ -1,0 +1,56 @@
+Inline;Operands;Values;Average Crossjoin Time (in us)
+false;3;10;97.7
+
+Inline;Operands;Values;Average Crossjoin Time (in us)
+true;3;10;35.8
+
+Inline;Operands;Values;Average Crossjoin Time (in us)
+false;3;100;5777.7
+
+Inline;Operands;Values;Average Crossjoin Time (in us)
+true;3;100;5395.2
+
+Inline;Operands;Values;Average Crossjoin Time (in us)
+false;1;100;15.7
+
+Inline;Operands;Values;Average Crossjoin Time (in us)
+true;1;100;16.9
+
+Inline;Operands;Values;Average Crossjoin Time (in us)
+true;1;2;2.7
+false;1;2;2.6
+true;1;5;2.9
+false;1;5;3.5
+true;1;10;3.3
+false;1;10;3.7
+true;1;20;3.4
+false;1;20;4.3
+true;1;50;7.2
+false;1;50;8.0
+true;1;100;7.2
+false;1;100;13.9
+true;2;2;3.7
+false;2;2;3.2
+true;2;5;6.5
+false;2;5;2.1
+true;2;10;8.1
+false;2;10;4.2
+true;2;20;13.0
+false;2;20;6.1
+true;2;50;36.0
+false;2;50;35.3
+true;2;100;58.5
+false;2;100;122.5
+true;3;2;6.5
+false;3;2;3.0
+true;3;5;8.5
+false;3;5;1.0
+true;3;10;20.8
+false;3;10;4.3
+true;3;20;90.4
+false;3;20;28.0
+true;3;50;708.9
+false;3;50;391.9
+true;3;100;4609.2
+false;3;100;2874.0
+

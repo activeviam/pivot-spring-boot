@@ -12,7 +12,6 @@ import com.qfs.index.impl.IndexManager;
 import com.qfs.index.impl.SecondaryIndexPartitionFactoryWithoutDictionary;
 import com.qfs.monitoring.statistic.memory.MemoryStatisticConstants;
 import com.qfs.store.IMultiVersionSecondaryRecordIndex;
-import com.qfs.store.impl.AColumnImprintsSecondaryRecordIndexBase;
 import com.qfs.store.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
 import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
 import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
@@ -43,7 +42,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 				"Heap Memory (in Mb)",
 				"Direct Memory (in Mb)",
 				"Target Store Size",
-				"Cacheline length"
+				"Cacheline Length"
 		};
 
 		BENCH_UNIQUE = false;
@@ -154,7 +153,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 			// Set cacheline order
 			// Set DEFAULT_CACHELINE_ORDER to public and non-final in
 			// AColumnImprintsSecondaryRecordIndexBase in order to set this variable here
-			AColumnImprintsSecondaryRecordIndexBase.DEFAULT_CACHELINE_ORDER = cachelineOrder;
+			//FIXME AColumnImprintsSecondaryRecordIndexBase.DEFAULT_CACHELINE_ORDER = cachelineOrder;
 
 			// Start bench
 			bench(scenario, indexName, cachelineOrder);

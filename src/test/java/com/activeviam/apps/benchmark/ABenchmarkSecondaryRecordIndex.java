@@ -8,14 +8,12 @@
 package com.activeviam.apps.benchmark;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
-import com.qfs.condition.impl.BaseConditions;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.monitoring.statistic.memory.MemoryStatisticConstants;
 import com.qfs.store.IDatastore;
 import com.qfs.store.IDatastoreSchemaVersion;
 import com.qfs.store.ISecondaryRecordIndex;
 import com.qfs.store.ISecondaryRecordIndexVersion;
-import com.qfs.store.IStoreMetadata;
 import com.qfs.store.IStoreVersion;
 import com.qfs.store.NoTransactionException;
 import com.qfs.store.impl.AColumnImprintsSecondaryRecordIndexVersion;
@@ -122,7 +120,7 @@ public abstract class ABenchmarkSecondaryRecordIndex extends ABenchmark {
 						.getPartition(0)
 						.getSecondaryIndexes();
 			for (final ISecondaryRecordIndexVersion index : indexes) {
-				AMultiVersionColumnImprintsSecondaryRecordIndex.printIndex(
+				AMultiVersionColumnImprintsSecondaryRecordIndex.printlnIndex(
 						(AColumnImprintsSecondaryRecordIndexVersion) index,
 						System.out);
 			}
@@ -140,57 +138,6 @@ public abstract class ABenchmarkSecondaryRecordIndex extends ABenchmark {
 	 * @return the schema description
 	 */
 	protected abstract IDatastoreSchemaDescription schemaDescription();
-
-	// Methods to empty and stop the datastore
-
-	/**
-	 * Empties the datastore from all its data, force the discard of all of its versions, and then
-	 * stop it.
-	 *
-	 * @param datastore the datastore to stop
-	 */
-	public static void emptyAndStopDatastore(final IDatastore datastore) {
-		Throwable prevExc = null;
-		try {
-			emptyDatastore(datastore);
-		} catch (Throwable e) {
-			prevExc = e;
-		} finally {
-			// In any case, lets try to stop the datastore
-			try {
-				datastore.stop();
-			} catch (Throwable e) {
-				if (prevExc != null) {
-					e.addSuppressed(prevExc);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Empties the datastore from all its data, and force the discard of all of its versions.
-	 *
-	 * @param datastore the datastore to stop
-	 * @throws DatastoreTransactionException failure
-	 */
-	public static void emptyDatastore(final IDatastore datastore)
-			throws DatastoreTransactionException {
-
-		final ITransactionManager tm = datastore.getTransactionManager();
-		long epochId = -1;
-		for (final IStoreMetadata sm : datastore.getSchemaMetadata().getStoreGraph().values()) {
-			// One transaction per store in case of UW triggers
-			tm.startTransaction(sm.getName());
-			tm.removeWhere(sm.getName(), BaseConditions.TRUE);
-			epochId = tm.commitTransaction().getEpoch().getId();
-		}
-
-		// Release and discard all epochs
-		for (final String branch : datastore.getEpochManager().getBranches()) {
-			datastore.getEpochManager().releaseEpochs(branch, 0, epochId - 1);
-		}
-		datastore.getEpochManager().forceDiscardEpochs(node -> true);
-	}
 
 	// Methods to compute memory consumption
 
