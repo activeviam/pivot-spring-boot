@@ -16,7 +16,7 @@
     <properties>
         <java.version>11</java.version>
         <activePivotVersion>5.9.3</activePivotVersion>
-        <activeui.version>4.3.12</activeui.version>
+        <activeui.version>4.3.13</activeui.version>
         <content-server-ui.version>2.0.0</content-server-ui.version>
     </properties>
 
@@ -62,13 +62,6 @@
             <version>${activePivotVersion}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.activeviam.activepivot</groupId>
-            <artifactId>activepivot-test</artifactId>
-            <version>${activePivotVersion}</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Dependencies for the content service persistence -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -81,7 +74,6 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-hikaricp</artifactId>
-            <version>${hibernate.version}</version>
         </dependency>
 
         <!-- Embedded content server UI -->
