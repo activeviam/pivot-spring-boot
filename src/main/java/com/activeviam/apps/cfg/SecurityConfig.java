@@ -1,8 +1,15 @@
 package com.activeviam.apps.cfg;
 
 import static com.qfs.QfsWebUtils.url;
+import static com.qfs.server.cfg.impl.ActivePivotRemotingServicesConfig.ID_GENERATOR_REMOTING_SERVICE;
+import static com.qfs.server.cfg.impl.ActivePivotRemotingServicesConfig.LICENSING_REMOTING_SERVICE;
+import static com.qfs.server.cfg.impl.ActivePivotRemotingServicesConfig.LONG_POLLING_REMOTING_SERVICE;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
+import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.ID_GENERATOR_SERVICE;
+import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.LICENSING_SERVICE;
+import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.LONG_POLLING_SERVICE;
+import static com.qfs.server.cfg.impl.CxfServletConfig.CXF_WEB_SERVICES;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,6 +73,7 @@ public class SecurityConfig implements ICorsConfig {
 	/** Admin role */
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 	public static final String ROLE_USER  ="ROLE_USER";
+
 	/** Content Server Root role */
 	public static final String ROLE_CS_ROOT = IContentService.ROLE_ROOT;
 
@@ -292,23 +300,27 @@ public class SecurityConfig implements ICorsConfig {
 	}
 
 	@Configuration
-	@Order(3)
-	// Must be done before ActivePivotSecurityConfigurer (because they match common URLs)
-	public static class VersionsSecurityConfigurer extends WebSecurityConfigurerAdapter {
-
-		@Autowired
-		protected ApplicationContext context;
+	@Order(1)
+	public class ActiveUISecurityConfigurer extends AWebSecurityConfigurer {
 
 		@Override
-		protected void configure(HttpSecurity http) throws Exception {
+		protected void doConfigure(HttpSecurity http) throws Exception {
+			// Permit all on ActiveUI resources and the root (/) that redirects to ActiveUI index.html.
+			final String pattern = "^(.{0}|\\/|\\/" + ActiveUIResourceServerConfig.UI_NAMESPACE + "(\\/.*)?)$";
 			http
-			.antMatcher(VersionServicesConfig.REST_API_URL_PREFIX + "/**")
-			// As of Spring Security 4.0, CSRF protection is enabled by default.
-			.cors().and()
-			.csrf().disable()
+			// Only theses URLs must be handled by this HttpSecurity
+			.regexMatcher(pattern)
 			.authorizeRequests()
-			.antMatchers("/**").permitAll();
+			// The order of the matchers matters
+			.regexMatchers(HttpMethod.OPTIONS, pattern)
+			.permitAll()
+			.regexMatchers(HttpMethod.GET, pattern)
+			.permitAll();
+
+			// Authorizing pages to be embedded in iframes to have ActiveUI in ActiveMonitor UI
+			http.headers().frameOptions().disable();
 		}
+
 	}
 
 	@Configuration
@@ -336,6 +348,28 @@ public class SecurityConfig implements ICorsConfig {
 		}
 	}
 
+	@Configuration
+	@Order(3)
+	// Must be done before ActivePivotSecurityConfigurer (because they match common URLs)
+	public static class VersionsSecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+		@Autowired
+		protected ApplicationContext context;
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http
+			.antMatcher(VersionServicesConfig.REST_API_URL_PREFIX + "/**")
+			// As of Spring Security 4.0, CSRF protection is enabled by default.
+			.cors().and()
+			.csrf().disable()
+			.authorizeRequests()
+			.antMatchers("/**").permitAll();
+		}
+	}
+
+
+
 	/**
 	 * Configure security for ActivePivot web services
 	 *
@@ -343,6 +377,7 @@ public class SecurityConfig implements ICorsConfig {
 	 *
 	 */
 	@Configuration
+	@Order(100)
 	public static class ActivePivotSecurityConfigurer extends AWebSecurityConfigurer {
 
 		@Autowired
@@ -359,16 +394,36 @@ public class SecurityConfig implements ICorsConfig {
 		protected void doConfigure(HttpSecurity http) throws Exception {
 			http.authorizeRequests()
 			// The order of the matchers matters
-			// The REST ping service is temporarily authenticated (see PIVOT-3149)
-			.antMatchers(url(REST_API_URL_PREFIX, PING_SUFFIX)).hasAnyAuthority(ROLE_ADMIN)
+			.antMatchers(HttpMethod.OPTIONS, REST_API_URL_PREFIX + "/**")
+			.permitAll()
+			// Web services used by AP live 3.4
+			.antMatchers(CXF_WEB_SERVICES + '/' + ID_GENERATOR_SERVICE + "/**")
+			.hasAnyAuthority(ROLE_USER)
+			.antMatchers(CXF_WEB_SERVICES + '/' + LONG_POLLING_SERVICE + "/**")
+			.hasAnyAuthority(ROLE_USER)
+			.antMatchers(CXF_WEB_SERVICES + '/' + LICENSING_SERVICE + "/**")
+			.hasAnyAuthority(ROLE_USER)
+			// Spring remoting services used by AP live 3.4
+			.antMatchers(url(ID_GENERATOR_REMOTING_SERVICE, "**"))
+			.hasAnyAuthority(ROLE_USER)
+			.antMatchers(url(LONG_POLLING_REMOTING_SERVICE, "**"))
+			.hasAnyAuthority(ROLE_USER)
+			.antMatchers(url(LICENSING_REMOTING_SERVICE, "**"))
+			.hasAnyAuthority(ROLE_USER)
+			// The ping service is temporarily authenticated (see PIVOT-3149)
+			.antMatchers(url(REST_API_URL_PREFIX, PING_SUFFIX))
+			.hasAnyAuthority(ROLE_USER)
 			// REST services
-			.antMatchers(REST_API_URL_PREFIX + "/**").hasAnyAuthority(ROLE_ADMIN)
-			// user admin can also have acess to all the other URLs
-			.antMatchers("/**").hasAuthority(ROLE_ADMIN)
-			.and().httpBasic()
+			.antMatchers(REST_API_URL_PREFIX + "/**")
+			.hasAnyAuthority(ROLE_USER)
+			// One has to be a user for all the other URLs
+			.antMatchers("/**")
+			.hasAuthority(ROLE_USER)
+			.and()
+			.httpBasic()
 			// SwitchUserFilter is the last filter in the chain. See FilterComparator class.
 			.and()
-			.addFilterAfter(activePivotConfig.contextValueFilter(), SwitchUserFilter.class);
+			.addFilterAfter(this.activePivotConfig.contextValueFilter(), SwitchUserFilter.class);
 		}
 
 		@Bean(name = BeanIds.AUTHENTICATION_MANAGER)
