@@ -8,10 +8,12 @@ import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegis
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.MultipartConfigElement;
 
 @ActivePivotApplication
+@EnableWebMvc
 @Import(ApplicationConfig.class)
 public class PivotSpringBootApplication {
 
