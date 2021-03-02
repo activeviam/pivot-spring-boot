@@ -34,9 +34,7 @@ import java.lang.annotation.Target;
         ActiveViamRestServicesConfig.class,
         JwtConfig.class,
 
-        ActivePivotWebServicesConfig.class,
         ActivePivotXmlaServletConfig.class,
-        ActivePivotRemotingServicesConfig.class,
         LocalI18nConfig.class
 })
 public @interface ActivePivotApplication {
