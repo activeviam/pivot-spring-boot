@@ -243,7 +243,7 @@ public class BenchmarkCrossjoin extends ABenchmark {
 		final TIntCollection positions = operand.getPositions(parameters);
 		final TIntIterator it = positions.iterator();
 		while (it.hasNext()) {
-			operands.setFirstValue(point, it.next());
+			operands.setValueOfNthOperandWithMultipleValues(point, 0, it.next());
 			if (!proc.test(point)) {
 				break;
 			}
@@ -271,9 +271,9 @@ public class BenchmarkCrossjoin extends ABenchmark {
 		final TIntCollection positions1 = operand1.getPositions(parameters);
 		final TIntCollection positions2 = operand2.getPositions(parameters);
 		positions1.forEach(v1 -> {
-			operands.setFirstValue(point, v1);
+			operands.setValueOfNthOperandWithMultipleValues(point, 0, v1);
 			return positions2.forEach(v2 -> {
-				operands.setSecondValue(point, v2);
+				operands.setValueOfNthOperandWithMultipleValues(point, 1, v2);
 
 				return proc.test(point);
 			});
@@ -304,11 +304,11 @@ public class BenchmarkCrossjoin extends ABenchmark {
 		final TIntCollection positions2 = operand2.getPositions(parameters);
 		final TIntCollection positions3 = operand3.getPositions(parameters);
 		positions1.forEach(v1 -> {
-			operands.setFirstValue(point, v1);
+			operands.setValueOfNthOperandWithMultipleValues(point, 0, v1);
 			return positions2.forEach(v2 -> {
-				operands.setSecondValue(point, v2);
+				operands.setValueOfNthOperandWithMultipleValues(point, 1, v2);
 				return positions3.forEach(v3 -> {
-					operands.setThirdValue(point, v3);
+					operands.setValueOfNthOperandWithMultipleValues(point, 2, v3);
 
 					return proc.test(point);
 				});
@@ -358,7 +358,7 @@ public class BenchmarkCrossjoin extends ABenchmark {
 			cardinalities[i] = pos.length;
 
 			// Initialize point
-			operands.setNthValue(point, i, pos[0]);
+			operands.setValueOfNthOperandWithMultipleValues(point, i, pos[0]);
 		}
 
 		// Initialize current index for each loop to 0
@@ -372,7 +372,7 @@ public class BenchmarkCrossjoin extends ABenchmark {
 			int index = ++indexes[numOperands - 1];
 			if (index < cardinalities[numOperands - 1]) {
 				final int value = positions[numOperands - 1][index];
-				operands.setNthValue(point, numOperands - 1, value);
+				operands.setValueOfNthOperandWithMultipleValues(point, numOperands - 1, value);
 
 			} else {
 				// Initialize current loop to the "more nested one"
@@ -388,7 +388,7 @@ public class BenchmarkCrossjoin extends ABenchmark {
 					// Reset index of current loop and set value of operand
 					indexes[currentLoop] = 0;
 					int value = positions[currentLoop][0];
-					operands.setNthValue(point, currentLoop, value);
+					operands.setValueOfNthOperandWithMultipleValues(point, currentLoop, value);
 
 					// Change current loop to the loop "at higher level"
 					--currentLoop;
@@ -397,7 +397,7 @@ public class BenchmarkCrossjoin extends ABenchmark {
 					index = ++indexes[currentLoop];
 					if (index < cardinalities[currentLoop]) {
 						value = positions[currentLoop][index];
-						operands.setNthValue(point, currentLoop, value);
+						operands.setValueOfNthOperandWithMultipleValues(point, currentLoop, value);
 
 						// Break the while because current loop has not reached its maximal index
 						break;
