@@ -9,17 +9,17 @@ package com.activeviam.apps.benchmark;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.desc.IDatastoreSchemaDescription;
+import com.qfs.index.ISecondaryRecordIndex;
+import com.qfs.index.ISecondaryRecordIndexVersion;
+import com.qfs.index.impl.AColumnImprintsSecondaryRecordIndexVersion;
+import com.qfs.index.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
 import com.qfs.monitoring.statistic.memory.MemoryStatisticConstants;
 import com.qfs.store.IDatastore;
 import com.qfs.store.IDatastoreSchemaVersion;
-import com.qfs.store.ISecondaryRecordIndex;
-import com.qfs.store.ISecondaryRecordIndexVersion;
 import com.qfs.store.IStoreVersion;
 import com.qfs.store.NoTransactionException;
-import com.qfs.store.impl.AColumnImprintsSecondaryRecordIndexVersion;
-import com.qfs.store.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
 import com.qfs.store.transaction.DatastoreTransactionException;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.impl.QfsArrays;
@@ -145,7 +145,7 @@ public abstract class ABenchmarkSecondaryRecordIndex extends ABenchmark {
 		final long[] footprint = new long[2];
 
 		final IDatastoreSchemaVersion schema = datastore.getMostRecentVersion().getSchema();
-		final List<String> storeNames = schema.getMetadata().getStoreNames();
+		final Collection<String> storeNames = schema.getMetadata().getStoreNames();
 
 		for (final String storeName : storeNames) {
 			final IStoreVersion storeVersion = schema.getStore(storeName);

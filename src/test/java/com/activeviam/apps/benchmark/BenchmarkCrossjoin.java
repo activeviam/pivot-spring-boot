@@ -1,5 +1,5 @@
 /*
- * (C) ActiveViam 2020
+ * (C) ActiveViam 2020-2021
  * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
@@ -329,12 +329,14 @@ public class BenchmarkCrossjoin extends ABenchmark {
 			final Object[] parameters,
 			final Predicate<int[]> proc) {
 
-		// Get operands with multiple values
-		final IDictionaryOperand[] operandsWithMultipleValues =
-				operands.getOperandsWithMultipleValues();
-
 		// Get number of operands with multiple values
-		final int numOperands = operandsWithMultipleValues.length;
+		final int numOperands = operands.getNumberOfOperandsWithMultipleValues();
+
+		// Get operands with multiple values
+		final IDictionaryOperand[] operandsWithMultipleValues = new IDictionaryOperand[numOperands];
+		for (int i = 0; i < numOperands; ++i) {
+			operandsWithMultipleValues[i] = operands.getNthOperandWithMultipleValues(i);
+		}
 
 		// Get point
 		final int[] point = operands.getPartialPoint(parameters);

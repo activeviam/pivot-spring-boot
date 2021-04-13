@@ -9,6 +9,7 @@ package com.activeviam.apps.benchmark;
 
 import static com.qfs.condition.impl.BaseConditions.And;
 import static com.qfs.condition.impl.BaseConditions.In;
+
 import com.qfs.condition.ICondition;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IStoreDescription;
@@ -306,7 +307,8 @@ public class BenchmarkQueriesWithRangeOperands extends ABenchmark {
 	}
 
 	protected ICompiledQuery compile(final ICondition condition) {
-		final QueryCompiler compiler = new QueryCompiler(latestVersion.getSchema());
+		final QueryCompiler compiler =
+				new QueryCompiler(latestVersion.getSchema().getQueryMetadata());
 		return new RecordQuery(STORE, condition, R).accept(compiler);
 	}
 

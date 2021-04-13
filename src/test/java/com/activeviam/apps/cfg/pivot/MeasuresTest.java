@@ -7,17 +7,16 @@ import com.activeviam.copper.builders.ITransactionsBuilder;
 import com.activeviam.copper.builders.impl.SimpleTransactionBuilder;
 import com.activeviam.copper.testing.CubeTester;
 import com.activeviam.copper.testing.CubeTesterBuilder;
-import com.activeviam.copper.testing.JUnitCubeTesterBuilder;
+import com.activeviam.copper.testing.CubeTesterBuilderExtension;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
 
-import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.createSchemaSelectionDescription;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES__NOTIONAL;
 
@@ -25,22 +24,21 @@ public class MeasuresTest {
 
     @BeforeClass
     public static void setup() {
-        CopperRegistrations.registerCopperPluginValues();
+        CopperRegistrations.setupRegistryForTests();
     }
 
-    @Rule
-    public JUnitCubeTesterBuilder builder = new JUnitCubeTesterBuilder(createTester());
+    @RegisterExtension
+    public CubeTesterBuilderExtension builder = new CubeTesterBuilderExtension(createTester());
 
     /**
      * Creates the tester using the descriptions of the project.
      *
      * @return The tester.
      */
-    /* {@codeBlock: TestMeasures.BuilderDefinition} */
     public static CubeTesterBuilder createTester() {
         IDatastoreSchemaDescription datastoreDescription =
                 DatastoreDescriptionConfig.schemaDescription();
-        ISelectionDescription selectionDescription = createSchemaSelectionDescription(datastoreDescription);
+        ISelectionDescription selectionDescription = PivotManagerConfig.createSchemaSelectionDescription(datastoreDescription);
         IActivePivotInstanceDescription cubeDescription = StartBuilding.cube()
                 .withName("Cube")
                 .withDimensions(CubeConfig::dimensions)
@@ -66,6 +64,7 @@ public class MeasuresTest {
      */
     @Test
     public void testSimpleSum() {
+
         final CubeTester tester = builder.build(Measures::build);
         tester.query()
                 .forMeasures(TRADES__NOTIONAL)

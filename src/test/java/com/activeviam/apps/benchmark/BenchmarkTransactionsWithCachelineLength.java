@@ -8,13 +8,13 @@
 package com.activeviam.apps.benchmark;
 
 import com.activeviam.copper.CopperRegistrations;
+import com.qfs.index.IMultiVersionSecondaryRecordIndex;
+import com.qfs.index.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
 import com.qfs.index.impl.IndexManager;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
 import com.qfs.index.impl.SecondaryIndexPartitionFactoryWithoutDictionary;
 import com.qfs.monitoring.statistic.memory.MemoryStatisticConstants;
-import com.qfs.store.IMultiVersionSecondaryRecordIndex;
-import com.qfs.store.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.store.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
 import com.quartetfs.fwk.IPair;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
