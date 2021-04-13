@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.*;
 /**
  * @author ActiveViam
  */
-@EnableWebMvc
 @Configuration
 public class ActivePivotWebMvcConfigurer implements WebMvcConfigurer {
 

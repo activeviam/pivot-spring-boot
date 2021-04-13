@@ -37,9 +37,6 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     public static final String INT_FORMATTER = "INT[#,###]";
     public static final String NATIVE_MEASURES = "Native Measures";
 
-    @Autowired
-    protected IDatastoreSchemaDescription datastoreDescription;
-
     @Override
     public IActivePivotManagerDescription userManagerDescription() {
         return StartBuilding.managerDescription(MANAGER_NAME)
