@@ -18,6 +18,7 @@ import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
+import com.activeviam.store.structure.impl.IndexDefinition;
 import com.qfs.condition.impl.BaseConditions;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
@@ -27,9 +28,8 @@ import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.index.IMultiVersionSecondaryRecordIndex;
 import com.qfs.index.ISecondaryRecordIndex;
-import com.qfs.index.impl.IndexManager;
 import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression;
 import com.qfs.index.impl.SecondaryIndexPartitionFactoryWithoutDictionary;
 import com.qfs.monitoring.statistic.memory.MemoryStatisticConstants;
 import com.qfs.multiversion.impl.KeepLastEpochPolicy;
@@ -92,7 +92,7 @@ public class BenchmarkTransactions extends ABenchmarkSecondaryRecordIndex {
 
 		//indexTypes.add(MultiVersionLazyDeleteLinkedIndex.class);
 		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndex.class);
-		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression.class);
+		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression.class);
 	}
 
 	public static final int COMMIT_SIZE = 20_000;
@@ -219,11 +219,11 @@ public class BenchmarkTransactions extends ABenchmarkSecondaryRecordIndex {
 			// Set index
 			final String indexName = indexType.getSimpleName();
 			if (indexName.contains("SecondaryRecord")) {
-				IndexManager.isSecondaryIndexPartitionFactoryWithoutDictionary = true;
+				IndexDefinition.isSecondaryIndexPartitionFactoryWithoutDictionary = true;
 				SecondaryIndexPartitionFactoryWithoutDictionary.setDefaultIndex(
 						(Class<? extends IMultiVersionSecondaryRecordIndex>) indexType);
 			} else {
-				IndexManager.isSecondaryIndexPartitionFactoryWithoutDictionary = false;
+				IndexDefinition.isSecondaryIndexPartitionFactoryWithoutDictionary = false;
 			}
 
 			// Start bench

@@ -7,11 +7,11 @@
 
 package com.activeviam.apps.benchmark;
 
+import com.activeviam.store.structure.impl.IndexDefinition;
 import com.qfs.index.IMultiVersionSecondaryRecordIndex;
 import com.qfs.index.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.index.impl.IndexManager;
 import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression;
 import com.qfs.index.impl.SecondaryIndexPartitionFactoryWithoutDictionary;
 import com.qfs.store.query.IRecordQuery;
 import java.util.Random;
@@ -53,7 +53,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 
 		indexTypes.clear();
 		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndex.class);
-		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression.class);
+		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression.class);
 	}
 
 	protected static final int[] cachelineOrders = new int[] {
@@ -145,7 +145,7 @@ public class BenchmarkQueriesWithCachelineLength extends BenchmarkQueries {
 			}
 
 			// Set index
-			IndexManager.isSecondaryIndexPartitionFactoryWithoutDictionary = true;
+			IndexDefinition.isSecondaryIndexPartitionFactoryWithoutDictionary = true;
 			SecondaryIndexPartitionFactoryWithoutDictionary.setDefaultIndex(
 					(Class<? extends IMultiVersionSecondaryRecordIndex>) indexType);
 

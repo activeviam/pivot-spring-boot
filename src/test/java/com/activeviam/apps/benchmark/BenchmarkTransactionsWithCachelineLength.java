@@ -8,11 +8,11 @@
 package com.activeviam.apps.benchmark;
 
 import com.activeviam.copper.CopperRegistrations;
+import com.activeviam.store.structure.impl.IndexDefinition;
 import com.qfs.index.IMultiVersionSecondaryRecordIndex;
 import com.qfs.index.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.index.impl.IndexManager;
 import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression;
 import com.qfs.index.impl.SecondaryIndexPartitionFactoryWithoutDictionary;
 import com.qfs.monitoring.statistic.memory.MemoryStatisticConstants;
 import com.quartetfs.fwk.IPair;
@@ -59,7 +59,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 
 		indexTypes.clear();
 		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndex.class);
-		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression.class);
+		indexTypes.add(MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression.class);
 	}
 
 	protected static final int[] cachelineOrders = new int[] {
@@ -135,7 +135,7 @@ public class BenchmarkTransactionsWithCachelineLength extends BenchmarkTransacti
 			}
 
 			// Set index
-			IndexManager.isSecondaryIndexPartitionFactoryWithoutDictionary = true;
+			IndexDefinition.isSecondaryIndexPartitionFactoryWithoutDictionary = true;
 			SecondaryIndexPartitionFactoryWithoutDictionary.setDefaultIndex(
 					(Class<? extends IMultiVersionSecondaryRecordIndex>) indexType);
 

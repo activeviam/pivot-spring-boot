@@ -14,7 +14,7 @@ import com.qfs.index.ISecondaryRecordIndexVersion;
 import com.qfs.index.impl.AColumnImprintsSecondaryRecordIndexVersion;
 import com.qfs.index.impl.AMultiVersionColumnImprintsSecondaryRecordIndex;
 import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndex;
-import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression;
+import com.qfs.index.impl.MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression;
 import com.qfs.monitoring.statistic.memory.MemoryStatisticConstants;
 import com.qfs.store.IDatastore;
 import com.qfs.store.IDatastoreSchemaVersion;
@@ -111,7 +111,7 @@ public abstract class ABenchmarkSecondaryRecordIndex extends ABenchmark {
 	protected void printIndex() {
 		// Print every trades store secondary record index of first partition
 		if (indexName == MultiVersionColumnImprintsSecondaryRecordIndex.class.getSimpleName()
-				|| indexName == MultiVersionColumnImprintsSecondaryRecordIndexWithoutRLECompression
+				|| indexName == MultiVersionColumnImprintsSecondaryRecordIndexWithoutRleCompression
 					.class.getSimpleName()) {
 
 			final ISecondaryRecordIndexVersion[] indexes = datastore.getMostRecentVersion()
