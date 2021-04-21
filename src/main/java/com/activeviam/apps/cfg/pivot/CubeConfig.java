@@ -64,7 +64,7 @@ public class CubeConfig {
 
         return builder
                 .withSingleLevelDimensions(
-                        StoreAndFieldConstants.TRADES_TRADEID
+                        StoreAndFieldConstants.TRADES__TRADEID
                 )
 
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
