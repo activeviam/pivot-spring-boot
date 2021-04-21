@@ -18,8 +18,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.createSchemaSelectionDescription;
-import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
-import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_NOTIONAL;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.*;
 
 public class MeasuresTest {
 
@@ -68,7 +67,7 @@ public class MeasuresTest {
     public void testSimpleSum() {
         final CubeTester tester = builder.build(Measures::build);
         tester.query()
-                .forMeasures(TRADES_NOTIONAL)
+                .forMeasures(TRADES__NOTIONAL)
                 .run()
                 .getTester()
                 .hasOnlyOneCellWith()
@@ -81,7 +80,7 @@ public class MeasuresTest {
     @Test
     public void testSimpleSum_withSlicer() {
         final CubeTester tester = builder.build(Measures::build);
-        tester.mdxQuery( "SELECT" +
+        tester.mdxQuery("SELECT" +
                 "  [Measures].[Notional] ON COLUMNS" +
                 "  FROM [Cube]" +
                 "  WHERE [TradeID].[TradeID].[ALL].[AllMember].[T1]")
