@@ -60,9 +60,11 @@ public class CubeConfig {
      */
     public static ICanBuildCubeDescription<IActivePivotInstanceDescription> dimensions(ICanStartBuildingDimensions builder) {
 
+        //TODO Training CubeDimensionsConfig + TrainingCubeConfig
+
         return builder
                 .withSingleLevelDimensions(
-                        StoreAndFieldConstants.TRADES__TRADEID
+                        StoreAndFieldConstants.TRADES_TRADEID
                 )
 
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates

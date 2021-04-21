@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.createSchemaSelectionDescription;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
-import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES__NOTIONAL;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_NOTIONAL;
 
 public class MeasuresTest {
 
@@ -68,7 +68,7 @@ public class MeasuresTest {
     public void testSimpleSum() {
         final CubeTester tester = builder.build(Measures::build);
         tester.query()
-                .forMeasures(TRADES__NOTIONAL)
+                .forMeasures(TRADES_NOTIONAL)
                 .run()
                 .getTester()
                 .hasOnlyOneCellWith()
