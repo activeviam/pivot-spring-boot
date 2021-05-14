@@ -1,6 +1,7 @@
 package com.activeviam.apps.cfg.pivot;
 
 import com.activeviam.apps.cfg.DatastoreDescriptionConfig;
+import com.activeviam.apps.pp.MultiplyAtLeafPostProcessor;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -11,20 +12,19 @@ import com.activeviam.copper.testing.CubeTesterBuilderExtension;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
+import com.quartetfs.biz.pivot.query.impl.QueryMonitoring;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.LocalDate;
-
-import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
-import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES__NOTIONAL;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.INSTRUMENTS_STORE_NAME;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.POSITIONS_STORE_NAME;
 
 public class MeasuresTest {
 
     @BeforeClass
     public static void setup() {
-        CopperRegistrations.setupRegistryForTests();
+        CopperRegistrations.setupRegistryForTests(MultiplyAtLeafPostProcessor.class);
     }
 
     @RegisterExtension
@@ -52,40 +52,69 @@ public class MeasuresTest {
 
     public static ITransactionsBuilder createTestData() {
         return SimpleTransactionBuilder.start()
-                .inStore(TRADES_STORE_NAME)
-                .add(LocalDate.parse("2019-03-13"), "T1", 100d)
-                .add(LocalDate.parse("2019-03-13"), "T2", 350d)
-                .add(LocalDate.parse("2019-03-13"), "T3", 300d)
+                .inStore(POSITIONS_STORE_NAME)
+                .add(1, 1, "A", "2B", "3BC", 45.35)
+                .add(2, 1, "A", "2B", "3BD", 79.81)
+                .add(3, 1, "A", "2C", "3AC", 42.42)
+                .add(4, 2, "A", "2C", "3BC", 99.19)
+                .add(5, 2, "A", "2C", "3CC", 25.83)
+
+                .inStore(INSTRUMENTS_STORE_NAME)
+                .add(1, 100d)
+                .add(2, 50d)
+
                 .end();
     }
 
-    /**
-     * Here is the actual test. Check that the numbers sum up correctly
-     */
     @Test
-    public void testSimpleSum() {
-
+    public void runM1() {
         final CubeTester tester = builder.build(Measures::build);
-        tester.query()
-                .forMeasures(TRADES__NOTIONAL)
-                .run()
+        tester.mdxQuery("SELECT\n" +
+                "  NON EMPTY {\n" +
+                "    [Measures].[M1]\n" +
+                "  } ON COLUMNS,\n" +
+                "  NON EMPTY [Portfolio].[Portfolio].Members ON ROWS\n" +
+                "  FROM [Cube]", new QueryMonitoring().enableExecutionTimingPrint().enableQueryPlanSummary())
                 .getTester()
-                .hasOnlyOneCellWith()
-                .containing(750d);
+                .printCellSet();
     }
 
-    /**
-     * Run a test on an MDX query with a slicer
-     */
     @Test
-    public void testSimpleSum_withSlicer() {
+    public void runM2() {
         final CubeTester tester = builder.build(Measures::build);
-        tester.mdxQuery( "SELECT" +
-                "  [Measures].[Notional] ON COLUMNS" +
-                "  FROM [Cube]" +
-                "  WHERE [TradeID].[TradeID].[ALL].[AllMember].[T1]")
+        tester.mdxQuery("SELECT\n" +
+                "  NON EMPTY {\n" +
+                "    [Measures].[M2]\n" +
+                "  } ON COLUMNS,\n" +
+                "  NON EMPTY [Portfolio].[Portfolio].Members ON ROWS\n" +
+                "  FROM [Cube]", new QueryMonitoring().enableExecutionTimingPrint().enableQueryPlanSummary())
                 .getTester()
-                .hasOnlyOneCell()
-                .containingFormattedValue("100");
+                .printCellSet();
+    }
+
+    @Test
+    public void runM3() {
+        final CubeTester tester = builder.build(Measures::build);
+        tester.mdxQuery("SELECT\n" +
+                "  NON EMPTY {\n" +
+                "    [Measures].[M3]\n" +
+                "  } ON COLUMNS,\n" +
+                "  NON EMPTY [Portfolio].[Portfolio].Members ON ROWS\n" +
+                "  FROM [Cube]", new QueryMonitoring().enableExecutionTimingPrint().enableQueryPlanSummary())
+                .getTester()
+                .printCellSet();
+    }
+
+    @Test
+    public void runM4() {
+        final CubeTester tester = builder.build(Measures::build);
+        tester.mdxQuery("SELECT\n" +
+                "  NON EMPTY {\n" +
+                "    [Measures].[M4]\n" +
+                "  } ON COLUMNS,\n" +
+                "  NON EMPTY [Portfolio].[Portfolio].Members ON ROWS\n" +
+                "  FROM [Cube]", new QueryMonitoring().enableExecutionTimingPrint().enableQueryPlanSummary())
+                .getTester()
+                .printCellSet();
     }
 }

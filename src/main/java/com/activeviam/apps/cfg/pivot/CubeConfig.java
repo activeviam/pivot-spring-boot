@@ -62,15 +62,13 @@ public class CubeConfig {
 
         return builder
                 .withSingleLevelDimensions(
-                        StoreAndFieldConstants.TRADES__TRADEID
+                        StoreAndFieldConstants.POSITION_ID,
+                        StoreAndFieldConstants.INSTRUMENT_ID
                 )
 
-                // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
-                // Also show the dates in reverse order ie most recent date first
-                .withDimension(StoreAndFieldConstants.ASOFDATE).withType(IDimension.DimensionType.TIME)
-                    .withHierarchy(StoreAndFieldConstants.ASOFDATE).slicing()
-                    .withLevelOfSameName()
-                        .withType(ILevelInfo.LevelType.TIME).withComparator(ReverseOrderComparator.type)
+                .withDimension("Portfolio").withHierarchyOfSameName()
+                .withLevels(StoreAndFieldConstants.L1, StoreAndFieldConstants.L2, StoreAndFieldConstants.L3)
+
                 ;
 
     }

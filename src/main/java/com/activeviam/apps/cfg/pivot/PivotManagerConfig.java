@@ -5,6 +5,7 @@ import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.ICubeDescriptionBuilder;
+import com.activeviam.desc.build.ISelectionDescriptionBuilder;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
@@ -57,8 +58,8 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     public static ISelectionDescription createSchemaSelectionDescription(
             final IDatastoreSchemaDescription datastoreDescription) {
         return StartBuilding.selection(datastoreDescription)
-                .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
-                .withAllFields()
+                .fromBaseStore(StoreAndFieldConstants.POSITIONS_STORE_NAME)
+                .withAllReachableFields(ISelectionDescriptionBuilder.FieldsCollisionHandler.CLOSEST)
                 .build();
     }
 
