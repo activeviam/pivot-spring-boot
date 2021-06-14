@@ -62,6 +62,12 @@
             <version>${activePivotVersion}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.activeviam.source</groupId>
+            <artifactId>cloud-source-aws</artifactId>
+            <version>${activePivotVersion}</version>
+        </dependency>
+
         <!-- Dependencies for the content service persistence -->
         <dependency>
             <groupId>org.hibernate</groupId>

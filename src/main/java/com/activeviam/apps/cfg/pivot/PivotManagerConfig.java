@@ -57,7 +57,7 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     public static ISelectionDescription createSchemaSelectionDescription(
             final IDatastoreSchemaDescription datastoreDescription) {
         return StartBuilding.selection(datastoreDescription)
-                .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
+                .fromBaseStore(StoreAndFieldConstants.SESSION_STORE_NAME)
                 .withAllFields()
                 .build();
     }

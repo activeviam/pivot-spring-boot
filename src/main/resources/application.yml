@@ -4,9 +4,6 @@ server:
 schema:
   printer: false
 
-file:
-  trades: "data/trades.csv"
-
 management:
   endpoints:
     web:

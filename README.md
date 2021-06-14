@@ -6,6 +6,10 @@
 
 ---
 
+## Branch info 
+
+Temporary branch for the application displaying the CI/CD'ed benchmark results.
+
 ## 📋 Details
 This project aims to be an example of how to run ActivePivot as a Spring Boot application. ActivePivot was already a Spring application, but with the power of Spring Boot we can simplify our dependency management, deployment model and many other goodies that come with Spring Boot.
 

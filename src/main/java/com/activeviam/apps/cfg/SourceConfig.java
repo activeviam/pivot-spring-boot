@@ -1,30 +1,45 @@
+/*
+ * (C) ActiveViam 2021
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
+
 package com.activeviam.apps.cfg;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
-import com.qfs.gui.impl.JungSchemaPrinter;
-import com.qfs.msg.IMessageChannel;
-import com.qfs.msg.csv.*;
-import com.qfs.msg.csv.filesystem.impl.FileSystemCSVTopicFactory;
+import com.activeviam.cloud.aws.s3.entity.impl.S3CloudDirectory;
+import com.activeviam.cloud.aws.s3.fetch.impl.S3ObjectChannel;
+import com.activeviam.cloud.aws.s3.impl.BucketUtil;
+import com.activeviam.cloud.entity.ICloudEntityPath;
+import com.activeviam.cloud.fetch.impl.CloudFetchingConfig;
+import com.activeviam.cloud.msg.csv.impl.AwsCsvDataProviderFactory;
+import com.activeviam.cloud.source.csv.ICloudCsvDataProviderFactory;
+import com.activeviam.cloud.source.csv.impl.CloudDirectoryCSVTopic;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
+import com.qfs.msg.csv.ICSVTopic;
+import com.qfs.msg.csv.IFileInfo;
+import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.source.impl.Fetch;
 import com.qfs.store.IDatastore;
 import com.qfs.store.IDatastoreSchemaMetadata;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.util.timing.impl.StopWatch;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
-
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Configuration
 public class SourceConfig {
@@ -37,46 +52,65 @@ public class SourceConfig {
     @Autowired
     protected IDatastore datastore;
 
+    protected CloudFetchingConfig config;
+    protected S3CloudDirectory directory;
+
     public static final String TRADES_TOPIC = "Trades";
+
+    private static final String BUCKET = "rnd-benchmark-test-storage";
+    private static final Regions REGION = Regions.EU_WEST_3;
+
+    /**
+     * [Bean].
+     *
+     * @return Client to connect to AWS S3
+     */
+    @Bean
+    public AmazonS3 client() {
+        return BucketUtil.getClient(REGION);
+    }
 
     /*
      * **************************** CSV Source *********************************
      */
 
     /**
-     * Topic factory bean. Allows to create CSV topics and watch changes to directories. Autocloseable.
+     * Topic factory bean. Allows to create CSV topics and watch changes to directories.
+     * Autocloseable.
      *
      * @return the topic factory
      */
     @Bean
-    public FileSystemCSVTopicFactory csvTopicFactory() {
-        return new FileSystemCSVTopicFactory(false);
+    public ICloudCsvDataProviderFactory<S3Object> topicFactory() {
+        this.config = new CloudFetchingConfig(2);
+        return new AwsCsvDataProviderFactory(this.config);
     }
 
     @Bean(destroyMethod = "close")
-    public CSVSource<Path> csvSource() {
+    public CSVSource<ICloudEntityPath<S3Object>> cloudSource() {
         final IDatastoreSchemaMetadata schemaMetadata = datastore.getSchemaMetadata();
-        final FileSystemCSVTopicFactory csvTopicFactory = csvTopicFactory();
-        final CSVSource<Path> csvSource = new CSVSource<>();
 
+        //Create the directory
+        this.directory = new S3CloudDirectory(client(), BUCKET, "");
 
-        final List<String> tradesColumns = schemaMetadata.getFields(StoreAndFieldConstants.TRADES_STORE_NAME);
-        final ICSVTopic<Path> tradesTopic = csvTopicFactory.createTopic(TRADES_TOPIC, env.getProperty("file.trades"),
-                createParserConfig(tradesColumns.size(), tradesColumns));
-        csvSource.addTopic(tradesTopic);
+        //Fetch all data
+        ICSVTopic<ICloudEntityPath<S3Object>> directoryTopic =
+            new CloudDirectoryCSVTopic<>(
+                "Session",
+                new CSVParserConfiguration(
+                    datastore.getSchemaMetadata()
+                        .getStoreMetadata(StoreAndFieldConstants.SESSION_STORE_NAME)
+                        .getStoreFormat()
+                        .getRecordFormat()
+                        .getFieldCount()),
+                topicFactory(),
+                this.directory,
+                "[a-z,A-Z,0-9,\\,/]*(session.csv)$");
 
-        final Properties sourceProps = new Properties();
-        sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, env.getProperty("parserThreads", "2"));
-        sourceProps.put(ICSVSourceConfiguration.SYNCHRONOUS_MODE_PROPERTY, env.getProperty("synchronousMode", "false"));
-        csvSource.configure(sourceProps);
+        final CSVSource<ICloudEntityPath<S3Object>> csvSource = new CSVSource<>();
+        csvSource.addTopic(directoryTopic);
+
         return csvSource;
-    }
-
-    @Bean
-    public CSVMessageChannelFactory<Path> csvChannelFactory() {
-        final CSVMessageChannelFactory<Path> csvChannelFactory = new CSVMessageChannelFactory<>(csvSource(), datastore);
-
-        return csvChannelFactory;
     }
 
     /*
@@ -86,16 +120,18 @@ public class SourceConfig {
     @Bean
     @DependsOn("startManager")
     public Void initialLoad() {
-        final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
-        csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
+        final Collection<S3ObjectChannel> csvChannels = new ArrayList<>();
+        directory.listEntities(true).forEach(
+            cloudEntity -> csvChannels.add(new S3ObjectChannel(cloudEntity, this.config)));
 
-        // do the transactions
+        // Do the transactions :
         final long before = System.nanoTime();
+        final Fetch<IFileInfo<ICloudEntityPath<S3Object>>, ILineReader> load = new Fetch<>(
+            csvChannelFactory(),
+            List.of(StoreAndFieldConstants.SESSION_STORE_NAME));
 
-        datastore.edit(t -> {
-            csvSource().fetch(csvChannels);
-            t.forceCommit();
-        });
+        load.fetch(cloudSource());
+
         final long elapsed = System.nanoTime() - before;
         LOGGER.log(Level.INFO, "Initial data load completed in " + elapsed / 1000000L + "ms");
 
@@ -103,19 +139,11 @@ public class SourceConfig {
         return null;
     }
 
-    private ICSVParserConfiguration createParserConfig(final int columnCount, final List<String> columns) {
-        final CSVParserConfiguration cfg = columns == null ? new CSVParserConfiguration(columnCount) : new CSVParserConfiguration(columns);
-        cfg.setNumberSkippedLines(1);// skip the first line
-        return cfg;
+    private CSVMessageChannelFactory<ICloudEntityPath<S3Object>> csvChannelFactory() {
+        return new CSVMessageChannelFactory<>(cloudSource(), datastore);
     }
-    private void printStoreSizes() {
-        // add some logging
-        if (Boolean.parseBoolean(env.getProperty("schema.printer", "true"))) {
-            // display the graph
-        	System.setProperty("java.awt.headless", "false");
-            new JungSchemaPrinter(false).print("Datastore", datastore);
-        }
 
+    private void printStoreSizes() {
         // Print stop watch profiling
         StopWatch.get().printTimings();
         StopWatch.get().printTimingLegend();
