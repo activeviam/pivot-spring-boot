@@ -94,7 +94,9 @@ public class SourceConfig {
         this.directory = new S3CloudDirectory(client(), BUCKET, "");
 
         //Fetch all data
-        ICSVTopic<ICloudEntityPath<S3Object>> directoryTopic =
+
+        // Start with the session CSV files
+        ICSVTopic<ICloudEntityPath<S3Object>> sessionTopic =
             new CloudDirectoryCSVTopic<>(
                 "Session",
                 new CSVParserConfiguration(
@@ -108,7 +110,7 @@ public class SourceConfig {
                 "[a-z,A-Z,0-9,\\,/]*(session.csv)$");
 
         final CSVSource<ICloudEntityPath<S3Object>> csvSource = new CSVSource<>();
-        csvSource.addTopic(directoryTopic);
+        csvSource.addTopic(sessionTopic);
 
         return csvSource;
     }
