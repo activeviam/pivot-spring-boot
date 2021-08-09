@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.servlet.Filter;
 
+import com.activeviam.collections.impl.Immutable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -59,31 +60,42 @@ import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
 import com.quartetfs.biz.pivot.security.IAuthorityComparator;
 import com.quartetfs.biz.pivot.security.impl.AuthorityComparatorAdapter;
 import com.quartetfs.fwk.ordering.impl.CustomComparator;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableGlobalAuthentication
-@EnableWebSecurity( debug = false )
+@EnableWebSecurity(debug = false)
 @Configuration
 public class SecurityConfig implements ICorsConfig {
 
-	/** Set to true to allow anonymous access. */
+	/**
+	 * Set to true to allow anonymous access.
+	 */
 	public static final boolean useAnonymous = false;
 
 	public static final String BASIC_AUTH_BEAN_NAME = "basicAuthenticationEntryPoint";
 
-	/** Admin role */
+	/**
+	 * Admin role
+	 */
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
-	public static final String ROLE_USER  ="ROLE_USER";
+	public static final String ROLE_USER = "ROLE_USER";
 
-	/** Content Server Root role */
+	/**
+	 * Content Server Root role
+	 */
 	public static final String ROLE_CS_ROOT = IContentService.ROLE_ROOT;
 
 	public static final String ROLE_APAC = "ROLE_APAC";
 
-	/** Admin user */
+	/**
+	 * Admin user
+	 */
 	public static final String USER_ADMIN = "admin";
 	public static final String PASSWORD_ADMIN = "admin";
 
-	/** Cookie name for AP */
+	/**
+	 * Cookie name for AP
+	 */
 	public static final String COOKIE_NAME = "AP_JSESSIONID";
 
 	@Autowired
@@ -106,10 +118,9 @@ public class SecurityConfig implements ICorsConfig {
 
 		InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> inMemUserDetailsManagerConfig =
 				new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
-				.passwordEncoder(passwordEncoder())
-				.withUser(USER_ADMIN).password(PASSWORD_ADMIN).authorities(ROLE_ADMIN,ROLE_CS_ROOT,ROLE_USER)
-				.and()
-				;
+						.passwordEncoder(passwordEncoder())
+						.withUser(USER_ADMIN).password(PASSWORD_ADMIN).authorities(ROLE_ADMIN, ROLE_CS_ROOT, ROLE_USER)
+						.and();
 
 		inMemUserDetailsManagerConfig.configure(auth);
 
@@ -121,7 +132,7 @@ public class SecurityConfig implements ICorsConfig {
 	 * for the fallback basic HTTP authentication.
 	 *
 	 * @return The default {@link AuthenticationEntryPoint} for the
-	 *         fallback HTTP basic authentication.
+	 * fallback HTTP basic authentication.
 	 */
 	@Bean(name = BASIC_AUTH_BEAN_NAME)
 	public AuthenticationEntryPoint basicAuthenticationEntryPoint() {
@@ -137,12 +148,13 @@ public class SecurityConfig implements ICorsConfig {
 	 *   <li>com.quartetfs.biz.pivot.security.impl.ContextValueManager#setAuthorityComparator(IAuthorityComparator)</li>
 	 *   <li>{@link IJwtService}</li>
 	 * </ul>
+	 *
 	 * @return a comparator that indicates which authority/role prevails over another. <b>NOTICE -
-	 *         an authority coming AFTER another one prevails over this "previous" authority.</b>
-	 *         This authority ordering definition is essential to resolve possible ambiguity when,
-	 *         for a given user, a context value has been defined in more than one authority
-	 *         applicable to that user. In such case, it is what has been set for the "prevailing"
-	 *         authority that will be effectively retained for that context value for that user.
+	 * an authority coming AFTER another one prevails over this "previous" authority.</b>
+	 * This authority ordering definition is essential to resolve possible ambiguity when,
+	 * for a given user, a context value has been defined in more than one authority
+	 * applicable to that user. In such case, it is what has been set for the "prevailing"
+	 * authority that will be effectively retained for that context value for that user.
 	 */
 	@Bean
 	public IAuthorityComparator authorityComparator() {
@@ -159,23 +171,24 @@ public class SecurityConfig implements ICorsConfig {
 	 * <p>This binds the defined user service to the authentication and sets the source
 	 * for JWT tokens.
 	 *
-	 *  @param auth Spring builder to manage authentication
+	 * @param auth Spring builder to manage authentication
 	 * @throws Exception in case of error
 	 */
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
 		auth
-		.eraseCredentials(false)
-		// Add an LDAP authentication provider instead of this to support LDAP
-		.userDetailsService(userDetailsService()).and()
-		// Required to allow JWT
-		.authenticationProvider(jwtConfig.jwtAuthenticationProvider());
+				.eraseCredentials(false)
+				// Add an LDAP authentication provider instead of this to support LDAP
+				.userDetailsService(userDetailsService()).and()
+				// Required to allow JWT
+				.authenticationProvider(jwtConfig.jwtAuthenticationProvider());
 	}
 
 	@Override
 	public List<String> getAllowedOrigins() {
-		return Collections.singletonList(CorsConfiguration.ALL);
+		return Immutable.list(CorsConfiguration.ALL).toList();
 	}
+
 
 	/**
 	 * [Bean] Spring standard way of configuring CORS.
@@ -187,7 +200,7 @@ public class SecurityConfig implements ICorsConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		final CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(getAllowedOrigins());
+		configuration.setAllowedOriginPatterns(getAllowedOrigins());
 		configuration.setAllowedHeaders(getAllowedHeaders());
 		configuration.setExposedHeaders(getExposedHeaders());
 		configuration.setAllowedMethods(getAllowedMethods());
@@ -210,7 +223,9 @@ public class SecurityConfig implements ICorsConfig {
 		 * {@code true} to enable the logout URL.
 		 */
 		protected final boolean logout;
-		/** The name of the cookie to clear. */
+		/**
+		 * The name of the cookie to clear.
+		 */
 		protected final String cookieName;
 
 		@Autowired
@@ -268,19 +283,19 @@ public class SecurityConfig implements ICorsConfig {
 			final Filter jwtFilter = context.getBean(IJwtConfig.class).jwtFilter();
 
 			http
-			// As of Spring Security 4.0, CSRF protection is enabled by default.
-			.csrf().disable()
-			.cors().and()
-			// To allow authentication with JWT (Required for ActiveUI)
-			.addFilterAfter(jwtFilter, SecurityContextPersistenceFilter.class);
+					// As of Spring Security 4.0, CSRF protection is enabled by default.
+					.csrf().disable()
+					.cors().and()
+					// To allow authentication with JWT (Required for ActiveUI)
+					.addFilterAfter(jwtFilter, CorsFilter.class);
 
 			if (logout) {
 				// Configure logout URL
 				http.logout()
-				.permitAll()
-				.deleteCookies(cookieName)
-				.invalidateHttpSession(true)
-				.logoutSuccessHandler(new NoRedirectLogoutSuccessHandler());
+						.permitAll()
+						.deleteCookies(cookieName)
+						.invalidateHttpSession(true)
+						.logoutSuccessHandler(new NoRedirectLogoutSuccessHandler());
 			}
 
 			if (useAnonymous) {
@@ -294,6 +309,7 @@ public class SecurityConfig implements ICorsConfig {
 
 		/**
 		 * Applies the specific configuration for the endpoint.
+		 *
 		 * @see #configure(HttpSecurity)
 		 */
 		protected abstract void doConfigure(HttpSecurity http) throws Exception;
@@ -308,14 +324,14 @@ public class SecurityConfig implements ICorsConfig {
 			// Permit all on ActiveUI resources and the root (/) that redirects to ActiveUI index.html.
 			final String pattern = "^(.{0}|\\/|\\/" + ActiveUIResourceServerConfig.UI_NAMESPACE + "(\\/.*)?)$";
 			http
-			// Only theses URLs must be handled by this HttpSecurity
-			.regexMatcher(pattern)
-			.authorizeRequests()
-			// The order of the matchers matters
-			.regexMatchers(HttpMethod.OPTIONS, pattern)
-			.permitAll()
-			.regexMatchers(HttpMethod.GET, pattern)
-			.permitAll();
+					// Only theses URLs must be handled by this HttpSecurity
+					.regexMatcher(pattern)
+					.authorizeRequests()
+					// The order of the matchers matters
+					.regexMatchers(HttpMethod.OPTIONS, pattern)
+					.permitAll()
+					.regexMatchers(HttpMethod.GET, pattern)
+					.permitAll();
 
 			// Authorizing pages to be embedded in iframes to have ActiveUI in ActiveMonitor UI
 			http.headers().frameOptions().disable();
@@ -336,15 +352,15 @@ public class SecurityConfig implements ICorsConfig {
 					BASIC_AUTH_BEAN_NAME,
 					AuthenticationEntryPoint.class);
 			http
-			.antMatcher(JwtRestServiceConfig.REST_API_URL_PREFIX + "/**")
-			// As of Spring Security 4.0, CSRF protection is enabled by default.
-			.csrf().disable()
-			.cors().and()
-			.authorizeRequests()
-			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-			.antMatchers("/**").hasAnyAuthority(ROLE_USER)
-			.and()
-			.httpBasic().authenticationEntryPoint(basicAuthenticationEntryPoint);
+					.antMatcher(JwtRestServiceConfig.REST_API_URL_PREFIX + "/**")
+					// As of Spring Security 4.0, CSRF protection is enabled by default.
+					.csrf().disable()
+					.cors().and()
+					.authorizeRequests()
+					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+					.antMatchers("/**").hasAnyAuthority(ROLE_USER)
+					.and()
+					.httpBasic().authenticationEntryPoint(basicAuthenticationEntryPoint);
 		}
 	}
 
@@ -359,22 +375,20 @@ public class SecurityConfig implements ICorsConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
-			.antMatcher(VersionServicesConfig.REST_API_URL_PREFIX + "/**")
-			// As of Spring Security 4.0, CSRF protection is enabled by default.
-			.cors().and()
-			.csrf().disable()
-			.authorizeRequests()
-			.antMatchers("/**").permitAll();
+					.antMatcher(VersionServicesConfig.REST_API_URL_PREFIX + "/**")
+					// As of Spring Security 4.0, CSRF protection is enabled by default.
+					.cors().and()
+					.csrf().disable()
+					.authorizeRequests()
+					.antMatchers("/**").permitAll();
 		}
 	}
-
 
 
 	/**
 	 * Configure security for ActivePivot web services
 	 *
 	 * @author ActiveViam
-	 *
 	 */
 	@Configuration
 	@Order(100)
@@ -393,37 +407,37 @@ public class SecurityConfig implements ICorsConfig {
 		@Override
 		protected void doConfigure(HttpSecurity http) throws Exception {
 			http.authorizeRequests()
-			// The order of the matchers matters
-			.antMatchers(HttpMethod.OPTIONS, REST_API_URL_PREFIX + "/**")
-			.permitAll()
-			// Web services used by AP live 3.4
-			.antMatchers(CXF_WEB_SERVICES + '/' + ID_GENERATOR_SERVICE + "/**")
-			.hasAnyAuthority(ROLE_USER)
-			.antMatchers(CXF_WEB_SERVICES + '/' + LONG_POLLING_SERVICE + "/**")
-			.hasAnyAuthority(ROLE_USER)
-			.antMatchers(CXF_WEB_SERVICES + '/' + LICENSING_SERVICE + "/**")
-			.hasAnyAuthority(ROLE_USER)
-			// Spring remoting services used by AP live 3.4
-			.antMatchers(url(ID_GENERATOR_REMOTING_SERVICE, "**"))
-			.hasAnyAuthority(ROLE_USER)
-			.antMatchers(url(LONG_POLLING_REMOTING_SERVICE, "**"))
-			.hasAnyAuthority(ROLE_USER)
-			.antMatchers(url(LICENSING_REMOTING_SERVICE, "**"))
-			.hasAnyAuthority(ROLE_USER)
-			// The ping service is temporarily authenticated (see PIVOT-3149)
-			.antMatchers(url(REST_API_URL_PREFIX, PING_SUFFIX))
-			.hasAnyAuthority(ROLE_USER)
-			// REST services
-			.antMatchers(REST_API_URL_PREFIX + "/**")
-			.hasAnyAuthority(ROLE_USER)
-			// One has to be a user for all the other URLs
-			.antMatchers("/**")
-			.hasAuthority(ROLE_USER)
-			.and()
-			.httpBasic()
-			// SwitchUserFilter is the last filter in the chain. See FilterComparator class.
-			.and()
-			.addFilterAfter(this.activePivotConfig.contextValueFilter(), SwitchUserFilter.class);
+					// The order of the matchers matters
+					.antMatchers(HttpMethod.OPTIONS, REST_API_URL_PREFIX + "/**")
+					.permitAll()
+					// Web services used by AP live 3.4
+					.antMatchers(CXF_WEB_SERVICES + '/' + ID_GENERATOR_SERVICE + "/**")
+					.hasAnyAuthority(ROLE_USER)
+					.antMatchers(CXF_WEB_SERVICES + '/' + LONG_POLLING_SERVICE + "/**")
+					.hasAnyAuthority(ROLE_USER)
+					.antMatchers(CXF_WEB_SERVICES + '/' + LICENSING_SERVICE + "/**")
+					.hasAnyAuthority(ROLE_USER)
+					// Spring remoting services used by AP live 3.4
+					.antMatchers(url(ID_GENERATOR_REMOTING_SERVICE, "**"))
+					.hasAnyAuthority(ROLE_USER)
+					.antMatchers(url(LONG_POLLING_REMOTING_SERVICE, "**"))
+					.hasAnyAuthority(ROLE_USER)
+					.antMatchers(url(LICENSING_REMOTING_SERVICE, "**"))
+					.hasAnyAuthority(ROLE_USER)
+					// The ping service is temporarily authenticated (see PIVOT-3149)
+					.antMatchers(url(REST_API_URL_PREFIX, PING_SUFFIX))
+					.hasAnyAuthority(ROLE_USER)
+					// REST services
+					.antMatchers(REST_API_URL_PREFIX + "/**")
+					.hasAnyAuthority(ROLE_USER)
+					// One has to be a user for all the other URLs
+					.antMatchers("/**")
+					.hasAuthority(ROLE_USER)
+					.and()
+					.httpBasic()
+					// SwitchUserFilter is the last filter in the chain. See FilterComparator class.
+					.and()
+					.addFilterAfter(this.activePivotConfig.contextValueFilter(), SwitchUserFilter.class);
 		}
 
 		@Bean(name = BeanIds.AUTHENTICATION_MANAGER)
