@@ -9,14 +9,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.activeviam.apps</groupId>
-    <artifactId>pivot-springboot</artifactId>
+    <artifactId>pivot-benchmark-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <description>Demo project for Spring Boot</description>
+    <description>ActivePivot Benchmark Application</description>
 
     <properties>
         <java.version>11</java.version>
-        <activePivotVersion>5.10.0</activePivotVersion>
-        <activeui.version>4.3.16</activeui.version>
+        <activePivotVersion>5.10.4</activePivotVersion>
+        <activeui.version>4.3.18</activeui.version>
         <content-server-ui.version>2.0.1</content-server-ui.version>
     </properties>
 

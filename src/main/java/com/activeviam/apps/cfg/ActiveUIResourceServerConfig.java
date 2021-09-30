@@ -22,6 +22,8 @@ public class ActiveUIResourceServerConfig extends ASpringResourceServerConfig {
         super.registerRedirections(registry);
         // Redirect from the root to ActiveUI
         registry.redirectTo(UI_NAMESPACE + "/index.html", "/");
+        registry.serve("/content/ui/env*.js").addResourceLocations("classpath:/static/content/");
+        registry.serve("/ui/env*.js").addResourceLocations("classpath:/static/activeui/");
     }
 
     /**

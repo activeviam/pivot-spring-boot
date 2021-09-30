@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @Import(value = {
-        ActivePivotWebMvcConfigurer.class,
         SecurityConfig.class,
         SourceConfig.class,
         DatastoreDescriptionConfig.class,
@@ -37,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 })
 public class ApplicationConfig {
 
-    /* Before anything else we statically initialize the Quartet FS Registry. */
+    /* Before anything else we statically initialize the Full Quartet FS Registry. */
     static {
         Registry.setContributionProvider(new ClasspathContributionProvider("com.qfs", "com.quartetfs", "com.activeviam"));
     }

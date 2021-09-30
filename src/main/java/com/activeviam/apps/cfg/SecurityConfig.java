@@ -77,8 +77,6 @@ public class SecurityConfig implements ICorsConfig {
 	/** Content Server Root role */
 	public static final String ROLE_CS_ROOT = IContentService.ROLE_ROOT;
 
-	public static final String ROLE_APAC = "ROLE_APAC";
-
 	/** Admin user */
 	public static final String USER_ADMIN = "admin";
 	public static final String PASSWORD_ADMIN = "admin";

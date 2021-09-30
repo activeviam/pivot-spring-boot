@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 9999
 
 schema:
   printer: false
@@ -44,6 +44,4 @@ contentServer:
     kpiRole: ROLE_USER
     cache:
       entitlementsTTL: 3600
-#  remote:
-#    api:
-#      uri:
+

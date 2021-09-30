@@ -7,7 +7,12 @@
 
 package com.activeviam.apps.cfg;
 
-import com.activeviam.apps.constants.StoreAndFieldConstants;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_DATA_STORE_NAME;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_INFO_STORE_NAME;
+import static com.activeviam.apps.constants.AppConstants.SESSION_BENCHMARKS_STORE_NAME;
+import static com.activeviam.apps.constants.AppConstants.SESSION_INFO_STORE_NAME;
+import static com.activeviam.apps.constants.AppConstants.SESSION_STORE_NAME;
+
 import com.activeviam.cloud.aws.s3.entity.impl.S3CloudDirectory;
 import com.activeviam.cloud.aws.s3.fetch.impl.S3ObjectChannel;
 import com.activeviam.cloud.aws.s3.impl.BucketUtil;
@@ -33,8 +38,12 @@ import com.qfs.util.timing.impl.StopWatch;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,10 +64,15 @@ public class SourceConfig {
     protected CloudFetchingConfig config;
     protected S3CloudDirectory directory;
 
-    public static final String TRADES_TOPIC = "Trades";
-
     private static final String BUCKET = "rnd-benchmark-test-storage";
     private static final Regions REGION = Regions.EU_WEST_3;
+
+    public static List<String> STORES_LIST =  List.of(
+        SESSION_STORE_NAME,
+        SESSION_BENCHMARKS_STORE_NAME,
+        SESSION_INFO_STORE_NAME,
+        BENCHMARK_INFO_STORE_NAME,
+        BENCHMARK_DATA_STORE_NAME);
 
     /**
      * [Bean].
@@ -88,30 +102,34 @@ public class SourceConfig {
 
     @Bean(destroyMethod = "close")
     public CSVSource<ICloudEntityPath<S3Object>> cloudSource() {
-        final IDatastoreSchemaMetadata schemaMetadata = datastore.getSchemaMetadata();
 
         //Create the directory
         this.directory = new S3CloudDirectory(client(), BUCKET, "");
 
-        //Fetch all data
+        final ToIntFunction<String> sessionColumnsCountProvider = (storeName) -> datastore
+            .getSchemaMetadata()
+            .getStoreMetadata(storeName)
+            .getStoreFormat()
+            .getRecordFormat()
+            .getFieldCount();
 
-        // Start with the session CSV files
-        ICSVTopic<ICloudEntityPath<S3Object>> sessionTopic =
-            new CloudDirectoryCSVTopic<>(
-                "Session",
-                new CSVParserConfiguration(
-                    datastore.getSchemaMetadata()
-                        .getStoreMetadata(StoreAndFieldConstants.SESSION_STORE_NAME)
-                        .getStoreFormat()
-                        .getRecordFormat()
-                        .getFieldCount()),
+        // NOTE : this requires that the csv files are named after the stores
+        final Function regexProvider = (storeName) -> "[a-z,A-Z,0-9,\\,/]*("
+            + storeName.toString().toLowerCase(Locale.ROOT)
+            + ".csv)$";
+
+        List<ICSVTopic<ICloudEntityPath<S3Object>>> topicList = STORES_LIST.stream()
+            .map((storeName) -> new CloudDirectoryCSVTopic<>(
+                storeName,
+                new CSVParserConfiguration(sessionColumnsCountProvider.applyAsInt(storeName)),
                 topicFactory(),
                 this.directory,
-                "[a-z,A-Z,0-9,\\,/]*(session.csv)$");
+                regexProvider.apply(storeName).toString()))
+            .collect(Collectors.toList());
 
         final CSVSource<ICloudEntityPath<S3Object>> csvSource = new CSVSource<>();
-        csvSource.addTopic(sessionTopic);
 
+        topicList.forEach(topic -> csvSource.addTopic(topic));
         return csvSource;
     }
 
@@ -130,7 +148,7 @@ public class SourceConfig {
         final long before = System.nanoTime();
         final Fetch<IFileInfo<ICloudEntityPath<S3Object>>, ILineReader> load = new Fetch<>(
             csvChannelFactory(),
-            List.of(StoreAndFieldConstants.SESSION_STORE_NAME));
+            STORES_LIST);
 
         load.fetch(cloudSource());
 

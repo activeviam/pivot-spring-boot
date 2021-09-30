@@ -1,14 +1,11 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.constants.StoreAndFieldConstants;
+import com.activeviam.apps.constants.AppConstants;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.ICubeDescriptionBuilder;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
-import com.quartetfs.biz.pivot.cube.dimension.IDimension;
-import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
-import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
 
 import java.util.concurrent.TimeUnit;
 
@@ -46,9 +43,7 @@ public class CubeConfig {
 
                 .withSharedDrillthroughProperties()
                 .withMaxRows(10000)
-                .end()
-
-                ;
+                .end();
     }
 
     /**
@@ -61,9 +56,10 @@ public class CubeConfig {
     public static ICanBuildCubeDescription<IActivePivotInstanceDescription> dimensions(ICanStartBuildingDimensions builder) {
 
         return builder
-                .withSingleLevelDimensions(
-                        StoreAndFieldConstants.SESSION_TIMESTAMP
-                ) ;
+            .withSingleLevelDimension(AppConstants.SESSION_TIMESTAMP)
+            .withSingleLevelDimension(AppConstants.BENCHMARK_INFO_PLUGIN_KEY)
+            .withSingleLevelDimension(AppConstants.BENCHMARK_DATA_ID);
+
 
     }
 
