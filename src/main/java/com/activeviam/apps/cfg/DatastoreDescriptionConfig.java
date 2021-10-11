@@ -24,10 +24,15 @@ import static com.activeviam.apps.constants.AppConstants.BENCHMARK_P6;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_P7;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_P8;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V1;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V10;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V2;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V3;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V4;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V5;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V6;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V7;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V8;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V9;
 import static com.activeviam.apps.constants.AppConstants.SESSION_AP_VERSION;
 import static com.activeviam.apps.constants.AppConstants.SESSION_BENCHMARKS_BENCHMARK_KEY;
 import static com.activeviam.apps.constants.AppConstants.SESSION_BENCHMARKS_BENCHMARK_NAME;
@@ -117,7 +122,12 @@ public class DatastoreDescriptionConfig {
             .withField(BENCHMARK_V2,ILiteralType.STRING)
             .withField(BENCHMARK_V3,ILiteralType.STRING)
             .withField(BENCHMARK_V4,ILiteralType.STRING)
-            .withField(BENCHMARK_V5,ILiteralType.STRING).build();
+            .withField(BENCHMARK_V5,ILiteralType.STRING)
+            .withField(BENCHMARK_V6,ILiteralType.STRING)
+            .withField(BENCHMARK_V7,ILiteralType.STRING)
+            .withField(BENCHMARK_V8,ILiteralType.STRING)
+            .withField(BENCHMARK_V9,ILiteralType.STRING)
+            .withField(BENCHMARK_V10,ILiteralType.STRING).build();
     }
 
     public static Collection<IReferenceDescription> references() {

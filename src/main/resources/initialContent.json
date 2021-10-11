@@ -1,0 +1,94 @@
+{
+  "entry": {
+    "isDirectory": true,
+    "owners": ["ROLE_CS_ROOT"],
+    "readers": ["ROLE_CS_ROOT"]
+  },
+  "children": {
+    "ui": {
+      "entry": {
+        "isDirectory": true,
+        "owners": ["ROLE_CS_ROOT"],
+        "readers": ["ROLE_CS_ROOT"]
+      },
+      "children": {
+        "filters": {
+          "entry": {
+            "isDirectory": true,
+            "owners": ["ROLE_CS_ROOT"],
+            "readers": ["ROLE_CS_ROOT"]
+          },
+          "children": {
+            "content": {
+              "entry": {
+                "isDirectory": true,
+                "owners": ["ROLE_USER"],
+                "readers": ["ROLE_USER"]
+              }
+            },
+            "structure": {
+              "entry": {
+                "isDirectory": true,
+                "owners": ["ROLE_USER"],
+                "readers": ["ROLE_USER"]
+              }
+            }
+          }
+        },
+        "widgets": {
+          "entry": {
+            "isDirectory": true,
+            "owners": ["ROLE_CS_ROOT"],
+            "readers": ["ROLE_CS_ROOT"]
+          },
+          "children": {
+            "content": {
+              "entry": {
+                "isDirectory": true,
+                "owners": ["ROLE_USER"],
+                "readers": ["ROLE_USER"]
+              }
+            },
+            "structure": {
+              "entry": {
+                "isDirectory": true,
+                "owners": ["ROLE_USER"],
+                "readers": ["ROLE_USER"]
+              }
+            }
+          }
+        },
+        "dashboards": {
+          "entry": {
+            "isDirectory": true,
+            "owners": ["ROLE_CS_ROOT"],
+            "readers": ["ROLE_CS_ROOT"]
+          },
+          "children": {
+            "content": {
+              "entry": {
+                "isDirectory": true,
+                "owners": ["ROLE_USER"],
+                "readers": ["ROLE_USER"]
+              }
+            },
+            "structure": {
+              "entry": {
+                "isDirectory": true,
+                "owners": ["ROLE_USER"],
+                "readers": ["ROLE_USER"]
+              }
+            }
+          }
+        },
+        "users": {
+          "entry": {
+            "isDirectory": true,
+            "owners": ["ROLE_USER"],
+            "readers": ["ROLE_USER"]
+          }
+        }
+      }
+    }
+  }
+}

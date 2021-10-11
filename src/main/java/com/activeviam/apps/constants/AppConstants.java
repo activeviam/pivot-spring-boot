@@ -56,5 +56,44 @@ public class AppConstants {
     public static final String BENCHMARK_V3 = "V3";
     public static final String BENCHMARK_V4 = "V4";
     public static final String BENCHMARK_V5 = "V5";
+    public static final String BENCHMARK_V6 = "V6";
+    public static final String BENCHMARK_V7 = "V7";
+    public static final String BENCHMARK_V8 = "V8";
+    public static final String BENCHMARK_V9 = "V9";
+    public static final String BENCHMARK_V10 = "V10";
 
+    //-------------------------------------------------//
+    //                 CUBE CONSTANTS                  //
+    //-------------------------------------------------//
+
+    // Dimension names
+    public static final String SESSION_DIMENSION = "Session";
+    public static final String BENCHMARK_DIMENSION = "Benchmark";
+    public static final String BENCHMARK_PARAMETERS_DIMENSION = "Parameters";
+
+    // Hierarchies
+    public static final String CODE_VERSION_HIERARCHY = "Code Version";
+    public static final String TIME_HIERARCHY = "Execution time";
+    public static final String BENCHMARK_HIERARCHY = "Benchmark";
+
+
+    // Levels
+    public static final String TIMESTAMP_LEVEL= SESSION_TIMESTAMP;
+
+    public static final String AP_VERSION_LEVEL = SESSION_AP_VERSION;
+    public static final String BRANCH_NAME_LEVEL = SESSION_BRANCH;
+    public static final String SHA1_LEVEL = SESSION_COMMIT_SHA1;
+    public static final String SESSION_ID_LEVEL = SESSION_ID;
+
+    public static final String BENCHMARK_TAGS_LEVEL = BENCHMARKS_INFO_TAG;
+    public static final String BENCHMARK_KEY_LEVEL = BENCHMARK_INFO_PLUGIN_KEY;
+
+    public static final String BENCHMARK_P1_LEVEL = BENCHMARK_P1;
+    public static final String BENCHMARK_P2_LEVEL = BENCHMARK_P2;
+    public static final String BENCHMARK_P3_LEVEL = BENCHMARK_P3;
+    public static final String BENCHMARK_P4_LEVEL = BENCHMARK_P4;
+    public static final String BENCHMARK_P5_LEVEL = BENCHMARK_P5;
+    public static final String BENCHMARK_P6_LEVEL = BENCHMARK_P6;
+    public static final String BENCHMARK_P7_LEVEL = BENCHMARK_P7;
+    public static final String BENCHMARK_P8_LEVEL = BENCHMARK_P8;
 }
