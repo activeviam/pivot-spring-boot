@@ -1,67 +1,73 @@
-<p align="center">
-  <img width="80" src="./activeviam.svg" />
-</p>
-<h1 align="center">Pivot Spring Boot</h1>
-<p align="center">A minimalist ActivePivot project built with Spring Boot for you to edit, customise and use as a base for you ActivePivot projects</p>
+
+<h1 align="center">ActivePivot Benchmark Application</h1>
 
 ---
 
 ## Branch info 
 
-Temporary branch for the application displaying the CI/CD'ed benchmark results.
+Branch for the application displaying the CI/CD'ed benchmark results.
 
-## 📋 Details
-This project aims to be an example of how to run ActivePivot as a Spring Boot application. ActivePivot was already a Spring application, but with the power of Spring Boot we can simplify our dependency management, deployment model and many other goodies that come with Spring Boot.
+## 📋 Queries 
 
-This project is a starting point for your own projects and implementations. You should be able to take this, customise it and get a cube up and running in a few minutes.
-
-## 📦 Installation
-#### Requirements
-- Java 11
-- Maven 3
-- ActivePivot jar files (commercial software)
-- Running the application requires a license for the ActivePivot software.
-
-Clone or download this repository and run `mvn clean install`.
-This will generate a jar file, which can be run using standard java commands.
-
-## 💻 Usage
-
-### Running the fat jar
-The project contains, out of the box, an extremely simple datastore schema and small `trades.csv` file.<br>
-This file you can find in `src/main/resources/data`.<br>
-NB: if running as a jar file then this file might not be found as it is in the classpath, you will need to explicitly point to it.<br>
-You will probably see this stack trace:
+#### QUERY 1 : displays the worst performance regressions between two AP Versions 
 
 ```
-Caused by: java.nio.file.FileSystemNotFoundException: null
-	at jdk.zipfs/jdk.nio.zipfs.ZipFileSystemProvider.getFileSystem(ZipFileSystemProvider.java:169)
-	at jdk.zipfs/jdk.nio.zipfs.ZipFileSystemProvider.getPath(ZipFileSystemProvider.java:155)
-	at java.base/java.nio.file.Path.of(Path.java:208)
-	at java.base/java.nio.file.Paths.get(Paths.java:97)
-	...
+WITH
+ Member [Measures].[DIFF] AS (
+  [Measures].[V1],
+  [Session].[Code Version].[5.11.0-SNAPSHOT]
+) - (
+  [Measures].[V1],
+  [Session].[Code Version].[5.10.5-SNAPSHOT]
+), FORMAT = "#,###.00"  
+ Member [Measures].[RATIO_IN_PERCENTAGE] AS Divide(
+  [Measures].DIFF,
+  (
+    [Measures].[V1],
+    [Session].[Code Version].[5.10.5-SNAPSHOT]
+  )
+) * 100, FORMAT = "#,###.00"  
+ Member [Measures].[SLOWER] AS IIF(
+  [Measures].[RATIO_IN_PERCENTAGE] > 5,
+  [Measures].[RATIO_IN_PERCENTAGE],
+  NULL
+), FORMAT = "#,###.00"  
+ Member [Measures].[5.10Val] AS (
+  [Measures].[V1],
+  [Session].[Code Version].[5.10.5-SNAPSHOT]
+)  
+ Member [Measures].[5.11Val] AS (
+  [Measures].[V1],
+  [Session].[Code Version].[5.11.0-SNAPSHOT]
+) 
+SELECT
+  NON EMPTY {
+    [Measures].[SLOWER],
+    [Measures].[5.11Val],
+    [Measures].[5.10Val]
+  } ON COLUMNS,
+  NON EMPTY Order(
+    Crossjoin(
+      [Benchmark].[Benchmark].[Plugin key].Members,
+      [Parameters].[P1].[AllMember].Children,
+      [Parameters].[P2].[AllMember].Children,
+      [Parameters].[P3].[AllMember].Children,
+      [Parameters].[P4].[AllMember].Children,
+      [Parameters].[P5].[AllMember].Children,
+      [Parameters].[P6].[AllMember].Children,
+      [Parameters].[P7].[AllMember].Children,
+      [Parameters].[P8].[AllMember].Children
+    ),
+    [Measures].[SLOWER],
+    BDESC
+  ) ON ROWS
+  FROM (
+    SELECT
+    {
+      [Session].[Code Version].[AllMember].[5.10.5-SNAPSHOT],
+      [Session].[Code Version].[AllMember].[5.11.0-SNAPSHOT]
+    } ON COLUMNS
+    FROM [Cube]
+  )
 ```
-	
-This is related to this Spring Boot known issue: `https://github.com/spring-projects/spring-boot/issues/7161`<br>
-In order to fix that override the `-Dfile.trades` property and pass it to the jvm:
-
-```
-java -Dfile.trades=<absolute path of trades.csv> -jar <fat jar path>
-```
-### Running on macos
-Add the following argument `-DchunkAllocatorClass=com.qfs.chunk.direct.impl.MmapDirectChunkAllocator` to your jvm, so then it becomes:
-
-```
-java -DchunkAllocatorClass=com.qfs.chunk.direct.impl.MmapDirectChunkAllocator -Dfile.trades=<absolute path of trades.csv> -jar <fat jar path>
-```
-
-### Connecting to the ActivePivot
-
-- Excel: you can connect to the cube from Excel, by connecting to an 'Analysis Services' source. The default URL to use when running locally is `http://localhost:9090/xmla`
-
-- ActiveUI, ActiveViam's user interface for exploring the cube, will be available from `http://localhost:9090/ui`
-
-The default security credentials are `admin:admin`, but can be modified in the `SecurityConfig` class (we use Spring Security).<br>
-You should change this before going into production.<br>
-You are also recommended to change the jwt key pair in `application.yaml` by running the class `JwtUtil` and generating new key pair.
 

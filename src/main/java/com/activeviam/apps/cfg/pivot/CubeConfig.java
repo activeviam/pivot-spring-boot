@@ -73,8 +73,7 @@ public class CubeConfig {
 				.withLevel(AppConstants.BENCHMARK_TAGS_LEVEL)
 
 				.withDimension(AppConstants.BENCHMARK_PARAMETERS_DIMENSION)
-				.withHierarchyOfSameName()
-				.withLevels(
+				.withSingleLevelHierarchies(
 						AppConstants.BENCHMARK_P1_LEVEL,
 						AppConstants.BENCHMARK_P2_LEVEL,
 						AppConstants.BENCHMARK_P3_LEVEL,

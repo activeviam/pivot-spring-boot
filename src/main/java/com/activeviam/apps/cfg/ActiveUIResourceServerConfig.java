@@ -1,11 +1,22 @@
+/*
+ * (C) ActiveViam 2016-2020
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
+
 package com.activeviam.apps.cfg;
 
 import com.qfs.server.cfg.impl.ASpringResourceServerConfig;
 import com.qfs.util.impl.QfsArrays;
+import java.util.Set;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Set;
-
+/**
+ * Spring configuration for ActiveUI web application
+ *
+ * @author ActiveViam
+ */
 @Configuration
 public class ActiveUIResourceServerConfig extends ASpringResourceServerConfig {
 
@@ -24,7 +35,17 @@ public class ActiveUIResourceServerConfig extends ASpringResourceServerConfig {
         registry.redirectTo(UI_NAMESPACE + "/index.html", "/");
         registry.serve("/content/ui/env*.js").addResourceLocations("classpath:/static/content/");
         registry.serve("/ui/env*.js").addResourceLocations("classpath:/static/activeui/");
+        registerExtensions(registry);
+
     }
+
+    protected void registerExtensions(final ResourceRegistry registry) {
+        registry.serve("/ui/extensions*.json")
+            .addResourceLocations("classpath:/static/activeui/");
+        registry.serve("/ui/extensions/mdx-drawer-extension/**/*.js")
+            .addResourceLocations("classpath:/static/activeui/extensions/mdx-drawer-extension/");
+    }
+
 
     /**
      * Registers resources to serve.
