@@ -11,8 +11,9 @@ import com.activeviam.copper.testing.CubeTesterBuilderExtension;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
-import org.junit.BeforeClass;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
@@ -20,9 +21,9 @@ import java.time.LocalDate;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES__NOTIONAL;
 
-public class MeasuresTest {
+class MeasuresTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         CopperRegistrations.setupRegistryForTests();
     }
@@ -63,7 +64,7 @@ public class MeasuresTest {
      * Here is the actual test. Check that the numbers sum up correctly
      */
     @Test
-    public void testSimpleSum() {
+    void testSimpleSum() {
 
         final CubeTester tester = builder.build(Measures::build);
         tester.query()
@@ -78,7 +79,7 @@ public class MeasuresTest {
      * Run a test on an MDX query with a slicer
      */
     @Test
-    public void testSimpleSum_withSlicer() {
+    void testSimpleSum_withSlicer() {
         final CubeTester tester = builder.build(Measures::build);
         tester.mdxQuery( "SELECT" +
                 "  [Measures].[Notional] ON COLUMNS" +
