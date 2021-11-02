@@ -1,8 +1,8 @@
 package com.activeviam.apps;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -23,16 +23,19 @@ class PivotSpringbootApplicationTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
+	@BeforeEach
+	public void setupAuth() {
+		restTemplate = restTemplate.withBasicAuth("admin", "admin");
+	}
+
 	@Test
 	void contextLoads() {
 	}
 
 	@Test
 	void activePivotPingReturnsPong() {
-		String pingUrl = url("http://localhost:" + port, REST_API_URL_PREFIX, PING_SUFFIX);
-		assertThat(this.restTemplate.withBasicAuth("admin", "admin")
-				.getForObject(pingUrl,
-						String.class)).contains("pong");
+		var pingUrl = url("http://localhost:" + port, REST_API_URL_PREFIX, PING_SUFFIX);
+		assertThat(this.restTemplate.getForObject(pingUrl, String.class)).contains("pong");
 	}
 
 }
