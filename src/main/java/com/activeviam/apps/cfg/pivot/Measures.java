@@ -34,6 +34,26 @@ public class Measures {
 				.as(AppConstants.BENCHMARK_V9).publish(context);
 		Copper.agg(AppConstants.BENCHMARK_V10, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
 				.as(AppConstants.BENCHMARK_V10).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V1_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V1_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V2_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V2_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V3_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V3_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V4_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V4_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V5_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V5_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V6_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V6_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V7_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V7_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V8_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V8_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V9_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V9_E).publish(context);
+		Copper.agg(AppConstants.BENCHMARK_V10_E, IAggregationFunction.SINGLE_VALUE_PLUGIN_KEY)
+				.as(AppConstants.BENCHMARK_V10_E).publish(context);
 
 		// Benchmark-related measures
 

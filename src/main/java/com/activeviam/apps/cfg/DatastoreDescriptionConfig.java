@@ -11,6 +11,7 @@ import static com.activeviam.apps.constants.AppConstants.BENCHMARKS_INFO_TAG;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_DATA_ID;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_DATA_STORE_NAME;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_INFO_DESCRIPTION;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_INFO_METRICS_UNITS_NAMES;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_INFO_PARAMETER_NAMES;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_INFO_PLUGIN_KEY;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_INFO_STORE_NAME;
@@ -25,14 +26,24 @@ import static com.activeviam.apps.constants.AppConstants.BENCHMARK_P7;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_P8;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V1;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V10;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V10_E;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V1_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V2;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V2_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V3;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V3_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V4;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V4_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V5;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V5_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V6;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V6_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V7;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V7_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V8;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V8_E;
 import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V9;
+import static com.activeviam.apps.constants.AppConstants.BENCHMARK_V9_E;
 import static com.activeviam.apps.constants.AppConstants.SESSION_AP_VERSION;
 import static com.activeviam.apps.constants.AppConstants.SESSION_BENCHMARKS_BENCHMARK_KEY;
 import static com.activeviam.apps.constants.AppConstants.SESSION_BENCHMARKS_BENCHMARK_NAME;
@@ -41,6 +52,7 @@ import static com.activeviam.apps.constants.AppConstants.SESSION_BENCHMARKS_SESS
 import static com.activeviam.apps.constants.AppConstants.SESSION_BENCHMARKS_STORE_NAME;
 import static com.activeviam.apps.constants.AppConstants.SESSION_BRANCH;
 import static com.activeviam.apps.constants.AppConstants.SESSION_COMMIT_SHA1;
+import static com.activeviam.apps.constants.AppConstants.SESSION_HOSTNAME;
 import static com.activeviam.apps.constants.AppConstants.SESSION_ID;
 import static com.activeviam.apps.constants.AppConstants.SESSION_INFO_CPU;
 import static com.activeviam.apps.constants.AppConstants.SESSION_INFO_DIRECT;
@@ -77,7 +89,8 @@ public class DatastoreDescriptionConfig {
             .withField(SESSION_AP_VERSION,ILiteralType.STRING)
             .withField(SESSION_BRANCH,ILiteralType.STRING)
             .withField(SESSION_COMMIT_SHA1,ILiteralType.STRING)
-            .withField(SESSION_INSTANCE_ID,ILiteralType.STRING).build();
+            .withField(SESSION_INSTANCE_ID,ILiteralType.STRING)
+            .withField(SESSION_HOSTNAME).build();
     }
 
     public static IStoreDescription createSessionInfoStoreDescription() {
@@ -104,6 +117,7 @@ public class DatastoreDescriptionConfig {
             .withField(BENCHMARKS_INFO_TAG,ILiteralType.STRING_ARRAY,new String[]{})
             .withField(BENCHMARK_INFO_PARAMETER_NAMES,ILiteralType.STRING_ARRAY,new String[]{})
             .withField(BENCHMARK_INFO_VALUES_NAMES,ILiteralType.STRING_ARRAY,new String[]{})
+            .withField(BENCHMARK_INFO_METRICS_UNITS_NAMES,ILiteralType.STRING_ARRAY,new String[]{})
             .withField(BENCHMARK_INFO_DESCRIPTION,ILiteralType.STRING).build();
     }
 
@@ -127,7 +141,17 @@ public class DatastoreDescriptionConfig {
             .withField(BENCHMARK_V7,ILiteralType.STRING)
             .withField(BENCHMARK_V8,ILiteralType.STRING)
             .withField(BENCHMARK_V9,ILiteralType.STRING)
-            .withField(BENCHMARK_V10,ILiteralType.STRING).build();
+            .withField(BENCHMARK_V10,ILiteralType.STRING)
+            .withField(BENCHMARK_V1_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V2_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V3_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V4_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V5_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V6_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V7_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V8_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V9_E,ILiteralType.STRING)
+            .withField(BENCHMARK_V10_E,ILiteralType.STRING).build();
     }
 
     public static Collection<IReferenceDescription> references() {

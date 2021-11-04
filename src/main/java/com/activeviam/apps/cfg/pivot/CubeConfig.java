@@ -65,10 +65,10 @@ public class CubeConfig {
 				.withLevel(AppConstants.BRANCH_NAME_LEVEL)
 				.withLevel(AppConstants.SHA1_LEVEL)
 				.withLevel(AppConstants.SESSION_ID_LEVEL)
+				.withLevel(AppConstants.SESSION_HOSTNAME)
 
 				.withDimension(AppConstants.BENCHMARK_DIMENSION)
 				.withHierarchy(AppConstants.BENCHMARK_HIERARCHY)
-				.slicing()
 				.withLevel(AppConstants.BENCHMARK_KEY_LEVEL)
 				.withLevel(AppConstants.BENCHMARK_TAGS_LEVEL)
 

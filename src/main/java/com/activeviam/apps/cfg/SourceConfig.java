@@ -64,7 +64,7 @@ public class SourceConfig {
     protected CloudFetchingConfig config;
     protected S3CloudDirectory directory;
 
-    private static final String BUCKET = "rnd-benchmark-test-storage";
+    private static final String BUCKET = "rndserver-benchmark-storage";
     private static final Regions REGION = Regions.EU_WEST_3;
 
     public static List<String> STORES_LIST =  List.of(
@@ -106,6 +106,8 @@ public class SourceConfig {
         //Create the directory
         this.directory = new S3CloudDirectory(client(), BUCKET, "");
 
+        var a = directory.listEntities(true);
+
         final ToIntFunction<String> sessionColumnsCountProvider = (storeName) -> datastore
             .getSchemaMetadata()
             .getStoreMetadata(storeName)
@@ -114,7 +116,7 @@ public class SourceConfig {
             .getFieldCount();
 
         // NOTE : this requires that the csv files are named after the stores
-        final Function regexProvider = (storeName) -> "[a-z,A-Z,0-9,\\,/]*("
+        final Function regexProvider = (storeName) -> "[a-z,A-Z,0-9,\\-,.,\\,\\/]*("
             + storeName.toString().toLowerCase(Locale.ROOT)
             + ".csv)$";
 

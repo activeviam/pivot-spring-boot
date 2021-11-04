@@ -19,6 +19,7 @@ public class AppConstants {
     public static final String SESSION_BRANCH = "Branch";
     public static final String SESSION_COMMIT_SHA1 = "Commit SHA1";
     public static final String SESSION_INSTANCE_ID = "Execution Instance Identifier";
+    public static final String SESSION_HOSTNAME = "Hostname Identifier";
 
     /** Session info store */
     public static final String SESSION_INFO_ID = "Session ID";
@@ -39,6 +40,7 @@ public class AppConstants {
     public static final String BENCHMARKS_INFO_TAG = "Benchmark tag";
     public static final String BENCHMARK_INFO_PARAMETER_NAMES = "Parameter names";
     public static final String BENCHMARK_INFO_VALUES_NAMES = "Values names";
+    public static final String BENCHMARK_INFO_METRICS_UNITS_NAMES = "Values unit names";
     public static final String BENCHMARK_INFO_DESCRIPTION = "Benchmark description";
 
     /** Benchmark data store */
@@ -61,6 +63,16 @@ public class AppConstants {
     public static final String BENCHMARK_V8 = "V8";
     public static final String BENCHMARK_V9 = "V9";
     public static final String BENCHMARK_V10 = "V10";
+    public static final String BENCHMARK_V1_E = "V1_E";
+    public static final String BENCHMARK_V2_E = "V2_E";
+    public static final String BENCHMARK_V3_E = "V3_E";
+    public static final String BENCHMARK_V4_E = "V4_E";
+    public static final String BENCHMARK_V5_E = "V5_E";
+    public static final String BENCHMARK_V6_E = "V6_E";
+    public static final String BENCHMARK_V7_E = "V7_E";
+    public static final String BENCHMARK_V8_E = "V8_E";
+    public static final String BENCHMARK_V9_E = "V9_E";
+    public static final String BENCHMARK_V10_E = "V10_E";
 
     //-------------------------------------------------//
     //                 CUBE CONSTANTS                  //
