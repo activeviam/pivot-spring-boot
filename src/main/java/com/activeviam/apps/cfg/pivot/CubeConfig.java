@@ -63,9 +63,13 @@ public class CubeConfig {
 				.withHierarchy(AppConstants.CODE_VERSION_HIERARCHY)
 				.withLevel(AppConstants.AP_VERSION_LEVEL)
 				.withLevel(AppConstants.BRANCH_NAME_LEVEL)
-				.withLevel(AppConstants.SHA1_LEVEL)
-				.withLevel(AppConstants.SESSION_ID_LEVEL)
-				.withLevel(AppConstants.SESSION_HOSTNAME)
+				.withHierarchy(AppConstants.SHA1_LEVEL)
+				.withLevelOfSameName()
+				.withHierarchy(AppConstants.SESSION_ID_LEVEL)
+				.withLevelOfSameName()
+
+				.withHierarchy(AppConstants.SESSION_HOSTNAME)
+				.withLevelOfSameName()
 
 				.withDimension(AppConstants.BENCHMARK_DIMENSION)
 				.withHierarchy(AppConstants.BENCHMARK_HIERARCHY)
