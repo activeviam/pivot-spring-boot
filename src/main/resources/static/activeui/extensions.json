@@ -1,0 +1,4 @@
+{
+  "@activeviam/starter": "extensions/@activeviam/starter/@activeviam/starter.js",
+  "mdx-drawer-extension": "extensions/mdx-drawer-extension/mdx-drawer-extension.js"
+}

@@ -1,126 +1,128 @@
 package com.activeviam.apps.cfg;
 
-import com.activeviam.apps.constants.StoreAndFieldConstants;
-import com.qfs.gui.impl.JungSchemaPrinter;
-import com.qfs.msg.IMessageChannel;
-import com.qfs.msg.csv.*;
-import com.qfs.msg.csv.filesystem.impl.FileSystemCSVTopicFactory;
-import com.qfs.msg.csv.impl.CSVParserConfiguration;
-import com.qfs.msg.csv.impl.CSVSource;
-import com.qfs.source.impl.CSVMessageChannelFactory;
-import com.qfs.store.IDatastore;
-import com.qfs.store.IDatastoreSchemaMetadata;
-import com.qfs.store.impl.SchemaPrinter;
-import com.qfs.util.timing.impl.StopWatch;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.activeviam.apps.constants.StoreAndFieldConstants;
+import com.qfs.gui.impl.JungSchemaPrinter;
+import com.qfs.msg.IMessageChannel;
+import com.qfs.msg.csv.ICSVParserConfiguration;
+import com.qfs.msg.csv.ICSVSourceConfiguration;
+import com.qfs.msg.csv.IFileInfo;
+import com.qfs.msg.csv.ILineReader;
+import com.qfs.msg.csv.filesystem.impl.FileSystemCSVTopicFactory;
+import com.qfs.msg.csv.impl.CSVParserConfiguration;
+import com.qfs.msg.csv.impl.CSVSource;
+import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.store.IDatastore;
+import com.qfs.store.impl.SchemaPrinter;
+import com.qfs.util.timing.impl.StopWatch;
 
 @Configuration
 public class SourceConfig {
 
-    private static final Logger LOGGER = Logger.getLogger(SourceConfig.class.getSimpleName());
+	private static final Logger logger = LoggerFactory.getLogger(SourceConfig.class);
 
-    @Autowired
-    protected Environment env;
+	@Autowired
+	protected Environment env;
 
-    @Autowired
-    protected IDatastore datastore;
+	@Autowired
+	protected IDatastore datastore;
 
-    public static final String TRADES_TOPIC = "Trades";
+	public static final String TRADES_TOPIC = "Trades";
 
-    /*
-     * **************************** CSV Source *********************************
-     */
+	/*
+	 * **************************** CSV Source *********************************
+	 */
 
-    /**
-     * Topic factory bean. Allows to create CSV topics and watch changes to directories. Autocloseable.
-     *
-     * @return the topic factory
-     */
-    @Bean
-    public FileSystemCSVTopicFactory csvTopicFactory() {
-        return new FileSystemCSVTopicFactory(false);
-    }
+	/**
+	 * Topic factory bean. Allows to create CSV topics and watch changes to directories. Autocloseable.
+	 *
+	 * @return the topic factory
+	 */
+	@Bean
+	public FileSystemCSVTopicFactory csvTopicFactory() {
+		return new FileSystemCSVTopicFactory(false);
+	}
 
-    @Bean(destroyMethod = "close")
-    public CSVSource<Path> csvSource() {
-        final IDatastoreSchemaMetadata schemaMetadata = datastore.getSchemaMetadata();
-        final FileSystemCSVTopicFactory csvTopicFactory = csvTopicFactory();
-        final CSVSource<Path> csvSource = new CSVSource<>();
+	@Bean(destroyMethod = "close")
+	public CSVSource<Path> csvSource() {
+		final var schemaMetadata = datastore.getQueryMetadata().getMetadata();
+		final var csvTopicFactory = csvTopicFactory();
+		final var csvSource = new CSVSource<Path>();
 
+		final var tradesColumns = schemaMetadata.getFields(StoreAndFieldConstants.TRADES_STORE_NAME);
+		final var tradesTopic = csvTopicFactory.createTopic(TRADES_TOPIC, env.getProperty("file.trades"),
+				createParserConfig(tradesColumns.size(), tradesColumns));
+		csvSource.addTopic(tradesTopic);
 
-        final List<String> tradesColumns = schemaMetadata.getFields(StoreAndFieldConstants.TRADES_STORE_NAME);
-        final ICSVTopic<Path> tradesTopic = csvTopicFactory.createTopic(TRADES_TOPIC, env.getProperty("file.trades"),
-                createParserConfig(tradesColumns.size(), tradesColumns));
-        csvSource.addTopic(tradesTopic);
+		final var sourceProps = new Properties();
+		sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, env.getProperty("parserThreads", "2"));
+		sourceProps.put(ICSVSourceConfiguration.SYNCHRONOUS_MODE_PROPERTY, env.getProperty("synchronousMode", "false"));
+		csvSource.configure(sourceProps);
+		return csvSource;
+	}
 
-        final Properties sourceProps = new Properties();
-        sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, env.getProperty("parserThreads", "2"));
-        sourceProps.put(ICSVSourceConfiguration.SYNCHRONOUS_MODE_PROPERTY, env.getProperty("synchronousMode", "false"));
-        csvSource.configure(sourceProps);
-        return csvSource;
-    }
+	@Bean
+	public CSVMessageChannelFactory<Path> csvChannelFactory() {
+		return new CSVMessageChannelFactory<>(csvSource(), datastore);
+	}
 
-    @Bean
-    public CSVMessageChannelFactory<Path> csvChannelFactory() {
-        final CSVMessageChannelFactory<Path> csvChannelFactory = new CSVMessageChannelFactory<>(csvSource(), datastore);
+	/*
+	 * **************************** Initial load *********************************
+	 */
 
-        return csvChannelFactory;
-    }
+	@Bean
+	@DependsOn("startManager")
+	public Void initialLoad() {
+		final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
+		csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
 
-    /*
-     * **************************** Initial load *********************************
-     */
+		// do the transactions
+		final var before = System.nanoTime();
 
-    @Bean
-    @DependsOn("startManager")
-    public Void initialLoad() {
-        final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
-        csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
+		datastore.edit(t -> {
+			csvSource().fetch(csvChannels);
+			t.forceCommit();
+		});
+		final var elapsed = System.nanoTime() - before;
+		logger.info("Initial data load completed in {} ms.", elapsed / 1000000L);
 
-        // do the transactions
-        final long before = System.nanoTime();
+		printStoreSizes();
+		return null;
+	}
 
-        datastore.edit(t -> {
-            csvSource().fetch(csvChannels);
-            t.forceCommit();
-        });
-        final long elapsed = System.nanoTime() - before;
-        LOGGER.log(Level.INFO, "Initial data load completed in " + elapsed / 1000000L + "ms");
+	private ICSVParserConfiguration createParserConfig(final int columnCount, final List<String> columns) {
+		final var cfg = columns == null ? new CSVParserConfiguration(columnCount) : new CSVParserConfiguration(columns);
+		cfg.setNumberSkippedLines(1);// skip the first line
+		return cfg;
+	}
 
-        printStoreSizes();
-        return null;
-    }
+	private void printStoreSizes() {
 
-    private ICSVParserConfiguration createParserConfig(final int columnCount, final List<String> columns) {
-        final CSVParserConfiguration cfg = columns == null ? new CSVParserConfiguration(columnCount) : new CSVParserConfiguration(columns);
-        cfg.setNumberSkippedLines(1);// skip the first line
-        return cfg;
-    }
-    private void printStoreSizes() {
-        // add some logging
-        if (Boolean.parseBoolean(env.getProperty("schema.printer", "true"))) {
-            // display the graph
-        	System.setProperty("java.awt.headless", "false");
-            new JungSchemaPrinter(false).print("Datastore", datastore);
-        }
+		// add some logging
+		if (Boolean.parseBoolean(env.getProperty("schema.printer", "true"))) {
+			// display the graph
+			System.setProperty("java.awt.headless", "false");
+			new JungSchemaPrinter(false).print("Datastore", datastore);
+		}
 
-        // Print stop watch profiling
-        StopWatch.get().printTimings();
-        StopWatch.get().printTimingLegend();
+		// Print stop watch profiling
+		StopWatch.get().printTimings();
+		StopWatch.get().printTimingLegend();
 
-        // print sizes
-        SchemaPrinter.printStoresSizes(datastore.getHead().getSchema());
-    }
+		// print sizes
+		SchemaPrinter.printStoresSizes(datastore.getHead().getSchema());
+	}
 }

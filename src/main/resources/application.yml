@@ -1,17 +1,25 @@
+# Spring Boot server port and compression
 server:
   port: 9090
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,application/javascript,text/html,text/xml,text/plain,text/css,text/javascript,image/jpeg,image/png,image/svg+xml
 
-schema:
-  printer: false
-
-file:
-  trades: "data/trades.csv"
-
+# Spring Boot actuator config
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+        
+# Print the stores schema
+schema:
+  printer: false
+
+# File to parse
+file:
+  trades: "data/trades.csv"
+
 
 # Content hibernate properties
 content:

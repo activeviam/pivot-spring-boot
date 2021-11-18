@@ -45,10 +45,10 @@ In order to fix that override the `-Dfile.trades` property and pass it to the jv
 java -Dfile.trades=<absolute path of trades.csv> -jar <fat jar path>
 ```
 ### Running on macos
-Add the following argument `-DchunkAllocatorClass=com.qfs.chunk.direct.impl.MmapDirectChunkAllocator` to your jvm, so then it becomes:
+Add the following argument `-DchunkAllocatorClass=com.qfs.chunk.direct.allocator.impl.MmapDirectChunkAllocator` to your jvm, so then it becomes:
 
 ```
-java -DchunkAllocatorClass=com.qfs.chunk.direct.impl.MmapDirectChunkAllocator -Dfile.trades=<absolute path of trades.csv> -jar <fat jar path>
+java -DchunkAllocatorClass=com.qfs.chunk.direct.allocator.impl.MmapDirectChunkAllocator -Dfile.trades=<absolute path of trades.csv> -jar <fat jar path>
 ```
 
 ### Connecting to the ActivePivot
