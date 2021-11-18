@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.springframework.context.annotation.Configuration;
-
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
@@ -17,7 +15,6 @@ import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
 
-@Configuration
 public class DatastoreDescriptionConfig {
 
 	public static IStoreDescription createTradesStoreDescription() {

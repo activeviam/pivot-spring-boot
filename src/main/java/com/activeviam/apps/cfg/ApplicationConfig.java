@@ -33,7 +33,6 @@ import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 		ActivePivotWebMvcConfigurer.class,
 		SecurityConfig.class,
 		SourceConfig.class,
-		DatastoreDescriptionConfig.class,
 		PivotManagerConfig.class,
 		LocalContentServiceConfig.class,
 		ActiveUIResourceServerConfig.class
