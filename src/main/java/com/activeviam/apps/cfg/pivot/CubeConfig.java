@@ -61,8 +61,8 @@ public class CubeConfig {
 				.withLevel(AppConstants.TIMESTAMP_LEVEL)
 
 				.withHierarchy(AppConstants.CODE_VERSION_HIERARCHY)
-				.withLevel(AppConstants.AP_VERSION_LEVEL)
 				.withLevel(AppConstants.BRANCH_NAME_LEVEL)
+				.withLevel(AppConstants.AP_VERSION_LEVEL)
 				.withHierarchy(AppConstants.SHA1_LEVEL)
 				.withLevelOfSameName()
 				.withHierarchy(AppConstants.SESSION_ID_LEVEL)

@@ -11,7 +11,7 @@ Branch for the application displaying the CI/CD'ed benchmark results.
 
 #### QUERY 1 : displays the worst performance regressions between two AP Versions 
 
-    ```
+    
     WITH
      Member [Measures].[DIFF] AS (
       [Measures].[V1],
@@ -69,5 +69,88 @@ Branch for the application displaying the CI/CD'ed benchmark results.
         } ON COLUMNS
         FROM [Cube]
       )
-```
 
+**QUERY 2 : displays the trend of a given Benchmark Execution on the 5.11 Version**
+ - Use ActiveUI's area chart, and set "P1" as Horizontal subplot , "P2" as Vertical subplot.
+ - Replace QFSBitmap as the PluginKey of the tested benchmark
+ - Replace 5.11 to replace the branch for which you want to follow
+```
+SELECT
+  NON EMPTY Crossjoin(
+    Hierarchize(
+      Descendants(
+        {
+          [Session].[Code Version].[AllMember]
+        },
+        1,
+        SELF_AND_BEFORE
+      )
+    ),
+    {
+      [Measures].[V1_E],
+      [Measures].[V1]
+    },
+    Hierarchize(
+      Descendants(
+        {
+          [Parameters].[P3].[AllMember]
+        },
+        1,
+        SELF_AND_BEFORE
+      )
+    ),
+    Hierarchize(
+      Descendants(
+        {
+          [Parameters].[P4].[AllMember]
+        },
+        1,
+        SELF_AND_BEFORE
+      )
+    ),
+    Hierarchize(
+      Descendants(
+        {
+          [Parameters].[P6].[AllMember]
+        },
+        1,
+        SELF_AND_BEFORE
+      )
+    ),
+    Hierarchize(
+      Descendants(
+        {
+          [Parameters].[P1].[AllMember]
+        },
+        1,
+        SELF_AND_BEFORE
+      )
+    ),
+    Hierarchize(
+      Descendants(
+        {
+          [Parameters].[P2].[AllMember]
+        },
+        1,
+        SELF_AND_BEFORE
+      )
+    )
+  ) ON COLUMNS,
+  NON EMPTY Hierarchize(
+    Descendants(
+      {
+        [Session].[Execution time].[AllMember]
+      },
+      1,
+      SELF_AND_BEFORE
+    )
+  ) ON ROWS
+  FROM (
+    SELECT
+    [Session].[Code Version].[AllMember].[5.11] ON COLUMNS
+    FROM [Cube]
+    WHERE [Benchmark].[Benchmark].[AllMember].[QFSBitmap]
+  )
+  WHERE [Benchmark].[Benchmark].[AllMember].[QFSBitmap]
+  CELL PROPERTIES VALUE, FORMATTED_VALUE, BACK_COLOR, FORE_COLOR, FONT_FLAGS
+```
