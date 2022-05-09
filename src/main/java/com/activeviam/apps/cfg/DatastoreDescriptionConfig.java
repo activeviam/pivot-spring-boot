@@ -7,8 +7,8 @@ import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import static com.qfs.literal.ILiteralType.*;
@@ -31,14 +31,16 @@ public class DatastoreDescriptionConfig {
                 .withStoreName(StoreAndFieldConstants.CATEGORIES_STORE_NAME)
                 .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE)
                 .asKeyField()
+                .withField(StoreAndFieldConstants.GROUP_ID, STRING)
+                .asKeyField()
                 .withField(StoreAndFieldConstants.TRADES_TRADEID, STRING)
                 .asKeyField()
-                .withField(StoreAndFieldConstants.GROUP_ID, STRING)
                 .build();
     }
 
     public static Collection<IReferenceDescription> references() {
-        return Collections.emptyList();
+        var references = new ArrayList<IReferenceDescription>();
+        return references;
     }
 
     /**
