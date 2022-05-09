@@ -19,7 +19,8 @@ schema:
 # File to parse
 file:
   trades: "data/trades.csv"
-  categories: "data/categories.csv"
+  groups: "data/groups.csv"
+  weights: "data/weights.csv"
 
 # Content hibernate properties
 content:

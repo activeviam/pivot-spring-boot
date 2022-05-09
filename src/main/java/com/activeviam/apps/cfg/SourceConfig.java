@@ -32,7 +32,9 @@ import java.util.Properties;
 public class SourceConfig {
 
     public static final String TRADES_TOPIC = "Trades";
-    public static final String CATEGORIES_TOPIC = "Categories";
+    public static final String GROUPS_TOPIC = "Groups";
+    public static final String WEIGHTS_TOPIC = "Weights";
+
     private static final Logger logger = LoggerFactory.getLogger(SourceConfig.class);
 
     @Autowired
@@ -66,12 +68,17 @@ public class SourceConfig {
                 TRADES_TOPIC, env.getProperty("file.trades"), createParserConfig(tradesColumns.size(), tradesColumns));
         csvSource.addTopic(tradesTopic);
 
-        final var categoriesColumns = schemaMetadata.getFields(StoreAndFieldConstants.CATEGORIES_STORE_NAME);
-        final var categoriesTopic = csvTopicFactory.createTopic(
-                CATEGORIES_TOPIC,
-                env.getProperty("file.categories"),
-                createParserConfig(categoriesColumns.size(), categoriesColumns));
-        csvSource.addTopic(categoriesTopic);
+        final var groupsColumns = schemaMetadata.getFields(StoreAndFieldConstants.GROUPS_STORE_NAME);
+        final var groupsTopic = csvTopicFactory.createTopic(
+                GROUPS_TOPIC, env.getProperty("file.groups"), createParserConfig(groupsColumns.size(), groupsColumns));
+        csvSource.addTopic(groupsTopic);
+
+        final var weightsColumns = schemaMetadata.getFields(StoreAndFieldConstants.WEIGHTS_STORE_NAME);
+        final var weightsTopic = csvTopicFactory.createTopic(
+                WEIGHTS_TOPIC,
+                env.getProperty("file.weights"),
+                createParserConfig(weightsColumns.size(), weightsColumns));
+        csvSource.addTopic(weightsTopic);
 
         final var sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, env.getProperty("parserThreads", "2"));
@@ -94,8 +101,8 @@ public class SourceConfig {
     public Void initialLoad() {
         final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
         csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
-        csvChannels.add(
-                csvChannelFactory().createChannel(CATEGORIES_TOPIC, StoreAndFieldConstants.CATEGORIES_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(GROUPS_TOPIC, StoreAndFieldConstants.GROUPS_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(WEIGHTS_TOPIC, StoreAndFieldConstants.WEIGHTS_STORE_NAME));
 
         // do the transactions
         final var before = System.nanoTime();
