@@ -34,6 +34,8 @@ public class SourceConfig {
     public static final String TRADES_TOPIC = "Trades";
     public static final String GROUPS_TOPIC = "Groups";
     public static final String WEIGHTS_TOPIC = "Weights";
+    public static final String PFS_TOPIC = "Pf";
+    public static final String PFS_STRUCT_TOPIC = "PfStruct";
 
     private static final Logger logger = LoggerFactory.getLogger(SourceConfig.class);
 
@@ -80,6 +82,18 @@ public class SourceConfig {
                 createParserConfig(weightsColumns.size(), weightsColumns));
         csvSource.addTopic(weightsTopic);
 
+        final var pfColumns = schemaMetadata.getFields(StoreAndFieldConstants.PORTFOLIOS_STORE_NAME);
+        final var pfTopic = csvTopicFactory.createTopic(
+                PFS_TOPIC, env.getProperty("file.pfs"), createParserConfig(pfColumns.size(), pfColumns));
+        csvSource.addTopic(pfTopic);
+
+        final var pfStructColumns = schemaMetadata.getFields(StoreAndFieldConstants.PORTFOLIOS_STRUCT_STORE_NAME);
+        final var pfStructTopic = csvTopicFactory.createTopic(
+                PFS_STRUCT_TOPIC,
+                env.getProperty("file.pfs_struct"),
+                createParserConfig(pfStructColumns.size(), pfStructColumns));
+        csvSource.addTopic(pfStructTopic);
+
         final var sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, env.getProperty("parserThreads", "2"));
         sourceProps.put(ICSVSourceConfiguration.SYNCHRONOUS_MODE_PROPERTY, env.getProperty("synchronousMode", "false"));
@@ -103,6 +117,9 @@ public class SourceConfig {
         csvChannels.add(csvChannelFactory().createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
         csvChannels.add(csvChannelFactory().createChannel(GROUPS_TOPIC, StoreAndFieldConstants.GROUPS_STORE_NAME));
         csvChannels.add(csvChannelFactory().createChannel(WEIGHTS_TOPIC, StoreAndFieldConstants.WEIGHTS_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(PFS_TOPIC, StoreAndFieldConstants.PORTFOLIOS_STORE_NAME));
+        csvChannels.add(csvChannelFactory()
+                .createChannel(PFS_STRUCT_TOPIC, StoreAndFieldConstants.PORTFOLIOS_STRUCT_STORE_NAME));
 
         // do the transactions
         final var before = System.nanoTime();

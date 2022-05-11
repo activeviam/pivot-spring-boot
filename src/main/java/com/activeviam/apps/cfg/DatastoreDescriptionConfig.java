@@ -55,6 +55,32 @@ public class DatastoreDescriptionConfig {
                 .build();
     }
 
+    public static IStoreDescription createPortfoliosStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(PORTFOLIOS_STORE_NAME)
+                .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE)
+                .asKeyField()
+                .withField(StoreAndFieldConstants.PORTFOLIO_ID, STRING)
+                .asKeyField()
+                .withField(StoreAndFieldConstants.TRADES_TRADEID, STRING)
+                .asKeyField()
+                .build();
+    }
+
+    public static IStoreDescription createPortfoliosStructStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(PORTFOLIOS_STRUCT_STORE_NAME)
+                .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE)
+                .asKeyField()
+                .withField(PORTFOLIO_ID, STRING)
+                .asKeyField()
+                .withField(PORTFOLIO_ROOT, STRING)
+                .withField(PORTFOLIO_LVL_1, STRING, DATA_MEMBER_DISCRIMINATOR)
+                .withField(PORTFOLIO_LVL_2, STRING, DATA_MEMBER_DISCRIMINATOR)
+                .withField(PORTFOLIO_LVL_3, STRING, DATA_MEMBER_DISCRIMINATOR)
+                .build();
+    }
+
     public static Collection<IReferenceDescription> references() {
         var references = new ArrayList<IReferenceDescription>();
         references.add(ReferenceDescription.builder()
@@ -63,6 +89,14 @@ public class DatastoreDescriptionConfig {
                 .withName(WEIGHTS_STORE_NAME)
                 .withMapping(ASOFDATE, ASOFDATE)
                 .withMapping(GROUP_ID, GROUP_ID)
+                .build());
+
+        references.add(ReferenceDescription.builder()
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(PORTFOLIOS_STRUCT_STORE_NAME)
+                .withName(PORTFOLIOS_STRUCT_STORE_NAME)
+                .withMapping(ASOFDATE, ASOFDATE)
+                .withMapping(PORTFOLIO_ID, PORTFOLIO_ID)
                 .build());
         return references;
     }
@@ -82,6 +116,8 @@ public class DatastoreDescriptionConfig {
         stores.add(createTradesStoreDescription());
         stores.add(createCategoriesStoreDescription());
         stores.add(createWeightsStoreDescription());
+        stores.add(createPortfoliosStoreDescription());
+        stores.add(createPortfoliosStructStoreDescription());
 
         return new DatastoreSchemaDescription(stores, references());
     }

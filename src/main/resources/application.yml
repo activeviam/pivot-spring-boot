@@ -21,6 +21,8 @@ file:
   trades: "data/trades.csv"
   groups: "data/groups.csv"
   weights: "data/weights.csv"
+  pfs: "data/portfolios.csv"
+  pfs_struct: "data/portfolios-struct.csv"
 
 # Content hibernate properties
 content:
