@@ -2,7 +2,7 @@ AsOf      ,PortfolioId,PF root,PF Lvl1,PF Lvl2,PF Lvl3
 2019-01-01,p111       ,PF1    ,L1     ,L11    ,L111
 2019-01-01,p112       ,PF1    ,L1     ,L11    ,L112
 2019-01-01,p121       ,PF1    ,L1     ,L12    ,L121
-2019-01-01,p13x       ,PF1    ,L1     ,L13    ,undefined
+2019-01-01,p13x       ,PF1    ,L1     ,L13    ,_DATAMEMBER_
 2019-01-01,p211       ,PF2    ,L2     ,L21    ,L211
 2019-01-01,p221       ,PF2    ,L2     ,L22    ,L221
 2019-01-01,p231       ,PF2    ,L2     ,L23    ,L231

@@ -16,16 +16,15 @@ public class Measures {
                 .withMapping(TRADES_TRADEID)
                 .withDefaultValue(GROUP_ID, "undefined");
 
-        //        Copper.newHierarchy(PORTFOLIOS, PORTFOLIOS)
-        //                .fromStore(portfolios)
-        //                .slicing()
-        //                .withLevel(PORTFOLIO_ROOT, PORTFOLIOS_STRUCT_STORE_NAME + "/" + PORTFOLIO_ROOT)
-        //                .publish(context);
+        Copper.newHierarchy(PORTFOLIOS, PORTFOLIOS)
+                .fromStore(portfolios)
+                .slicing()
+                .withLevel(PORTFOLIO_ROOT, PORTFOLIOS_STRUCT_STORE_NAME + "/" + PORTFOLIO_ROOT)
+                .publish(context);
 
         Copper.newHierarchy(PORTFOLIOS, PORTFOLIO_LEVELS)
                 .fromStore(portfolios)
-                //  .slicing() // <== if not slicing, we get the intermediate totals
-                .withLevel(PORTFOLIO_ROOT, PORTFOLIOS_STRUCT_STORE_NAME + "/" + PORTFOLIO_ROOT)
+                // .withLevel(PORTFOLIO_ROOT, PORTFOLIOS_STRUCT_STORE_NAME + "/" + PORTFOLIO_ROOT)
                 .withLevel(PORTFOLIO_LVL_1, PORTFOLIOS_STRUCT_STORE_NAME + "/" + PORTFOLIO_LVL_1)
                 .withLevel(PORTFOLIO_LVL_2, PORTFOLIOS_STRUCT_STORE_NAME + "/" + PORTFOLIO_LVL_2)
                 .withLevel(PORTFOLIO_LVL_3, PORTFOLIOS_STRUCT_STORE_NAME + "/" + PORTFOLIO_LVL_3)
