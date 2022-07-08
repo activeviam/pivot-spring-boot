@@ -58,3 +58,5 @@ contentServer:
 #  remote:
 #    api:
 #      uri:
+
+security.type: basic

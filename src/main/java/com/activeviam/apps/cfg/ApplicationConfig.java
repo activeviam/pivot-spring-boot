@@ -1,15 +1,9 @@
 package com.activeviam.apps.cfg;
 
-import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
-
 import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
+import com.activeviam.apps.cfg.security.SecurityConfig;
+import com.activeviam.apps.cfg.security.basic.BasicAuthenticationConfig;
+import com.activeviam.apps.cfg.security.saml.SAMLAuthenticationConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -21,6 +15,14 @@ import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Import;
+
+import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Spring configuration of the ActivePivot Application services
@@ -32,6 +34,8 @@ import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 @Import(value = {
 		ActivePivotWebMvcConfigurer.class,
 		SecurityConfig.class,
+		BasicAuthenticationConfig.class,
+		SAMLAuthenticationConfig.class,
 		SourceConfig.class,
 		PivotManagerConfig.class,
 		LocalContentServiceConfig.class,

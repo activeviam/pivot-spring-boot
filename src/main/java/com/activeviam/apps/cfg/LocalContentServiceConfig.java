@@ -1,7 +1,13 @@
 package com.activeviam.apps.cfg;
 
-import java.util.Properties;
-
+import com.activeviam.apps.cfg.security.UserDetailsConfig;
+import com.activeviam.fwk.ActiveViamRuntimeException;
+import com.qfs.content.service.IContentService;
+import com.qfs.content.snapshot.impl.ContentServiceSnapshotter;
+import com.qfs.pivot.content.IActivePivotContentService;
+import com.qfs.pivot.content.impl.ActivePivotContentServiceBuilder;
+import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
+import com.qfs.util.impl.QfsFiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import com.activeviam.fwk.ActiveViamRuntimeException;
-import com.qfs.content.service.IContentService;
-import com.qfs.content.snapshot.impl.ContentServiceSnapshotter;
-import com.qfs.pivot.content.IActivePivotContentService;
-import com.qfs.pivot.content.impl.ActivePivotContentServiceBuilder;
-import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
-import com.qfs.util.impl.QfsFiles;
+import java.util.Properties;
 
 @Configuration
 public class LocalContentServiceConfig implements IActivePivotContentServiceConfig {
@@ -47,7 +47,7 @@ public class LocalContentServiceConfig implements IActivePivotContentServiceConf
 						.addProperties(hibernateProperties))
 				.withAudit()
 				.withCacheForEntitlements(Long.parseLong(env.getProperty("contentServer.security.cache.entitlementsTTL", "3600")))
-				.needInitialization(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_ADMIN).build();
+				.needInitialization(UserDetailsConfig.ROLE_ADMIN, UserDetailsConfig.ROLE_ADMIN).build();
 	}
 
 	private static final String UI_FOLDER = "/ui";

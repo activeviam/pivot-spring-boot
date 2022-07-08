@@ -18,6 +18,7 @@
         <activePivotVersion>5.11.1</activePivotVersion>
         <activeui.version>5.0.10</activeui.version>
         <content-server-ui.version>2.0.1</content-server-ui.version>
+        <spring-security-saml.version>1.0.10.RELEASE</spring-security-saml.version>
     </properties>
 
     <dependencyManagement>
@@ -88,6 +89,12 @@
             <groupId>com.activeviam.activeui</groupId>
             <artifactId>activeui</artifactId>
             <version>${activeui.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security.extensions</groupId>
+            <artifactId>spring-security-saml2-core</artifactId>
+            <version>${spring-security-saml.version}</version>
         </dependency>
 
         <!-- Test dependencies -->

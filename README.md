@@ -61,3 +61,25 @@ The default security credentials are `admin:admin`, but can be modified in the `
 You should change this before going into production.<br>
 You are also recommended to change the jwt key pair in `application.yaml` by running the class `JwtUtil` and generating new key pair.
 
+### SAML Authentication
+This project provides an example of how to authenticate users using SAML authentication. For more details
+[this article](https://www.baeldung.com/spring-security-saml) provides a good starting point.
+
+#### Setup
+Some additional first time setup is required in order to use SAML authentication:
+
+- Configure your identity provider (IdP). See the above article on how to do this using [Okta](https://www.okta.com/).
+Be sure to add at least one user (likely yourself) in `Assignments`, as well as configure these users and their roles
+in `SAMLAuthenticationProviderConfig`.
+- Add your IdP metadata to the application. The default path is `src/main/resources/saml/metadata/sso.xml`. The metadata
+can be found by navigating in Okta to `Sign On` then selecting `View SAML setup instructions`.
+- Generate your Keystore and self-signed key using the command (`baeldungsamlokta` should also be used as the Keystore
+password):
+```
+keytool -genkeypair -alias baeldungspringsaml -keypass baeldungsamlokta -keystore saml-keystore.jks -keysize 2048
+-keyalg RSA -sigalg SHA256withRSA
+```
+- Add the Keystore to the application. The default path is `src/main/resources/saml/keystore/saml-keystore.jks`.
+
+#### Enabling SAML
+To enable SAML authentication simply activate the `saml` Spring profile when running the application.

@@ -1,0 +1,14 @@
+security:
+  type: saml
+  saml:
+    entity-id: http://localhost:9090/saml/metadata
+    entity-base-url: http://localhost:9090
+    idp-metadata: /saml/metadata/sso.xml
+    # To avoid issues with expired assertions this should be equal to or larger than the assertion validity time (in
+    # seconds) of the IdP
+    max-authentication-age: 43200
+    keystore:
+      location: classpath:/saml/keystore/saml-keystore.jks
+      username: baeldungspringsaml
+      password: baeldungsamlokta
+      default-key: baeldungspringsaml
