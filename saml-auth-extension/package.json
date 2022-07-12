@@ -1,0 +1,29 @@
+{
+  "name": "saml-auth-extension",
+  "version": "5.0.14",
+  "description": "ActiveUI SAML authentication extension",
+  "license": "UNLICENSED",
+  "author": "ActiveViam",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "start": "echo saml-auth-extension does not need to be started",
+    "build": "activeui-scripts build:extension -o build"
+  },
+  "dependencies": {
+    "@activeviam/activeui-sdk": "5.0.10",
+    "@activeviam/sandbox-clients": "5.0.10",
+    "react": "^17.0.0"
+  },
+  "devDependencies": {
+    "@activeviam/activeui-scripts": "5.0.10",
+    "@activeviam/activeui-sdk-scripts": "5.0.10",
+    "@types/react": "^16.9.34",
+    "typescript": "^4.5.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
+  }
+}

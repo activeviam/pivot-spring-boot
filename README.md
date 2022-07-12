@@ -83,3 +83,6 @@ keytool -genkeypair -alias baeldungspringsaml -keypass baeldungsamlokta -keystor
 
 #### Enabling SAML
 To enable SAML authentication simply activate the `saml` Spring profile when running the application.
+
+To activate the SAML authentication extension included in the project uncomment the indicated line in
+[the env file](./src/main/resources/static/activeui/env.js).

@@ -12,3 +12,8 @@ window.env = {
     },
   },
 };
+
+window.customEnv = {
+  // Uncomment this line to enable the SAML authentication extension
+//  security: "saml"
+};

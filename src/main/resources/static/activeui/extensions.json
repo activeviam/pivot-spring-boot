@@ -1,4 +1,5 @@
 {
   "@activeviam/starter": "extensions/@activeviam/starter/@activeviam/starter.js",
-  "mdx-drawer-extension": "extensions/mdx-drawer-extension/mdx-drawer-extension.js"
+  "mdx-drawer-extension": "extensions/mdx-drawer-extension/mdx-drawer-extension.js",
+  "saml-auth-extension": "extensions/saml-auth-extension/saml-auth-extension.js"
 }

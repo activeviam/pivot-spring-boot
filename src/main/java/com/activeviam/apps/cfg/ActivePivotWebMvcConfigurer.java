@@ -28,6 +28,8 @@ public class ActivePivotWebMvcConfigurer implements WebMvcConfigurer {
 				.addResourceLocations("classpath:/static/activeui/");
 		registry.addResourceHandler("/ui/extensions/mdx-drawer-extension/**/*.js")
 				.addResourceLocations("classpath:/static/activeui/extensions/mdx-drawer-extension/");
+		registry.addResourceHandler("/ui/extensions/saml-auth-extension/**/*.js")
+				.addResourceLocations("classpath:/static/activeui/extensions/saml-auth-extension/");
 	}
 
 }
