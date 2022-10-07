@@ -44,7 +44,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.Filter;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.qfs.QfsWebUtils.url;
@@ -156,9 +155,8 @@ public class SecurityConfig implements ICorsConfig {
     @Bean
     public IAuthorityComparator authorityComparator() {
         final CustomComparator<String> comp = new CustomComparator<>();
-        comp.setFirstObjects(Arrays.asList(ROLE_CS_ROOT));
-        comp.setLastObjects(Arrays.asList(ROLE_ADMIN));
-        comp.setLastObjects(Arrays.asList(ROLE_USER));
+        comp.setFirstObjects(List.of(ROLE_USER));
+        comp.setLastObjects(List.of(ROLE_ADMIN));
         return new AuthorityComparatorAdapter(comp);
     }
 
