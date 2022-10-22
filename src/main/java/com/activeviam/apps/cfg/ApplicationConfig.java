@@ -1,26 +1,26 @@
 package com.activeviam.apps.cfg;
 
-import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
-
+import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
+import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
+import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
+import com.qfs.server.cfg.IActivePivotConfig;
+import com.qfs.server.cfg.IDatastoreConfig;
+import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
+import com.qfs.server.cfg.impl.ActivePivotServicesConfig;
+import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
+import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
+import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
+import com.quartetfs.fwk.Registry;
+import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
+import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
-import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
-import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
-import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
-import com.qfs.server.cfg.IDatastoreConfig;
-import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
-import com.qfs.server.cfg.impl.ActivePivotConfig;
-import com.qfs.server.cfg.impl.ActivePivotServicesConfig;
-import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
-import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
-import com.quartetfs.fwk.Registry;
-import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
-import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
+import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Spring configuration of the ActivePivot Application services
@@ -32,10 +32,12 @@ import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 @Import(value = {
 		ActivePivotWebMvcConfigurer.class,
 		SecurityConfig.class,
+		UserDetailsServiceConfig.class,
 		SourceConfig.class,
 		PivotManagerConfig.class,
 		LocalContentServiceConfig.class,
-		ActiveUIResourceServerConfig.class
+		ActiveUIResourceServerConfig.class,
+		NoSecurityDatabaseServiceConfig.class
 })
 public class ApplicationConfig {
 
@@ -45,7 +47,7 @@ public class ApplicationConfig {
 	}
 
 	@Autowired
-	protected ActivePivotConfig apConfig;
+	protected IActivePivotConfig apConfig;
 
 	/**
 	 * ActivePivot content service spring configuration
@@ -66,7 +68,7 @@ public class ApplicationConfig {
 	 */
 	@Bean
 	public JMXEnabler jmxDatastoreEnabler() {
-		return new JMXEnabler(datastoreConfig.datastore());
+		return new JMXEnabler(datastoreConfig.database());
 	}
 
 	/**
@@ -102,9 +104,8 @@ public class ApplicationConfig {
 	@Bean
 	public JMXEnabler jmxMemoryMonitoringServiceEnabler() {
 		return new JMXEnabler(new MemoryAnalysisService(
-				this.datastoreConfig.datastore(),
+				this.datastoreConfig.database(),
 				this.apConfig.activePivotManager(),
-				this.datastoreConfig.datastore().getEpochManager(),
 				Paths.get(System.getProperty("java.io.tmpdir"))));
 	}
 

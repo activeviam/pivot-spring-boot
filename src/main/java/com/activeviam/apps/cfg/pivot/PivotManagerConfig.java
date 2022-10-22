@@ -8,6 +8,7 @@ import com.activeviam.desc.build.ICubeDescriptionBuilder;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
+import com.qfs.server.cfg.IDatastoreSchemaDescriptionConfig;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
@@ -19,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig {
+public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig, IDatastoreSchemaDescriptionConfig {
 
     /* *********************/
     /* OLAP Property names */
@@ -38,12 +39,12 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     public static final String NATIVE_MEASURES = "Native Measures";
 
     @Override
-    public IActivePivotManagerDescription userManagerDescription() {
+    public IActivePivotManagerDescription managerDescription() {
         return StartBuilding.managerDescription(MANAGER_NAME)
                 .withCatalog(CATALOG_NAME)
                 .containingAllCubes()
                 .withSchema(SCHEMA_NAME)
-                .withSelection(createSchemaSelectionDescription(userSchemaDescription()))
+                .withSelection(createSchemaSelectionDescription(datastoreSchemaDescription()))
                 .withCube(createCubeDescription())
                 .build();
     }
@@ -67,7 +68,7 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     }
 
     @Override
-    public IDatastoreSchemaDescription userSchemaDescription() {
+    public IDatastoreSchemaDescription datastoreSchemaDescription() {
         return DatastoreDescriptionConfig.schemaDescription();
     }
 

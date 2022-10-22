@@ -25,7 +25,7 @@ class MeasuresTest {
 	}
 
 	@RegisterExtension
-	public CubeTesterBuilderExtension builder = new CubeTesterBuilderExtension(createTester());
+	public CubeTesterBuilderExtension builder = new CubeTesterBuilderExtension(() -> createTester());
 
 	/**
 	 * Creates the tester using the descriptions of the project.

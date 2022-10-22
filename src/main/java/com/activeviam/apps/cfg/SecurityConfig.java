@@ -4,6 +4,7 @@ import com.activeviam.collections.impl.Immutable;
 import com.activeviam.security.cfg.ICorsConfig;
 import com.qfs.content.service.IContentService;
 import com.qfs.jwt.service.IJwtService;
+import com.qfs.server.cfg.ActivePivotRestServices;
 import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.server.cfg.impl.JwtRestServiceConfig;
@@ -52,7 +53,7 @@ import static com.qfs.server.cfg.impl.ActivePivotRemotingServicesConfig.*;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
 import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.*;
-import static com.qfs.server.cfg.impl.CxfServletConfig.CXF_WEB_SERVICES;
+
 
 @EnableGlobalAuthentication
 @EnableWebSecurity(debug = false)
@@ -96,33 +97,10 @@ public class SecurityConfig implements ICorsConfig {
     @Autowired
     protected IJwtConfig jwtConfig;
 
+
     @Autowired
-    protected AuthenticationManagerBuilder auth;
+    UserDetailsServiceConfig userDetailsService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        ((DelegatingPasswordEncoder) passwordEncoder)
-                .setDefaultPasswordEncoderForMatches(NoOpPasswordEncoder.getInstance());
-        return passwordEncoder;
-    }
-
-    // UserDetailsService Bean implemented as it is needed by jwtAuthenticationProvider to enable connection through jwt
-    @Bean
-    public UserDetailsService userDetailsService() throws Exception {
-
-        InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> inMemUserDetailsManagerConfig =
-                new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
-                        .passwordEncoder(passwordEncoder())
-                        .withUser(USER_ADMIN)
-                        .password(PASSWORD_ADMIN)
-                        .authorities(ROLE_ADMIN, ROLE_CS_ROOT, ROLE_USER, ROLE_SHARE)
-                        .and();
-
-        inMemUserDetailsManagerConfig.configure(auth);
-
-        return inMemUserDetailsManagerConfig.getUserDetailsService();
-    }
 
     /**
      * Returns the default {@link AuthenticationEntryPoint} to use
@@ -175,7 +153,7 @@ public class SecurityConfig implements ICorsConfig {
     public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
         auth.eraseCredentials(false)
                 // Add an LDAP authentication provider instead of this to support LDAP
-                .userDetailsService(userDetailsService())
+                .userDetailsService(userDetailsService.userDetailsService())
                 .and()
                 // Required to allow JWT
                 .authenticationProvider(jwtConfig.jwtAuthenticationProvider());
@@ -386,27 +364,13 @@ public class SecurityConfig implements ICorsConfig {
         protected void doConfigure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
                     // The order of the matchers matters
-                    .antMatchers(HttpMethod.OPTIONS, REST_API_URL_PREFIX + "/**")
+                    .antMatchers(HttpMethod.OPTIONS, ActivePivotRestServices.REST_API_URL_PREFIX + "/**")
                     .permitAll()
-                    // Web services used by AP live 3.4
-                    .antMatchers(CXF_WEB_SERVICES + '/' + ID_GENERATOR_SERVICE + "/**")
-                    .hasAnyAuthority(ROLE_USER)
-                    .antMatchers(CXF_WEB_SERVICES + '/' + LONG_POLLING_SERVICE + "/**")
-                    .hasAnyAuthority(ROLE_USER)
-                    .antMatchers(CXF_WEB_SERVICES + '/' + LICENSING_SERVICE + "/**")
-                    .hasAnyAuthority(ROLE_USER)
-                    // Spring remoting services used by AP live 3.4
-                    .antMatchers(url(ID_GENERATOR_REMOTING_SERVICE, "**"))
-                    .hasAnyAuthority(ROLE_USER)
-                    .antMatchers(url(LONG_POLLING_REMOTING_SERVICE, "**"))
-                    .hasAnyAuthority(ROLE_USER)
-                    .antMatchers(url(LICENSING_REMOTING_SERVICE, "**"))
-                    .hasAnyAuthority(ROLE_USER)
-                    // The ping service is temporarily authenticated (see PIVOT-3149)
-                    .antMatchers(url(REST_API_URL_PREFIX, PING_SUFFIX))
+                    // The ping service needs to be authenticated
+                    .antMatchers(url(ActivePivotRestServices.REST_API_URL_PREFIX, PING_SUFFIX))
                     .hasAnyAuthority(ROLE_USER)
                     // REST services
-                    .antMatchers(REST_API_URL_PREFIX + "/**")
+                    .antMatchers(ActivePivotRestServices.REST_API_URL_PREFIX + "/**")
                     .hasAnyAuthority(ROLE_USER)
                     // One has to be a user for all the other URLs
                     .antMatchers("/**")

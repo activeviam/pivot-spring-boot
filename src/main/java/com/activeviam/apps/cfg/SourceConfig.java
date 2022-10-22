@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import com.qfs.msg.csv.impl.CSVSourceConfiguration;
+import com.qfs.platform.IPlatform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +69,14 @@ public class SourceConfig {
 				createParserConfig(tradesColumns.size(), tradesColumns));
 		csvSource.addTopic(tradesTopic);
 
-		final var sourceProps = new Properties();
-		sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, env.getProperty("parserThreads", "2"));
-		sourceProps.put(ICSVSourceConfiguration.SYNCHRONOUS_MODE_PROPERTY, env.getProperty("synchronousMode", "false"));
-		csvSource.configure(sourceProps);
+		// Allocate half the the machine cores to CSV parsing
+		Integer parserThreads = Math.max(2, IPlatform.CURRENT_PLATFORM.getProcessorCount() / 2);
+		logger.info("Allocating " + parserThreads + " parser threads.");
+
+		CSVSourceConfiguration.CSVSourceConfigurationBuilder<Path> sourceConfigurationBuilder = new CSVSourceConfiguration.CSVSourceConfigurationBuilder<>();
+		sourceConfigurationBuilder.parserThreads(parserThreads);
+		sourceConfigurationBuilder.synchronousMode(Boolean.valueOf( env.getProperty("synchronousMode", "false")));
+		csvSource.configure(sourceConfigurationBuilder.build());
 		return csvSource;
 	}
 
