@@ -11,7 +11,7 @@ management:
     web:
       exposure:
         include: "*"
-        
+
 # Print the stores schema
 schema:
   printer: false
@@ -19,6 +19,7 @@ schema:
 # File to parse
 file:
   trades: "data/trades.csv"
+  instrument: "data/instrument.csv"
 
 
 # Content hibernate properties
