@@ -1,4 +1,4 @@
-package com.activeviam.apps.cfg;
+package com.activeviam.apps.ui;
 
 import com.qfs.server.cfg.impl.ASpringResourceServerConfig;
 import com.qfs.util.impl.QfsArrays;

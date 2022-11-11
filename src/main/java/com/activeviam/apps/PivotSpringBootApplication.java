@@ -1,20 +1,17 @@
 package com.activeviam.apps;
 
-import com.activeviam.apps.annotations.ActivePivotApplication;
-import com.activeviam.apps.cfg.ApplicationConfig;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.MultipartConfigElement;
 
-@ActivePivotApplication
+@SpringBootApplication
 @EnableWebMvc
-@Import(ApplicationConfig.class)
 public class PivotSpringBootApplication {
 
     public static void main(String[] args) {

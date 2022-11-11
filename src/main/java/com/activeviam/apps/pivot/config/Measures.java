@@ -1,6 +1,6 @@
-package com.activeviam.apps.cfg.pivot;
+package com.activeviam.apps.pivot.config;
 
-import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.DOUBLE_FORMATTER;
+import static com.activeviam.apps.pivot.config.PivotManagerConfig.DOUBLE_FORMATTER;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_NOTIONAL;
 
 

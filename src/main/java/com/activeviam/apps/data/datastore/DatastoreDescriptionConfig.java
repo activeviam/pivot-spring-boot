@@ -1,4 +1,4 @@
-package com.activeviam.apps.cfg;
+package com.activeviam.apps.data.datastore;
 
 import static com.qfs.literal.ILiteralType.DOUBLE;
 import static com.qfs.literal.ILiteralType.LOCAL_DATE;

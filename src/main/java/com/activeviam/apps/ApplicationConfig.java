@@ -1,15 +1,20 @@
-package com.activeviam.apps.cfg;
+package com.activeviam.apps;
 
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
+import com.activeviam.apps.security.ActivePivotWebMvcConfigurer;
+import com.activeviam.apps.ui.ActiveUIResourceServerConfig;
+import com.activeviam.apps.content.LocalContentServiceConfig;
+import com.activeviam.apps.data.source.SourceConfig;
+import com.activeviam.apps.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
-import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
+import com.activeviam.apps.pivot.config.PivotManagerConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
 import com.qfs.server.cfg.IDatastoreConfig;

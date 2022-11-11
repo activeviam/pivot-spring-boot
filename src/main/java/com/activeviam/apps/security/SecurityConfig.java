@@ -1,5 +1,6 @@
-package com.activeviam.apps.cfg;
+package com.activeviam.apps.security;
 
+import com.activeviam.apps.ui.ActiveUIResourceServerConfig;
 import com.activeviam.collections.impl.Immutable;
 import com.activeviam.security.cfg.ICorsConfig;
 import com.qfs.content.service.IContentService;

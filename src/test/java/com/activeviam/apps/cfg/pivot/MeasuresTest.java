@@ -5,11 +5,14 @@ import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_
 
 import java.time.LocalDate;
 
+import com.activeviam.apps.pivot.config.CubeConfig;
+import com.activeviam.apps.pivot.config.Measures;
+import com.activeviam.apps.pivot.config.PivotManagerConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import com.activeviam.apps.cfg.DatastoreDescriptionConfig;
+import com.activeviam.apps.data.datastore.DatastoreDescriptionConfig;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;

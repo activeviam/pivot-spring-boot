@@ -1,4 +1,4 @@
-package com.activeviam.apps.cfg;
+package com.activeviam.apps.data.source;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
-import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.csv.ICSVParserConfiguration;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
@@ -111,12 +110,6 @@ public class SourceConfig {
 
 	private void printStoreSizes() {
 
-		// add some logging
-		if (Boolean.parseBoolean(env.getProperty("schema.printer", "true"))) {
-			// display the graph
-			System.setProperty("java.awt.headless", "false");
-			new JungSchemaPrinter(false).print("Datastore", datastore);
-		}
 
 		// Print stop watch profiling
 		StopWatch.get().printTimings();

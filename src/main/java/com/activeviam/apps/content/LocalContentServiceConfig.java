@@ -1,7 +1,8 @@
-package com.activeviam.apps.cfg;
+package com.activeviam.apps.content;
 
 import java.util.Properties;
 
+import com.activeviam.apps.security.SecurityConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
