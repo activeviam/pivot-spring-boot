@@ -36,4 +36,6 @@ public class CubeConstants {
 
     public static final String TRADE_ID = StoreAndFieldConstants.TRADES_TRADEID;
     public static final String AS_OF_DATE = StoreAndFieldConstants.ASOFDATE;
+
+    public static final String TRADE_TICKER = StoreAndFieldConstants.TRADES_TICKER;
 }

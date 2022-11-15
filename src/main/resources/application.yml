@@ -37,7 +37,8 @@ active-pivot:
         entitlementsTTL: 3600
   data:
     files:
-      trades: "classpath:data/trades.csv"
+      Trades: "classpath:data/trades.csv"
+      TradeDetails: "classpath:data/trade_details.csv"
     csv-source-properties:
       parser-threads: 2
       synchronous-mode: false

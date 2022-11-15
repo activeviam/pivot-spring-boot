@@ -12,5 +12,6 @@ import com.qfs.desc.IDatastoreSchemaDescription;
  * @author ActiveViam
  */
 public interface IDatastoreConfigurer {
-	IDatastoreSchemaDescription schemaDescription();
+	IDatastoreSchemaDescription datastoreSchemaDescription();
+
 }

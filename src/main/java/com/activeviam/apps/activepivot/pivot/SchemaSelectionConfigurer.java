@@ -36,7 +36,7 @@ public class SchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
             IDatastoreSchemaDescription datastoreSchemaDescription) {
         return StartBuilding.selection(datastoreSchemaDescription)
                 .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
-                .withAllFields()
+                .withAllReachableFields()
                 .build();
     }
 }
