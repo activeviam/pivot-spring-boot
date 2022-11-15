@@ -1,28 +1,27 @@
 package com.activeviam.apps.activepivot.pivot;
 
 import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
-import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
 import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
+import com.activeviam.desc.build.IActivePivotManagerDescriptionBuilder;
+import com.activeviam.desc.build.ICanBuildActivePivotManagerDescription;
+import com.activeviam.fwk.ActiveViamRuntimeException;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
 import com.quartetfs.biz.pivot.definitions.IActivePivotManagerDescription;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Optional;
+
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 
 @Configuration
 public class ActivePivotManagerConfiguration implements IActivePivotManagerDescriptionConfig {
-
-    private final ICubeConfigurer cubeConfigurer;
     private final ISchemaSelectionConfigurer schemaConfigurer;
     private final IDatastoreConfigurer datastoreConfigurer;
 
     public ActivePivotManagerConfiguration(
-            ICubeConfigurer cubeConfigurer,
-            ISchemaSelectionConfigurer schemaConfigurer,
-            IDatastoreConfigurer datastoreConfigurer) {
-        this.cubeConfigurer = cubeConfigurer;
+            ISchemaSelectionConfigurer schemaConfigurer, IDatastoreConfigurer datastoreConfigurer) {
         this.schemaConfigurer = schemaConfigurer;
         this.datastoreConfigurer = datastoreConfigurer;
     }
@@ -33,9 +32,19 @@ public class ActivePivotManagerConfiguration implements IActivePivotManagerDescr
                 .withCatalog(CATALOG_NAME)
                 .containingAllCubes();
 
-        return builder.withSchema(schemaConfigurer.schemaName())
-                .withSelection(schemaConfigurer.createSchemaSelectionDescription(userSchemaDescription()))
-                .withCube(cubeConfigurer.cubeDescription())
+        IActivePivotManagerDescriptionBuilder.HasSelection schema = null;
+        if (!schemaConfigurer.cubes().isEmpty()) {
+            schema = builder.withSchema(schemaConfigurer.schemaName())
+                    .withSelection(schemaConfigurer.createSchemaSelectionDescription(userSchemaDescription()));
+            for (var cubeConfigurer : schemaConfigurer.cubes()) {
+                schema = (IActivePivotManagerDescriptionBuilder.HasSelection)
+                        schema.withCube(cubeConfigurer.cubeDescription());
+            }
+        }
+        return Optional.ofNullable(schema)
+                .map(ICanBuildActivePivotManagerDescription.class::cast)
+                .orElseThrow(() ->
+                        new ActiveViamRuntimeException("No cubes defined on schema " + schemaConfigurer.schemaName()))
                 .build();
     }
 

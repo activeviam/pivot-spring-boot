@@ -6,9 +6,12 @@
  */
 package com.activeviam.apps.activepivot.configurers;
 
+import com.activeviam.desc.build.IActivePivotManagerDescriptionBuilder;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Collection;
 
 /**
  * @author ActiveViam
@@ -25,5 +28,7 @@ public interface ISchemaSelectionConfigurer {
 	String schemaName();
 
 	ISelectionDescription createSchemaSelectionDescription(IDatastoreSchemaDescription schemaDescription);
+
+	Collection<ICubeConfigurer> cubes();
 
 }

@@ -6,12 +6,15 @@
  */
 package com.activeviam.apps.activepivot.pivot;
 
+import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
 import com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants;
 import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.SCHEMA_NAME;
 
@@ -20,6 +23,13 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.SCHEMA_NAME;
  */
 @Component
 public class SchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
+
+    private final Collection<ICubeConfigurer> cubeConfigurers;
+
+    public SchemaSelectionConfigurer(Collection<ICubeConfigurer> cubeConfigurers) {
+        this.cubeConfigurers = cubeConfigurers;
+    }
+
     @Override
     public String schemaName() {
         return SCHEMA_NAME;
@@ -38,5 +48,10 @@ public class SchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
                 .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
                 .withAllReachableFields()
                 .build();
+    }
+
+    @Override
+    public Collection<ICubeConfigurer> cubes() {
+        return cubeConfigurers;
     }
 }
