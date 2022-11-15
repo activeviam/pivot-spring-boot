@@ -63,7 +63,7 @@ class MeasuresTest {
 				IDatastoreConfigurer datastoreConfigurer,
 				ISchemaSelectionConfigurer selectionConfigurer,
 				IDimensionsConfigurer dimensionsConfigurer) {
-			final var datastoreDescription = datastoreConfigurer.schemaDescription();
+			final var datastoreDescription = datastoreConfigurer.datastoreSchemaDescription();
 			final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
 			final var cubeDescription = StartBuilding.cube()
 					.withName(CUBE_NAME)

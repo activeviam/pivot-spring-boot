@@ -25,14 +25,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.TRADES_DETAILS_STORE_NAME;
 import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.TRADES_STORE_NAME;
 
 @Service
 @Slf4j
 @EnableConfigurationProperties(CsvDataFilesProperties.class)
 public class DataLoadingService {
-
-    private static final String TRADES_TOPIC = "trades";
 
     private final CsvDataFilesProperties csvDataProperties;
 
@@ -46,15 +45,15 @@ public class DataLoadingService {
 
     private final CSVMessageChannelFactory<Path> csvChannelFactory;
 
-    private boolean initialLoadCompleted = false;
-
     public DataLoadingService(
             CsvDataFilesProperties csvDataProperties, IDatastore datastore, ResourceLoader resourceLoader) {
         this.csvDataProperties = csvDataProperties;
         this.datastore = datastore;
         this.resourceLoader = resourceLoader;
         try {
-            csvSource.addTopic(createTopic(TRADES_TOPIC, TRADES_STORE_NAME));
+            // TODO: we could do this for every file
+            csvSource.addTopic(createTopic(TRADES_STORE_NAME, TRADES_STORE_NAME));
+            csvSource.addTopic(createTopic(TRADES_DETAILS_STORE_NAME, TRADES_DETAILS_STORE_NAME));
             csvSource.configure(csvDataProperties.getCsvSourceProperties().toProperties());
         } catch (IOException e) {
             throw new ActiveViamRuntimeException("Failed to create CSV sources", e);
@@ -83,7 +82,8 @@ public class DataLoadingService {
         // do the transactions
         final var before = System.nanoTime();
         final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
-        csvChannels.add(csvChannelFactory.createChannel(TRADES_TOPIC, TRADES_STORE_NAME));
+        csvChannels.add(csvChannelFactory.createChannel(TRADES_STORE_NAME, TRADES_STORE_NAME));
+        csvChannels.add(csvChannelFactory.createChannel(TRADES_DETAILS_STORE_NAME, TRADES_DETAILS_STORE_NAME));
         datastore.edit(t -> {
             csvSource.fetch(csvChannels);
             t.forceCommit();
@@ -92,19 +92,4 @@ public class DataLoadingService {
         log.info("Data load completed in {} ms.", elapsed / 1000000L);
     }
 
-    // Used in regression test
-    public boolean isInitialLoadCompleted() {
-        return initialLoadCompleted;
-    }
-
-    /*
-     * **************************** Initial load *********************************
-     */
-
-    @EventListener(ApplicationReadyEvent.class)
-    @Order(4)
-    public void initialLoad() {
-        loadData();
-        initialLoadCompleted = true;
-    }
 }

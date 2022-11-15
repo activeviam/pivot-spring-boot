@@ -15,8 +15,7 @@ import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
 import org.springframework.stereotype.Component;
 
-import static com.activeviam.apps.activepivot.pivot.CubeConstants.AS_OF_DATE;
-import static com.activeviam.apps.activepivot.pivot.CubeConstants.TRADE_ID;
+import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 
 /**
  * @author ActiveViam
@@ -26,7 +25,7 @@ public class DimensionsConfigurer implements IDimensionsConfigurer {
     @Override
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> publish(ICanStartBuildingDimensions builder) {
         return builder.withSingleLevelDimensions(TRADE_ID)
-
+                .withSingleLevelDimension(TRADE_TICKER)
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
                 // Also show the dates in reverse order ie most recent date first
                 .withDimension(AS_OF_DATE)

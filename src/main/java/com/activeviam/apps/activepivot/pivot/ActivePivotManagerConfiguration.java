@@ -18,7 +18,10 @@ public class ActivePivotManagerConfiguration implements IActivePivotManagerDescr
     private final ISchemaSelectionConfigurer schemaConfigurer;
     private final IDatastoreConfigurer datastoreConfigurer;
 
-    public ActivePivotManagerConfiguration(ICubeConfigurer cubeConfigurer, ISchemaSelectionConfigurer schemaConfigurer, IDatastoreConfigurer datastoreConfigurer) {
+    public ActivePivotManagerConfiguration(
+            ICubeConfigurer cubeConfigurer,
+            ISchemaSelectionConfigurer schemaConfigurer,
+            IDatastoreConfigurer datastoreConfigurer) {
         this.cubeConfigurer = cubeConfigurer;
         this.schemaConfigurer = schemaConfigurer;
         this.datastoreConfigurer = datastoreConfigurer;
@@ -26,19 +29,18 @@ public class ActivePivotManagerConfiguration implements IActivePivotManagerDescr
 
     @Override
     public IActivePivotManagerDescription userManagerDescription() {
-        return StartBuilding.managerDescription(MANAGER_NAME)
+        var builder = StartBuilding.managerDescription(MANAGER_NAME)
                 .withCatalog(CATALOG_NAME)
-                .containingAllCubes()
-                .withSchema(schemaConfigurer.schemaName())
+                .containingAllCubes();
+
+        return builder.withSchema(schemaConfigurer.schemaName())
                 .withSelection(schemaConfigurer.createSchemaSelectionDescription(userSchemaDescription()))
                 .withCube(cubeConfigurer.cubeDescription())
                 .build();
     }
 
-
     @Override
     public IDatastoreSchemaDescription userSchemaDescription() {
-        return datastoreConfigurer.schemaDescription();
+        return datastoreConfigurer.datastoreSchemaDescription();
     }
-
 }
