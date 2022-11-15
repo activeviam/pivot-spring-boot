@@ -24,5 +24,5 @@ public interface IDimensionsConfigurer {
 	 *            The cube builder
 	 * @return The builder for chained calls
 	 */
-	ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder);
+	ICanBuildCubeDescription<IActivePivotInstanceDescription> publish(ICanStartBuildingDimensions builder);
 }

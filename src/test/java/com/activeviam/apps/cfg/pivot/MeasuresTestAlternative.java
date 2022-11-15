@@ -3,10 +3,10 @@ package com.activeviam.apps.cfg.pivot;
 import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
 import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
-import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
+import com.activeviam.apps.activepivot.pivot.CalculationsConfigurer;
 import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
+import com.activeviam.apps.activepivot.configurers.ICalculationsConfigurer;
 import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
@@ -34,7 +34,7 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.CUBE_NAME;
 class MeasuresTestAlternative {
 
     @TestConfiguration
-    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
+    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, CalculationsConfigurer.class})
     public static class MeasuresTestAlternativeConfiguration {
 
         static {
@@ -66,11 +66,11 @@ class MeasuresTestAlternative {
 
     // This could also be done inside each test if we want to add different measures or different data in each test!
     @BeforeEach
-    public void createTester(IMeasuresConfigurer measuresConfigurer) {
+    public void createTester(ICalculationsConfigurer measuresConfigurer) {
         tester = builder
                 // we could add different data here if we wanted!
                 .setData(createTestData())
-                .build(measuresConfigurer::add);
+                .build(measuresConfigurer::publish);
     }
 
     /**
@@ -83,7 +83,7 @@ class MeasuresTestAlternative {
         final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
         final var cubeDescription = StartBuilding.cube()
                 .withName(CUBE_NAME)
-                .withDimensions(dimensionsConfigurer::add)
+                .withDimensions(dimensionsConfigurer::publish)
                 .build();
         return new CubeTesterBuilder(datastoreDescription, selectionDescription, cubeDescription);
     }

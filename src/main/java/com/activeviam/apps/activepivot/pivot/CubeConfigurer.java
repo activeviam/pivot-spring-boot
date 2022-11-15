@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
+import com.activeviam.apps.activepivot.configurers.ICalculationsConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
@@ -15,11 +15,11 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 @Component
 public class CubeConfigurer implements ICubeConfigurer {
 
-	private final IMeasuresConfigurer measuresConfigurer;
+	private final ICalculationsConfigurer measuresConfigurer;
 
 	private final IDimensionsConfigurer dimensionsConfigurer;
 
-	public CubeConfigurer(MeasuresConfigurer measuresConfigurer, DimensionsConfigurer dimensionsConfigurer) {
+	public CubeConfigurer(CalculationsConfigurer measuresConfigurer, DimensionsConfigurer dimensionsConfigurer) {
 		this.measuresConfigurer = measuresConfigurer;
 		this.dimensionsConfigurer = dimensionsConfigurer;
 	}
@@ -34,8 +34,8 @@ public class CubeConfigurer implements ICubeConfigurer {
 	public IActivePivotInstanceDescription cubeDescription() {
 		return StartBuilding.cube(cubeName())
 
-				.withCalculations(measuresConfigurer::add)
-				.withDimensions(dimensionsConfigurer::add)
+				.withCalculations(measuresConfigurer::publish)
+				.withDimensions(dimensionsConfigurer::publish)
 
 				// Aggregate provider
 				.withAggregateProvider()

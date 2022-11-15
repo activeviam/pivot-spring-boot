@@ -3,10 +3,10 @@ package com.activeviam.apps.cfg.pivot;
 import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
 import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
-import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
+import com.activeviam.apps.activepivot.pivot.CalculationsConfigurer;
 import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
+import com.activeviam.apps.activepivot.configurers.ICalculationsConfigurer;
 import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
@@ -44,7 +44,7 @@ class MeasuresTest {
      * 	 the test), then it is better to use the approach in {@link MeasuresTestAlternative}
      */
     @TestConfiguration
-    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
+    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, CalculationsConfigurer.class})
     public static class MeasuresTestConfiguration {
 
 		// Add customer plugins (e.g. PostProcessors etc) here if needed!
@@ -67,7 +67,7 @@ class MeasuresTest {
 			final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
 			final var cubeDescription = StartBuilding.cube()
 					.withName(CUBE_NAME)
-					.withDimensions(dimensionsConfigurer::add)
+					.withDimensions(dimensionsConfigurer::publish)
 					.build();
 			return new CubeTesterBuilder(
 					datastoreDescription,
@@ -81,10 +81,10 @@ class MeasuresTest {
 		}
 
 		@Bean
-		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, IMeasuresConfigurer measures) {
+		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, ICalculationsConfigurer measures) {
 			return cubeTesterBuilderExtension
 					.setData(createTestData())
-					.build(measures::add);
+					.build(measures::publish);
 		}
 
 		private static ITransactionsBuilder createTestData() {

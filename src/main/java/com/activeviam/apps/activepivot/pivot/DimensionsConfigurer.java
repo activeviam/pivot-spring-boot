@@ -24,7 +24,7 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.TRADE_ID;
 @Component
 public class DimensionsConfigurer implements IDimensionsConfigurer {
     @Override
-    public ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder) {
+    public ICanBuildCubeDescription<IActivePivotInstanceDescription> publish(ICanStartBuildingDimensions builder) {
         return builder.withSingleLevelDimensions(TRADE_ID)
 
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
