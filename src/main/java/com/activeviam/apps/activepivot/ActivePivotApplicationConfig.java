@@ -1,6 +1,5 @@
 package com.activeviam.apps.activepivot;
 
-import com.activeviam.apps.activepivot.pivot.ActivePivotManagerConfiguration;
 import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
@@ -9,7 +8,6 @@ import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.i18n.impl.LocalI18nConfig;
 import com.qfs.server.cfg.impl.*;
 import com.qfs.service.store.impl.NoSecurityDatastoreServiceConfig;
-import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
@@ -21,7 +19,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Spring configuration of the ActivePivot Application services

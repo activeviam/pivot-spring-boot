@@ -1,13 +1,13 @@
 package com.activeviam.apps.cfg.pivot;
 
 import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
-import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
-import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
-import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
-import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
 import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
 import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
+import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
+import com.activeviam.apps.activepivot.pivot.trades.TradesDimensionsConfigurer;
+import com.activeviam.apps.activepivot.pivot.trades.TradesMeasuresConfigurer;
+import com.activeviam.apps.activepivot.pivot.trades.TradesSchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -28,13 +28,13 @@ import java.time.LocalDate;
 
 import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.TRADES_NOTIONAL;
 import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.TRADES_STORE_NAME;
-import static com.activeviam.apps.activepivot.pivot.CubeConstants.CUBE_NAME;
+import static com.activeviam.apps.activepivot.pivot.CubeConstants.TRADES_CUBE_NAME;
 
 @SpringJUnitConfig
 class MeasuresTestAlternative {
 
     @TestConfiguration
-    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
+    @Import(value = {DatastoreConfigurer.class, TradesSchemaSelectionConfigurer.class, TradesDimensionsConfigurer.class, TradesMeasuresConfigurer.class})
     public static class MeasuresTestAlternativeConfiguration {
 
         static {
@@ -82,7 +82,7 @@ class MeasuresTestAlternative {
         final var datastoreDescription = datastoreConfigurer.datastoreSchemaDescription();
         final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
         final var cubeDescription = StartBuilding.cube()
-                .withName(CUBE_NAME)
+                .withName(TRADES_CUBE_NAME)
                 .withDimensions(dimensionsConfigurer::add)
                 .build();
         return new CubeTesterBuilder(datastoreDescription, selectionDescription, cubeDescription);

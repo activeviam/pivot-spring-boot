@@ -1,23 +1,14 @@
 package com.activeviam.apps.activepivot.data.datastore;
 
-import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.*;
-import static com.qfs.literal.ILiteralType.DOUBLE;
-import static com.qfs.literal.ILiteralType.LOCAL_DATE;
-import static com.qfs.literal.ILiteralType.STRING;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-
 import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
-import com.qfs.desc.impl.DatastoreSchemaDescription;
-import com.qfs.desc.impl.ReferenceDescription;
-import com.qfs.desc.impl.StoreDescriptionBuilder;
 import org.springframework.stereotype.Component;
+
+import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.*;
+import static com.qfs.literal.ILiteralType.*;
 
 @Component
 public class DatastoreConfigurer implements IDatastoreConfigurer {

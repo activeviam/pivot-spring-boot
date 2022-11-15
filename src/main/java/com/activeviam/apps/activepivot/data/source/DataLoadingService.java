@@ -12,10 +12,7 @@ import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 

@@ -4,11 +4,12 @@
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.activepivot.pivot;
+package com.activeviam.apps.activepivot.pivot.tickers;
 
 import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
-import com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants;
 import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
+import com.activeviam.apps.activepivot.configurers.OnSchema;
+import com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
@@ -16,23 +17,23 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
-import static com.activeviam.apps.activepivot.pivot.CubeConstants.SCHEMA_NAME;
+import static com.activeviam.apps.activepivot.pivot.CubeConstants.TICKERS_SCHEMA_NAME;
 
 /**
  * @author ActiveViam
  */
 @Component
-public class SchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
+public class TickersSchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
 
     private final Collection<ICubeConfigurer> cubeConfigurers;
 
-    public SchemaSelectionConfigurer(Collection<ICubeConfigurer> cubeConfigurers) {
+    public TickersSchemaSelectionConfigurer(@OnSchema(TICKERS_SCHEMA_NAME) Collection<ICubeConfigurer> cubeConfigurers) {
         this.cubeConfigurers = cubeConfigurers;
     }
 
     @Override
     public String schemaName() {
-        return SCHEMA_NAME;
+        return TICKERS_SCHEMA_NAME;
     }
 
     /**
@@ -45,7 +46,7 @@ public class SchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
     public ISelectionDescription createSchemaSelectionDescription(
             IDatastoreSchemaDescription datastoreSchemaDescription) {
         return StartBuilding.selection(datastoreSchemaDescription)
-                .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
+                .fromBaseStore(StoreAndFieldConstants.TRADES_DETAILS_STORE_NAME)
                 .withAllReachableFields()
                 .build();
     }

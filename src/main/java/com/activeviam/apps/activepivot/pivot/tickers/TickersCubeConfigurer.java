@@ -1,25 +1,26 @@
-package com.activeviam.apps.activepivot.pivot;
+package com.activeviam.apps.activepivot.pivot.tickers;
 
-import java.util.concurrent.TimeUnit;
-
-import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
-import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
+import com.activeviam.apps.activepivot.configurers.*;
 import com.activeviam.builders.StartBuilding;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import org.springframework.stereotype.Component;
 
-import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
+import java.util.concurrent.TimeUnit;
+
+import static com.activeviam.apps.activepivot.pivot.CubeConstants.TICKERS_CUBE_NAME;
+import static com.activeviam.apps.activepivot.pivot.CubeConstants.TICKERS_SCHEMA_NAME;
 
 @Component
-public class CubeConfigurer implements ICubeConfigurer {
+// We use this qualifier to bind our cube to the correct schema
+@OnSchema(TICKERS_SCHEMA_NAME)
+public class TickersCubeConfigurer implements ICubeConfigurer {
 
 	private final IMeasuresConfigurer measuresConfigurer;
 
 	private final IDimensionsConfigurer dimensionsConfigurer;
 
-	public CubeConfigurer(MeasuresConfigurer measuresConfigurer, DimensionsConfigurer dimensionsConfigurer) {
+	public TickersCubeConfigurer(@OnCube(TICKERS_CUBE_NAME) TickersMeasuresConfigurer measuresConfigurer, @OnCube(TICKERS_CUBE_NAME) TickersDimensionsConfigurer dimensionsConfigurer) {
 		this.measuresConfigurer = measuresConfigurer;
 		this.dimensionsConfigurer = dimensionsConfigurer;
 	}
@@ -27,7 +28,7 @@ public class CubeConfigurer implements ICubeConfigurer {
 
 	@Override
 	public String cubeName() {
-		return CUBE_NAME;
+		return TICKERS_CUBE_NAME;
 	}
 
 	@Override

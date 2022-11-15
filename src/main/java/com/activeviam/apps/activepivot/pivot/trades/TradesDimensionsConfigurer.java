@@ -4,9 +4,10 @@
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.activepivot.pivot;
+package com.activeviam.apps.activepivot.pivot.trades;
 
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
+import com.activeviam.apps.activepivot.configurers.OnCube;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
@@ -21,7 +22,8 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
  * @author ActiveViam
  */
 @Component
-public class DimensionsConfigurer implements IDimensionsConfigurer {
+@OnCube(TRADES_CUBE_NAME)
+public class TradesDimensionsConfigurer implements IDimensionsConfigurer {
     @Override
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder) {
         return builder.withSingleLevelDimensions(TRADE_ID)

@@ -6,7 +6,6 @@
  */
 package com.activeviam.apps.activepivot.configurers;
 
-import com.activeviam.desc.build.IActivePivotManagerDescriptionBuilder;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
 import org.springframework.context.annotation.Configuration;

@@ -20,8 +20,11 @@ public class CubeConstants {
 
     public static final String MANAGER_NAME = "Manager";
     public static final String CATALOG_NAME = "Catalog";
-    public static final String SCHEMA_NAME = "Schema";
-    public static final String CUBE_NAME = "Cube";
+    public static final String TRADES_SCHEMA_NAME = "TradesSchema";
+    public static final String TRADES_CUBE_NAME = "TradesCube";
+
+    public static final String TICKERS_SCHEMA_NAME = "TickersSchema";
+    public static final String TICKERS_CUBE_NAME = "TickersCube";
 
     /* ********** */
     /* Formatters */
