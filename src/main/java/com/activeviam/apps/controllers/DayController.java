@@ -1,6 +1,6 @@
 package com.activeviam.apps.controllers;
 
-import com.activeviam.apps.constants.StoreAndFieldConstants;
+import com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants;
 import com.qfs.store.IDatastore;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import org.springframework.beans.factory.annotation.Autowired;
