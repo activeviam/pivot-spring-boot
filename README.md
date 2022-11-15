@@ -39,10 +39,10 @@ Caused by: java.nio.file.FileSystemNotFoundException: null
 ```
 	
 This is related to this Spring Boot known issue: `https://github.com/spring-projects/spring-boot/issues/7161`<br>
-In order to fix that override the `-Dfile.trades` property and pass it to the jvm:
+In order to fix that override the `-Dactive-pivot.data.files.trades` property and pass it to the jvm:
 
 ```
-java -Dfile.trades=<absolute path of trades.csv> -jar <fat jar path>
+java -Dactive-pivot.data.files.trades=<absolute path of trades.csv> -jar <fat jar path>
 ```
 ### Running on macos
 Add the following argument `-DchunkAllocatorClass=com.qfs.chunk.direct.allocator.impl.MmapDirectChunkAllocator` to your jvm, so then it becomes:
