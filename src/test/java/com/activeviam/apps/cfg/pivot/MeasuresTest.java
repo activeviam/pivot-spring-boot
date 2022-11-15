@@ -1,12 +1,13 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.activepivot.data.datastore.DatastoreDescriptionConfig;
+import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
+import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
 import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
 import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
-import com.activeviam.apps.activepivot.pivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.pivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.pivot.configurers.ISchemaSelectionConfigurer;
+import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
+import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
+import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -43,7 +44,7 @@ class MeasuresTest {
      * 	 the test), then it is better to use the approach in {@link MeasuresTestAlternative}
      */
     @TestConfiguration
-    @Import(value = {SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
+    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
     public static class MeasuresTestConfiguration {
 
 		// Add customer plugins (e.g. PostProcessors etc) here if needed!
@@ -58,12 +59,15 @@ class MeasuresTest {
 		 * @return The tester.
 		 */
 		@Bean
-		CubeTesterBuilder testerBuilder(ISchemaSelectionConfigurer selectionConfigurer, IDimensionsConfigurer dimensionsConfigurer) {
-			final var datastoreDescription = DatastoreDescriptionConfig.schemaDescription();
+		CubeTesterBuilder testerBuilder(
+				IDatastoreConfigurer datastoreConfigurer,
+				ISchemaSelectionConfigurer selectionConfigurer,
+				IDimensionsConfigurer dimensionsConfigurer) {
+			final var datastoreDescription = datastoreConfigurer.schemaDescription();
 			final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
 			final var cubeDescription = StartBuilding.cube()
 					.withName(CUBE_NAME)
-					.withDimensions(dimensionsConfigurer::build)
+					.withDimensions(dimensionsConfigurer::add)
 					.build();
 			return new CubeTesterBuilder(
 					datastoreDescription,
@@ -80,7 +84,7 @@ class MeasuresTest {
 		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, IMeasuresConfigurer measures) {
 			return cubeTesterBuilderExtension
 					.setData(createTestData())
-					.build(measures::build);
+					.build(measures::add);
 		}
 
 		private static ITransactionsBuilder createTestData() {

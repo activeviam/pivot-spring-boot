@@ -4,7 +4,7 @@
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.activepivot.pivot.configurers;
+package com.activeviam.apps.activepivot.configurers;
 
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
@@ -24,5 +24,5 @@ public interface IDimensionsConfigurer {
 	 *            The cube builder
 	 * @return The builder for chained calls
 	 */
-	ICanBuildCubeDescription<IActivePivotInstanceDescription> build(ICanStartBuildingDimensions builder);
+	ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder);
 }

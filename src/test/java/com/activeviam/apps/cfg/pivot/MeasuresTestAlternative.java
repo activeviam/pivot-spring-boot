@@ -1,12 +1,13 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.activepivot.data.datastore.DatastoreDescriptionConfig;
+import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
+import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
 import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
 import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
-import com.activeviam.apps.activepivot.pivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.pivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.pivot.configurers.ISchemaSelectionConfigurer;
+import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
+import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
+import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -33,7 +34,7 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.CUBE_NAME;
 class MeasuresTestAlternative {
 
     @TestConfiguration
-    @Import(value = {SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
+    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
     public static class MeasuresTestAlternativeConfiguration {
 
         static {
@@ -46,6 +47,9 @@ class MeasuresTestAlternative {
 
     @Autowired
     private IDimensionsConfigurer dimensionsConfigurer;
+
+    @Autowired
+    private IDatastoreConfigurer datastoreConfigurer;
 
     /**
      * NOTE: by registering the CubeTesterBuilderExtension as an extension, we let it create and destroy the test cube
@@ -66,7 +70,7 @@ class MeasuresTestAlternative {
         tester = builder
                 // we could add different data here if we wanted!
                 .setData(createTestData())
-                .build(measuresConfigurer::build);
+                .build(measuresConfigurer::add);
     }
 
     /**
@@ -75,11 +79,11 @@ class MeasuresTestAlternative {
      * @return The tester.
      */
     private CubeTesterBuilder testerBuilder() {
-        final var datastoreDescription = DatastoreDescriptionConfig.schemaDescription();
+        final var datastoreDescription = datastoreConfigurer.schemaDescription();
         final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
         final var cubeDescription = StartBuilding.cube()
                 .withName(CUBE_NAME)
-                .withDimensions(dimensionsConfigurer::build)
+                .withDimensions(dimensionsConfigurer::add)
                 .build();
         return new CubeTesterBuilder(datastoreDescription, selectionDescription, cubeDescription);
     }

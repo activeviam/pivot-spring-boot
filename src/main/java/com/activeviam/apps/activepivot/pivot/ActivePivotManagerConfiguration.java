@@ -1,14 +1,12 @@
 package com.activeviam.apps.activepivot.pivot;
 
-import com.activeviam.apps.activepivot.data.datastore.DatastoreDescriptionConfig;
-import com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants;
-import com.activeviam.apps.activepivot.pivot.configurers.ICubeConfigurer;
-import com.activeviam.apps.activepivot.pivot.configurers.ISchemaSelectionConfigurer;
+import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
+import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
+import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
 import com.quartetfs.biz.pivot.definitions.IActivePivotManagerDescription;
-import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
 import org.springframework.context.annotation.Configuration;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
@@ -18,10 +16,12 @@ public class ActivePivotManagerConfiguration implements IActivePivotManagerDescr
 
     private final ICubeConfigurer cubeConfigurer;
     private final ISchemaSelectionConfigurer schemaConfigurer;
+    private final IDatastoreConfigurer datastoreConfigurer;
 
-    public ActivePivotManagerConfiguration(ICubeConfigurer cubeConfigurer, ISchemaSelectionConfigurer schemaConfigurer) {
+    public ActivePivotManagerConfiguration(ICubeConfigurer cubeConfigurer, ISchemaSelectionConfigurer schemaConfigurer, IDatastoreConfigurer datastoreConfigurer) {
         this.cubeConfigurer = cubeConfigurer;
         this.schemaConfigurer = schemaConfigurer;
+        this.datastoreConfigurer = datastoreConfigurer;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ActivePivotManagerConfiguration implements IActivePivotManagerDescr
 
     @Override
     public IDatastoreSchemaDescription userSchemaDescription() {
-        return DatastoreDescriptionConfig.schemaDescription();
+        return datastoreConfigurer.schemaDescription();
     }
 
 }

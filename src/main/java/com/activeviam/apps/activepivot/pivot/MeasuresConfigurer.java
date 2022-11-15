@@ -3,14 +3,14 @@ package com.activeviam.apps.activepivot.pivot;
 import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.TRADES_NOTIONAL;
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 
-import com.activeviam.apps.activepivot.pivot.configurers.IMeasuresConfigurer;
+import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
 import com.activeviam.copper.ICopperContext;
 import com.activeviam.copper.api.Copper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MeasuresConfigurer implements IMeasuresConfigurer {
-    public void build(final ICopperContext context) {
+    public void add(final ICopperContext context) {
 
         Copper.count()
                 .withAlias("Count")

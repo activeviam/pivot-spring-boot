@@ -4,7 +4,7 @@
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.activepivot.pivot.configurers;
+package com.activeviam.apps.activepivot.configurers;
 
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;

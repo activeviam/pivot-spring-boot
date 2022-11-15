@@ -1,4 +1,4 @@
-package com.activeviam.apps.activepivot.pivot.configurers;
+package com.activeviam.apps.activepivot.configurers;
 
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import org.springframework.stereotype.Component;

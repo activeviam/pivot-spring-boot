@@ -6,7 +6,7 @@
  */
 package com.activeviam.apps.activepivot.pivot;
 
-import com.activeviam.apps.activepivot.pivot.configurers.IDimensionsConfigurer;
+import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
@@ -24,7 +24,7 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.TRADE_ID;
 @Component
 public class DimensionsConfigurer implements IDimensionsConfigurer {
     @Override
-    public ICanBuildCubeDescription<IActivePivotInstanceDescription> build(ICanStartBuildingDimensions builder) {
+    public ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder) {
         return builder.withSingleLevelDimensions(TRADE_ID)
 
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates

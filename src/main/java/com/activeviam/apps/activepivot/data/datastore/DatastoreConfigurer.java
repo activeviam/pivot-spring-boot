@@ -8,15 +8,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
+import org.springframework.stereotype.Component;
 
-public class DatastoreDescriptionConfig {
+@Component
+public class DatastoreConfigurer implements IDatastoreConfigurer {
 
-	public static IStoreDescription createTradesStoreDescription() {
+	private static IStoreDescription createTradesStoreDescription() {
 		return new StoreDescriptionBuilder().withStoreName(StoreAndFieldConstants.TRADES_STORE_NAME)
 				.withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE).asKeyField()
 				.withField(StoreAndFieldConstants.TRADES_TRADEID, STRING).asKeyField()
@@ -24,7 +27,7 @@ public class DatastoreDescriptionConfig {
 				.build();
 	}
 
-	public static Collection<IReferenceDescription> references() {
+	private static Collection<IReferenceDescription> references() {
 		return Collections.emptyList();
 	}
 
@@ -37,7 +40,7 @@ public class DatastoreDescriptionConfig {
 	 *
 	 * @return schema description
 	 */
-	public static IDatastoreSchemaDescription schemaDescription() {
+	public IDatastoreSchemaDescription schemaDescription() {
 
 		final Collection<IStoreDescription> stores = new LinkedList<>();
 		stores.add(createTradesStoreDescription());
