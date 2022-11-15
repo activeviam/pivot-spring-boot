@@ -11,18 +11,20 @@ import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
 import com.quartetfs.biz.pivot.definitions.IActivePivotManagerDescription;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 
 @Configuration
 public class ActivePivotManagerConfiguration implements IActivePivotManagerDescriptionConfig {
-    private final ISchemaSelectionConfigurer schemaConfigurer;
+
+    private final List<ISchemaSelectionConfigurer> schemaConfigurers;
     private final IDatastoreConfigurer datastoreConfigurer;
 
     public ActivePivotManagerConfiguration(
-            ISchemaSelectionConfigurer schemaConfigurer, IDatastoreConfigurer datastoreConfigurer) {
-        this.schemaConfigurer = schemaConfigurer;
+            List<ISchemaSelectionConfigurer> schemaConfigurers, IDatastoreConfigurer datastoreConfigurer) {
+        this.schemaConfigurers = schemaConfigurers;
         this.datastoreConfigurer = datastoreConfigurer;
     }
 
@@ -33,7 +35,7 @@ public class ActivePivotManagerConfiguration implements IActivePivotManagerDescr
                 .containingAllCubes();
 
         IActivePivotManagerDescriptionBuilder.HasSelection schema = null;
-        if (!schemaConfigurer.cubes().isEmpty()) {
+        for (var schemaConfigurer : schemaConfigurers) {
             schema = builder.withSchema(schemaConfigurer.schemaName())
                     .withSelection(schemaConfigurer.createSchemaSelectionDescription(userSchemaDescription()));
             for (var cubeConfigurer : schemaConfigurer.cubes()) {
@@ -43,8 +45,7 @@ public class ActivePivotManagerConfiguration implements IActivePivotManagerDescr
         }
         return Optional.ofNullable(schema)
                 .map(ICanBuildActivePivotManagerDescription.class::cast)
-                .orElseThrow(() ->
-                        new ActiveViamRuntimeException("No cubes defined on schema " + schemaConfigurer.schemaName()))
+                .orElseThrow(() -> new ActiveViamRuntimeException("No schemas defined"))
                 .build();
     }
 
