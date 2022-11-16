@@ -6,9 +6,6 @@
  */
 package com.activeviam.apps.activepivot.configurers;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.annotation.AliasFor;
-
 import java.lang.annotation.*;
 
 
@@ -17,11 +14,9 @@ import java.lang.annotation.*;
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Qualifier
 @Documented
-public @interface InCube {
+public @interface InCubes {
 
-    @AliasFor(annotation = Qualifier.class, attribute = "value")
-    String value();
+    String[] value();
 
 }

@@ -19,11 +19,11 @@ public class TradesCubeConfigurer implements ICubeConfigurer {
 
 	private final IMeasuresConfigurer measuresConfigurer;
 
-	private final List<IDimensionsConfigurer> dimensionsConfigurer;
+	private final IDimensionsConfigurer dimensionsConfigurer;
 
 	public TradesCubeConfigurer(
-			@InCube(TRADES_CUBE_NAME) IMeasuresConfigurer measuresConfigurer,
-			@InCube(TRADES_CUBE_NAME) List<IDimensionsConfigurer> dimensionsConfigurer
+			@InCubes(TRADES_CUBE_NAME) IMeasuresConfigurer measuresConfigurer,
+			@InCubes(TRADES_CUBE_NAME) IDimensionsConfigurer dimensionsConfigurer
 	) {
 		this.measuresConfigurer = measuresConfigurer;
 		this.dimensionsConfigurer = dimensionsConfigurer;
@@ -40,7 +40,7 @@ public class TradesCubeConfigurer implements ICubeConfigurer {
 		return StartBuilding.cube(cubeName())
 
 				.withCalculations(measuresConfigurer::add)
-				.withDimensions(dimensionsConfigurer.get(0)::add)
+				.withDimensions(dimensionsConfigurer::add)
 
 				// Aggregate provider
 				.withAggregateProvider()

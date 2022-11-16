@@ -1,7 +1,7 @@
 package com.activeviam.apps.activepivot.pivot.tickers;
 
 import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.configurers.InCube;
+import com.activeviam.apps.activepivot.configurers.InCubes;
 import com.activeviam.copper.ICopperContext;
 import com.activeviam.copper.api.Copper;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 
 @Component
-@InCube(TICKERS_CUBE_NAME)
+@InCubes(TICKERS_CUBE_NAME)
 public class TickersMeasuresConfigurer implements IMeasuresConfigurer {
     public void add(final ICopperContext context) {
 

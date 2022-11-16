@@ -6,6 +6,7 @@ import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.TICKERS_CUBE_NAME;
@@ -16,13 +17,13 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.TICKERS_SCHEMA
 @OnSchema(TICKERS_SCHEMA_NAME)
 public class TickersCubeConfigurer implements ICubeConfigurer {
 
-	private final IMeasuresConfigurer measuresConfigurer;
+	private final List<IMeasuresConfigurer> measuresConfigurer;
 
 	private final IDimensionsConfigurer dimensionsConfigurer;
 
 	public TickersCubeConfigurer(
-			@InCube(TICKERS_CUBE_NAME) IMeasuresConfigurer measuresConfigurer,
-			@InCube(TICKERS_CUBE_NAME) IDimensionsConfigurer dimensionsConfigurer
+			@InCubes(TICKERS_CUBE_NAME) List<IMeasuresConfigurer> measuresConfigurer,
+			@InCubes(TICKERS_CUBE_NAME) IDimensionsConfigurer dimensionsConfigurer
 	) {
 		this.measuresConfigurer = measuresConfigurer;
 		this.dimensionsConfigurer = dimensionsConfigurer;
@@ -38,7 +39,7 @@ public class TickersCubeConfigurer implements ICubeConfigurer {
 	public IActivePivotInstanceDescription cubeDescription() {
 		return StartBuilding.cube(cubeName())
 
-				.withCalculations(measuresConfigurer::add)
+				.withCalculations(measuresConfigurer.get(0)::add)
 				.withDimensions(dimensionsConfigurer::add)
 
 				// Aggregate provider
