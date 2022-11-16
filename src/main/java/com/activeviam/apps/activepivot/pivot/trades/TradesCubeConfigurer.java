@@ -6,6 +6,7 @@ import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.TRADES_CUBE_NAME;
@@ -18,9 +19,12 @@ public class TradesCubeConfigurer implements ICubeConfigurer {
 
 	private final IMeasuresConfigurer measuresConfigurer;
 
-	private final IDimensionsConfigurer dimensionsConfigurer;
+	private final List<IDimensionsConfigurer> dimensionsConfigurer;
 
-	public TradesCubeConfigurer(@OnCube(TRADES_CUBE_NAME) TradesMeasuresConfigurer measuresConfigurer, @OnCube(TRADES_CUBE_NAME) TradesDimensionsConfigurer dimensionsConfigurer) {
+	public TradesCubeConfigurer(
+			@InCube(TRADES_CUBE_NAME) IMeasuresConfigurer measuresConfigurer,
+			@InCube(TRADES_CUBE_NAME) List<IDimensionsConfigurer> dimensionsConfigurer
+	) {
 		this.measuresConfigurer = measuresConfigurer;
 		this.dimensionsConfigurer = dimensionsConfigurer;
 	}
@@ -36,7 +40,7 @@ public class TradesCubeConfigurer implements ICubeConfigurer {
 		return StartBuilding.cube(cubeName())
 
 				.withCalculations(measuresConfigurer::add)
-				.withDimensions(dimensionsConfigurer::add)
+				.withDimensions(dimensionsConfigurer.get(0)::add)
 
 				// Aggregate provider
 				.withAggregateProvider()

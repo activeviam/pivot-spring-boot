@@ -7,7 +7,7 @@
 package com.activeviam.apps.activepivot.pivot.trades;
 
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.OnCube;
+import com.activeviam.apps.activepivot.configurers.InCube;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
@@ -22,11 +22,12 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
  * @author ActiveViam
  */
 @Component
-@OnCube(TRADES_CUBE_NAME)
+@InCube(TRADES_CUBE_NAME)
 public class TradesDimensionsConfigurer implements IDimensionsConfigurer {
     @Override
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder) {
-        return builder.withSingleLevelDimensions(TRADE_ID)
+        return builder
+                .withSingleLevelDimensions(TRADE_ID)
                 .withSingleLevelDimension(TRADE_TICKER)
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
                 // Also show the dates in reverse order ie most recent date first

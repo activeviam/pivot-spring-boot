@@ -20,7 +20,10 @@ public class TickersCubeConfigurer implements ICubeConfigurer {
 
 	private final IDimensionsConfigurer dimensionsConfigurer;
 
-	public TickersCubeConfigurer(@OnCube(TICKERS_CUBE_NAME) TickersMeasuresConfigurer measuresConfigurer, @OnCube(TICKERS_CUBE_NAME) TickersDimensionsConfigurer dimensionsConfigurer) {
+	public TickersCubeConfigurer(
+			@InCube(TICKERS_CUBE_NAME) IMeasuresConfigurer measuresConfigurer,
+			@InCube(TICKERS_CUBE_NAME) IDimensionsConfigurer dimensionsConfigurer
+	) {
 		this.measuresConfigurer = measuresConfigurer;
 		this.dimensionsConfigurer = dimensionsConfigurer;
 	}

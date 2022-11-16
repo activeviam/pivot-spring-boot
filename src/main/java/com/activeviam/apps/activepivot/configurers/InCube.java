@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
 @Documented
-public @interface OnCube {
+public @interface InCube {
 
     @AliasFor(annotation = Qualifier.class, attribute = "value")
     String value();

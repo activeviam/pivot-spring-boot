@@ -7,10 +7,11 @@
 package com.activeviam.apps.activepivot.pivot.tickers;
 
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.OnCube;
+import com.activeviam.apps.activepivot.configurers.InCube;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
@@ -19,7 +20,7 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
  * @author ActiveViam
  */
 @Component
-@OnCube(TICKERS_CUBE_NAME)
+@InCube(TICKERS_CUBE_NAME)
 public class TickersDimensionsConfigurer implements IDimensionsConfigurer {
     @Override
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder) {
