@@ -1,32 +1,34 @@
 package com.activeviam.apps.activepivot.pivot.trades;
 
 import com.activeviam.apps.activepivot.configurers.*;
+import com.activeviam.apps.activepivot.configurers.annotation.InCube;
 import com.activeviam.builders.StartBuilding;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.TRADES_CUBE_NAME;
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.TRADES_SCHEMA_NAME;
 
-@Component
+@Component("tradesCube")
 // We use this qualifier to bind our cube to the correct schema
 @OnSchema(TRADES_SCHEMA_NAME)
 public class TradesCubeConfigurer implements ICubeConfigurer {
 
-	private final IMeasuresConfigurer measuresConfigurer;
+	private final List<IMeasuresConfigurer> measuresConfigurers;
 
-	private final IDimensionsConfigurer dimensionsConfigurer;
+	private final List<IDimensionsConfigurer> dimensionsConfigurers;
 
 	public TradesCubeConfigurer(
-			@InCubes(TRADES_CUBE_NAME) IMeasuresConfigurer measuresConfigurer,
-			@InCubes(TRADES_CUBE_NAME) IDimensionsConfigurer dimensionsConfigurer
+			@InCube(TRADES_CUBE_NAME) @NotEmpty List<IMeasuresConfigurer> measuresConfigurers,
+			@InCube(TRADES_CUBE_NAME) @NotEmpty List<IDimensionsConfigurer> dimensionsConfigurers
 	) {
-		this.measuresConfigurer = measuresConfigurer;
-		this.dimensionsConfigurer = dimensionsConfigurer;
+		this.measuresConfigurers = measuresConfigurers;
+		this.dimensionsConfigurers = dimensionsConfigurers;
 	}
 
 
@@ -39,8 +41,8 @@ public class TradesCubeConfigurer implements ICubeConfigurer {
 	public IActivePivotInstanceDescription cubeDescription() {
 		return StartBuilding.cube(cubeName())
 
-				.withCalculations(measuresConfigurer::add)
-				.withDimensions(dimensionsConfigurer::add)
+				.withCalculations(context -> measuresConfigurers.forEach(configurer -> configurer.add(context)))
+				.withDimensions(dimensionsConfigurers.get(0)::add)
 
 				// Aggregate provider
 				.withAggregateProvider()

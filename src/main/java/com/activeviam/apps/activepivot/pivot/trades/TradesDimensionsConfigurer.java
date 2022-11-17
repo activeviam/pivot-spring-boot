@@ -7,7 +7,7 @@
 package com.activeviam.apps.activepivot.pivot.trades;
 
 import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.InCubes;
+import com.activeviam.apps.activepivot.configurers.annotation.InCube;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
@@ -22,7 +22,7 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
  * @author ActiveViam
  */
 @Component
-@InCubes(TRADES_CUBE_NAME)
+@InCube(TRADES_CUBE_NAME)
 public class TradesDimensionsConfigurer implements IDimensionsConfigurer {
     @Override
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder) {

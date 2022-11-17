@@ -7,20 +7,22 @@
 package com.activeviam.apps.activepivot.pivot.tickers;
 
 import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.configurers.InCubes;
+import com.activeviam.apps.activepivot.configurers.annotation.InCube;
 import com.activeviam.copper.api.Copper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.TICKERS_CUBE_NAME;
 
 /**
  * @author ActiveViam
  */
+@Configuration
 public class InLineMeasuresConfig {
 
 
-	@Bean("tickerMeasures")
-	@InCubes(TICKERS_CUBE_NAME)
+	@Bean("inlineConfigurer")
+	@InCube(TICKERS_CUBE_NAME)
 	IMeasuresConfigurer tickerMeasures(){
 		return context -> Copper.count().publish(context);
 	}
