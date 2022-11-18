@@ -7,7 +7,6 @@
 package com.activeviam.apps.activepivot.pivot;
 
 import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.configurers.annotation_multivalue.InCube;
 import com.activeviam.apps.activepivot.configurers.annotation_repeatable.Cube;
 import com.activeviam.copper.api.Copper;
 import org.springframework.context.annotation.Bean;
