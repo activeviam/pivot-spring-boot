@@ -1,7 +1,8 @@
 package com.activeviam.apps.activepivot.pivot.tickers;
 
 import com.activeviam.apps.activepivot.configurers.*;
-import com.activeviam.apps.activepivot.configurers.annotation.InCube;
+import com.activeviam.apps.activepivot.configurers.annotation_multivalue.InCube;
+import com.activeviam.apps.activepivot.configurers.annotation_repeatable.Cube;
 import com.activeviam.builders.StartBuilding;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
@@ -24,8 +25,8 @@ public class TickersCubeConfigurer implements ICubeConfigurer {
 	private final List<IDimensionsConfigurer> dimensionsConfigurers;
 
 	public TickersCubeConfigurer(
-			@InCube(TICKERS_CUBE_NAME) @NotEmpty List<IMeasuresConfigurer> measuresConfigurer,
-			@InCube(TICKERS_CUBE_NAME) @NotEmpty List<IDimensionsConfigurer> dimensionsConfigurer
+			@Cube(TICKERS_CUBE_NAME) @NotEmpty List<IMeasuresConfigurer> measuresConfigurer,
+			@Cube(TICKERS_CUBE_NAME) @NotEmpty List<IDimensionsConfigurer> dimensionsConfigurer
 	) {
 		this.measuresConfigurers = measuresConfigurer;
 		this.dimensionsConfigurers = dimensionsConfigurer;

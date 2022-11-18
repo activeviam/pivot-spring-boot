@@ -4,7 +4,7 @@
  * property of ActiveViam. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.activepivot.configurers.annotation;
+package com.activeviam.apps.activepivot.configurers.annotation_multivalue;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -18,7 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+// inspired by https://github.com/Cepr0/sb-tagged-autowire-candidate-resolver
 public class InCubesAutowireCandidateResolver extends ContextAnnotationAutowireCandidateResolver {
+
+
 	@Override
 	public boolean isAutowireCandidate(BeanDefinitionHolder bdHolder, DependencyDescriptor descriptor) {
 		if (super.isAutowireCandidate(bdHolder, descriptor)) {

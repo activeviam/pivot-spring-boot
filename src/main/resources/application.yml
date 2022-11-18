@@ -17,7 +17,8 @@ active-pivot:
     data-source:
       hibernate:
         connection:
-          url: "jdbc:h2:mem:content_service;DB_CLOSE_DELAY=-1"
+          #url: "jdbc:h2:mem:content_service;DB_CLOSE_DELAY=-1"
+          url: "jdbc:h2:file:./db/content_service;DB_CLOSE_DELAY=-1"
           driver_class: org.h2.Driver
         dialect: "org.hibernate.dialect.H2Dialect"
         show_sql: false

@@ -1,7 +1,8 @@
 package com.activeviam.apps.activepivot.pivot.trades;
 
 import com.activeviam.apps.activepivot.configurers.*;
-import com.activeviam.apps.activepivot.configurers.annotation.InCube;
+import com.activeviam.apps.activepivot.configurers.annotation_multivalue.InCube;
+import com.activeviam.apps.activepivot.configurers.annotation_repeatable.Cube;
 import com.activeviam.builders.StartBuilding;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
@@ -24,8 +25,8 @@ public class TradesCubeConfigurer implements ICubeConfigurer {
 	private final List<IDimensionsConfigurer> dimensionsConfigurers;
 
 	public TradesCubeConfigurer(
-			@InCube(TRADES_CUBE_NAME) @NotEmpty List<IMeasuresConfigurer> measuresConfigurers,
-			@InCube(TRADES_CUBE_NAME) @NotEmpty List<IDimensionsConfigurer> dimensionsConfigurers
+			@Cube(TRADES_CUBE_NAME) @NotEmpty List<IMeasuresConfigurer> measuresConfigurers,
+			@Cube(TRADES_CUBE_NAME) @NotEmpty List<IDimensionsConfigurer> dimensionsConfigurers
 	) {
 		this.measuresConfigurers = measuresConfigurers;
 		this.dimensionsConfigurers = dimensionsConfigurers;

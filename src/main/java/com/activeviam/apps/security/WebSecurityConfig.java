@@ -26,6 +26,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import static com.activeviam.apps.activepivot.admin.AdminUIWebMvcConfiguration.ADMIN_UI_NAMESPACE;
@@ -57,6 +58,9 @@ public class WebSecurityConfig {
 
 	@Autowired
 	IActivePivotConfig activePivotConfig;
+
+	@Autowired
+	CorsConfigurationSource corsConfigurationSource;
 
 	@Bean
 	@Order(2)
@@ -194,7 +198,7 @@ public class WebSecurityConfig {
 
 	@Bean
 	JwtAuthenticationDsl jwtAuthenticationDsl() {
-		return new JwtAuthenticationDsl((JwtFilter) jwtConfig.jwtFilter(), activePivotConfig.contextValueFilter());
+		return new JwtAuthenticationDsl((JwtFilter) jwtConfig.jwtFilter(), activePivotConfig.contextValueFilter(),corsConfigurationSource);
 	}
 
 	private static class JwtAuthenticationDsl extends AbstractHttpConfigurer<JwtAuthenticationDsl, HttpSecurity> {
@@ -203,10 +207,12 @@ public class WebSecurityConfig {
 
 		private final ContextValueFilter contextValueFilter;
 
+		private final CorsConfigurationSource corsConfigurationSource;
 
-		public JwtAuthenticationDsl(JwtFilter jwtFilter, ContextValueFilter contextValueFilter) {
+		public JwtAuthenticationDsl(JwtFilter jwtFilter, ContextValueFilter contextValueFilter, CorsConfigurationSource corsConfigurationSource) {
 			this.jwtFilter = jwtFilter;
 			this.contextValueFilter = contextValueFilter;
+			this.corsConfigurationSource = corsConfigurationSource;
 		}
 
 		// We do this in init to prevent the chain to automatically create cors
@@ -216,7 +222,7 @@ public class WebSecurityConfig {
 			builder
 					// As of Spring Security 4.0, CSRF protection is enabled by default.
 					.csrf(AbstractHttpConfigurer::disable)
-					.cors(Customizer.withDefaults());
+					.cors(c -> c.configurationSource(corsConfigurationSource));
 			if (LOGOUT) {
 				// Configure logout URL
 				builder.logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
