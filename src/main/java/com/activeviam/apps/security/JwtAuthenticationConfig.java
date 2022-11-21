@@ -13,6 +13,7 @@ import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,6 +25,7 @@ import static com.activeviam.apps.security.WebSecurityConfig.COOKIE_NAME;
 /**
  * @author ActiveViam
  */
+@Configuration
 public class JwtAuthenticationConfig {
 
     @Bean
