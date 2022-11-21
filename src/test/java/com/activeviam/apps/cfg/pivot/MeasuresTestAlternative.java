@@ -65,7 +65,7 @@ class MeasuresTestAlternative {
     public void createTester(MeasuresConfigurer measuresConfigurer) {
         tester = builder
                 // we could add different data here if we wanted!
-                .setData(createTestData())
+                .setData(TestUtils.createTestData())
                 .build(measuresConfigurer::add);
     }
 
@@ -82,15 +82,6 @@ class MeasuresTestAlternative {
                 .withDimensions(dimensionsConfigurer::add)
                 .build();
         return new CubeTesterBuilder(datastoreDescription, selectionDescription, cubeDescription);
-    }
-
-    public static ITransactionsBuilder createTestData() {
-        return SimpleTransactionBuilder.start()
-                .inStore(TRADES_STORE_NAME)
-                .add(LocalDate.parse("2019-03-13"), "T1", 100d)
-                .add(LocalDate.parse("2019-03-13"), "T2", 350d)
-                .add(LocalDate.parse("2019-03-13"), "T3", 300d)
-                .end();
     }
 
     /**
