@@ -21,7 +21,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,10 +30,7 @@ import java.util.List;
 @Import(value = {
 		JwtConfig.class
 })
-public class AuthenticationConfig {
-
-	public static final String BASIC_AUTH_BEAN_NAME = "basicAuthenticationEntryPoint";
-
+public class BasicAuthenticationConfig {
 	/**
 	 * Admin role
 	 */
@@ -72,18 +68,6 @@ public class AuthenticationConfig {
 				.authorities(ROLE_USER, ROLE_ADMIN).build());
 		return localUserDetailsService;
 	}
-
-	/**
-	 * Returns the default {@link AuthenticationEntryPoint} to use
-	 * for the fallback basic HTTP authentication.
-	 *
-	 * @return The default {@link AuthenticationEntryPoint} for the
-	 * fallback HTTP basic authentication.
-	 */
-//	@Bean(name = BASIC_AUTH_BEAN_NAME)
-//	public AuthenticationEntryPoint basicAuthenticationEntryPoint() {
-//		return new BasicAuthenticationEntryPoint();
-//	}
 
 	/**
 	 * [Bean] Comparator for user roles

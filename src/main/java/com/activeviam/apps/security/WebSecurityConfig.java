@@ -30,8 +30,8 @@ import org.springframework.web.filter.CorsFilter;
 
 import static com.activeviam.apps.activepivot.admin.AdminUIWebMvcConfiguration.ADMIN_UI_NAMESPACE;
 import static com.activeviam.apps.activepivot.ui.ActiveUIWebMvcConfiguration.ACTIVEUI_NAMESPACE;
-import static com.activeviam.apps.security.AuthenticationConfig.ROLE_ADMIN;
-import static com.activeviam.apps.security.AuthenticationConfig.ROLE_USER;
+import static com.activeviam.apps.security.BasicAuthenticationConfig.ROLE_ADMIN;
+import static com.activeviam.apps.security.BasicAuthenticationConfig.ROLE_USER;
 import static com.qfs.QfsWebUtils.url;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
@@ -49,14 +49,8 @@ public class WebSecurityConfig {
 	 */
 	public static final String COOKIE_NAME = "AP_JSESSIONID";
 
-	private static final boolean LOGOUT = false;
-
-
 	@Autowired
-	IJwtConfig jwtConfig;
-
-	@Autowired
-	IActivePivotConfig activePivotConfig;
+	JwtAuthenticationConfig.ActivePivotJwtAuthenticationDsl jwtAuthenticationDsl;
 
 	@Bean
 	@Order(2)
@@ -105,7 +99,7 @@ public class WebSecurityConfig {
 								.permitAll()
 								.antMatchers(pattern + "/**")
 								.hasAnyAuthority(ROLE_USER))
-				.apply(jwtAuthenticationDsl());
+				.apply(jwtAuthenticationDsl);
 		return http.build();
 	}
 
@@ -118,7 +112,7 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests(auth ->
 						auth.antMatchers(pattern + "/**")
 								.hasAnyAuthority(ROLE_USER))
-				.apply(jwtAuthenticationDsl());
+				.apply(jwtAuthenticationDsl);
 		return http.build();
 	}
 
@@ -151,7 +145,7 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests(auth ->
 						auth.regexMatchers(pattern)
 								.permitAll())
-				.apply(jwtAuthenticationDsl());
+				.apply(jwtAuthenticationDsl);
 		return http.build();
 	}
 
@@ -187,51 +181,8 @@ public class WebSecurityConfig {
 								// One has to be an admin for all the other URLs
 								.antMatchers("/**")
 								.hasAnyAuthority(ROLE_ADMIN))
-				.apply(jwtAuthenticationDsl());
+				.apply(jwtAuthenticationDsl);
 		return http.build();
-	}
-
-
-	@Bean
-	JwtAuthenticationDsl jwtAuthenticationDsl() {
-		return new JwtAuthenticationDsl((JwtFilter) jwtConfig.jwtFilter(), activePivotConfig.contextValueFilter());
-	}
-
-	private static class JwtAuthenticationDsl extends AbstractHttpConfigurer<JwtAuthenticationDsl, HttpSecurity> {
-
-		private final JwtFilter jwtFilter;
-
-		private final ContextValueFilter contextValueFilter;
-
-
-		public JwtAuthenticationDsl(JwtFilter jwtFilter, ContextValueFilter contextValueFilter) {
-			this.jwtFilter = jwtFilter;
-			this.contextValueFilter = contextValueFilter;
-		}
-
-		// We do this in init to prevent the chain to automatically create cors
-		@Override
-		public void init(HttpSecurity builder) throws Exception {
-			super.init(builder);
-			builder
-					// As of Spring Security 4.0, CSRF protection is enabled by default.
-					.csrf(AbstractHttpConfigurer::disable)
-					.cors(Customizer.withDefaults());
-			if (LOGOUT) {
-				// Configure logout URL
-				builder.logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
-						.permitAll()
-						.deleteCookies(COOKIE_NAME)
-						.invalidateHttpSession(true)
-						.logoutSuccessHandler(new NoRedirectLogoutSuccessHandler())
-				);
-			}
-			builder.httpBasic(Customizer.withDefaults());
-			builder.addFilterAfter(contextValueFilter, SwitchUserFilter.class);
-			// To Allow authentication with JW ( Needed for Active UI )
-			builder.addFilterAfter(jwtFilter, CorsFilter.class);
-		}
-
 	}
 
 }
