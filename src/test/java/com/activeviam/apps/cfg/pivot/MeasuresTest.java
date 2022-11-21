@@ -79,7 +79,7 @@ class MeasuresTest {
 		tester.mdxQuery("SELECT" +
 				"  [Measures].[Notional] ON COLUMNS" +
 				"  FROM [Cube]" +
-				"  WHERE [TradeID].[TradeID].[ALL].[AllMember].[T1]")
+				"  WHERE [TradeID].[TradeID].[AllMember].[T1]")
 				.getTester()
 				.hasOnlyOneCell()
 				.containingFormattedValue("100");
