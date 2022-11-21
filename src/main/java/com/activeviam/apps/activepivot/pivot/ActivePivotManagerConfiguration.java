@@ -1,8 +1,6 @@
 package com.activeviam.apps.activepivot.pivot;
 
-import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
-import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
-import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
+import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
@@ -14,14 +12,14 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 @Configuration
 public class ActivePivotManagerConfiguration implements IActivePivotManagerDescriptionConfig {
 
-    private final ICubeConfigurer cubeConfigurer;
-    private final ISchemaSelectionConfigurer schemaConfigurer;
-    private final IDatastoreConfigurer datastoreConfigurer;
+    private final CubeConfigurer cubeConfigurer;
+    private final SchemaSelectionConfigurer schemaConfigurer;
+    private final DatastoreConfigurer datastoreConfigurer;
 
     public ActivePivotManagerConfiguration(
-            ICubeConfigurer cubeConfigurer,
-            ISchemaSelectionConfigurer schemaConfigurer,
-            IDatastoreConfigurer datastoreConfigurer) {
+            CubeConfigurer cubeConfigurer,
+            SchemaSelectionConfigurer schemaConfigurer,
+            DatastoreConfigurer datastoreConfigurer) {
         this.cubeConfigurer = cubeConfigurer;
         this.schemaConfigurer = schemaConfigurer;
         this.datastoreConfigurer = datastoreConfigurer;

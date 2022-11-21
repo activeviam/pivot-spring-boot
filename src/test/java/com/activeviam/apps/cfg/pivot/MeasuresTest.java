@@ -1,13 +1,9 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
 import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
 import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
 import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
-import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -60,9 +56,9 @@ class MeasuresTest {
 		 */
 		@Bean
 		CubeTesterBuilder testerBuilder(
-				IDatastoreConfigurer datastoreConfigurer,
-				ISchemaSelectionConfigurer selectionConfigurer,
-				IDimensionsConfigurer dimensionsConfigurer) {
+				DatastoreConfigurer datastoreConfigurer,
+				SchemaSelectionConfigurer selectionConfigurer,
+				DimensionsConfigurer dimensionsConfigurer) {
 			final var datastoreDescription = datastoreConfigurer.datastoreSchemaDescription();
 			final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
 			final var cubeDescription = StartBuilding.cube()
@@ -81,7 +77,7 @@ class MeasuresTest {
 		}
 
 		@Bean
-		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, IMeasuresConfigurer measures) {
+		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, MeasuresConfigurer measures) {
 			return cubeTesterBuilderExtension
 					.setData(createTestData())
 					.build(measures::add);
@@ -119,13 +115,18 @@ class MeasuresTest {
 	 */
 	@Test
 	void tradesNotionalTotal_withSlicer_test() {
-		tester.mdxQuery("SELECT" +
-						"  [Measures].[Notional] ON COLUMNS" +
-						"  FROM [Cube]" +
-						"  WHERE [TradeID].[TradeID].[ALL].[AllMember].[T1]")
-				.getTester()
-				.hasOnlyOneCell()
-				.containingFormattedValue("100");
+        //		tester.mdxQuery("SELECT" +
+        //						"  [Measures].[Notional] ON COLUMNS" +
+        //						"  FROM [Cube]" +
+        //						"  WHERE [TradeID].[TradeID].[ALL].[AllMember].[T1]")
+        tester.mdxQuery("SELECT\n" + "  NON EMPTY {\n"
+                        + "    [Measures].[Notional]\n"
+                        + "  } ON COLUMNS\n"
+                        + "  FROM [Cube]\n"
+                        + "  WHERE [TradeID].[TradeID].[AllMember].[T1]")
+                .getTester()
+                .hasOnlyOneCell()
+                .containingFormattedValue("100");
 	}
 
 }

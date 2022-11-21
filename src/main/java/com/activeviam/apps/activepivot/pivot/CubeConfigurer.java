@@ -1,10 +1,6 @@
 package com.activeviam.apps.activepivot.pivot;
 
 import java.util.concurrent.TimeUnit;
-
-import com.activeviam.apps.activepivot.configurers.ICubeConfigurer;
-import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
@@ -13,11 +9,11 @@ import org.springframework.stereotype.Component;
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
 
 @Component
-public class CubeConfigurer implements ICubeConfigurer {
+public class CubeConfigurer {
 
-	private final IMeasuresConfigurer measuresConfigurer;
+	private final MeasuresConfigurer measuresConfigurer;
 
-	private final IDimensionsConfigurer dimensionsConfigurer;
+	private final DimensionsConfigurer dimensionsConfigurer;
 
 	public CubeConfigurer(MeasuresConfigurer measuresConfigurer, DimensionsConfigurer dimensionsConfigurer) {
 		this.measuresConfigurer = measuresConfigurer;
@@ -25,12 +21,10 @@ public class CubeConfigurer implements ICubeConfigurer {
 	}
 
 
-	@Override
 	public String cubeName() {
 		return CUBE_NAME;
 	}
 
-	@Override
 	public IActivePivotInstanceDescription cubeDescription() {
 		return StartBuilding.cube(cubeName())
 

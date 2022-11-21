@@ -6,7 +6,6 @@
  */
 package com.activeviam.apps.activepivot.pivot;
 
-import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
@@ -21,8 +20,8 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.*;
  * @author ActiveViam
  */
 @Component
-public class DimensionsConfigurer implements IDimensionsConfigurer {
-    @Override
+public class DimensionsConfigurer {
+
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> add(ICanStartBuildingDimensions builder) {
         return builder.withSingleLevelDimensions(TRADE_ID)
                 .withSingleLevelDimension(TRADE_TICKER)

@@ -1,13 +1,9 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
 import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
 import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
 import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
-import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -43,13 +39,13 @@ class MeasuresTestAlternative {
     }
 
     @Autowired
-    private ISchemaSelectionConfigurer selectionConfigurer;
+    private SchemaSelectionConfigurer selectionConfigurer;
 
     @Autowired
-    private IDimensionsConfigurer dimensionsConfigurer;
+    private DimensionsConfigurer dimensionsConfigurer;
 
     @Autowired
-    private IDatastoreConfigurer datastoreConfigurer;
+    private DatastoreConfigurer datastoreConfigurer;
 
     /**
      * NOTE: by registering the CubeTesterBuilderExtension as an extension, we let it create and destroy the test cube
@@ -66,7 +62,7 @@ class MeasuresTestAlternative {
 
     // This could also be done inside each test if we want to add different measures or different data in each test!
     @BeforeEach
-    public void createTester(IMeasuresConfigurer measuresConfigurer) {
+    public void createTester(MeasuresConfigurer measuresConfigurer) {
         tester = builder
                 // we could add different data here if we wanted!
                 .setData(createTestData())

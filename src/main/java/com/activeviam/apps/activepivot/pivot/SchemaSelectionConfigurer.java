@@ -7,7 +7,6 @@
 package com.activeviam.apps.activepivot.pivot;
 
 import com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants;
-import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
@@ -19,8 +18,8 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.SCHEMA_NAME;
  * @author ActiveViam
  */
 @Component
-public class SchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
-    @Override
+public class SchemaSelectionConfigurer {
+
     public String schemaName() {
         return SCHEMA_NAME;
     }
@@ -31,7 +30,6 @@ public class SchemaSelectionConfigurer implements ISchemaSelectionConfigurer {
      * @param datastoreSchemaDescription : The datastore description
      * @return The created selection description
      */
-    @Override
     public ISelectionDescription createSchemaSelectionDescription(
             IDatastoreSchemaDescription datastoreSchemaDescription) {
         return StartBuilding.selection(datastoreSchemaDescription)
