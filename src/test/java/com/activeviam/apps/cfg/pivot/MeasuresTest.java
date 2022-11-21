@@ -1,13 +1,9 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.activepivot.configurers.IDatastoreConfigurer;
 import com.activeviam.apps.activepivot.data.datastore.DatastoreConfigurer;
 import com.activeviam.apps.activepivot.pivot.DimensionsConfigurer;
 import com.activeviam.apps.activepivot.pivot.MeasuresConfigurer;
 import com.activeviam.apps.activepivot.pivot.SchemaSelectionConfigurer;
-import com.activeviam.apps.activepivot.configurers.IDimensionsConfigurer;
-import com.activeviam.apps.activepivot.configurers.IMeasuresConfigurer;
-import com.activeviam.apps.activepivot.configurers.ISchemaSelectionConfigurer;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -25,8 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 
-import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.TRADES_NOTIONAL;
-import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.TRADES_STORE_NAME;
+import static com.activeviam.apps.activepivot.data.datastore.StoreAndFieldConstants.*;
 import static com.activeviam.apps.activepivot.pivot.CubeConstants.CUBE_NAME;
 
 @SpringJUnitConfig
@@ -60,9 +55,9 @@ class MeasuresTest {
 		 */
 		@Bean
 		CubeTesterBuilder testerBuilder(
-				IDatastoreConfigurer datastoreConfigurer,
-				ISchemaSelectionConfigurer selectionConfigurer,
-				IDimensionsConfigurer dimensionsConfigurer) {
+				DatastoreConfigurer datastoreConfigurer,
+				SchemaSelectionConfigurer selectionConfigurer,
+				DimensionsConfigurer dimensionsConfigurer) {
 			final var datastoreDescription = datastoreConfigurer.datastoreSchemaDescription();
 			final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
 			final var cubeDescription = StartBuilding.cube()
@@ -81,20 +76,10 @@ class MeasuresTest {
 		}
 
 		@Bean
-		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, IMeasuresConfigurer measures) {
+		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, MeasuresConfigurer measures) {
 			return cubeTesterBuilderExtension
-					.setData(createTestData())
+					.setData(TestUtils.createTestData())
 					.build(measures::add);
-		}
-
-		private static ITransactionsBuilder createTestData() {
-			return SimpleTransactionBuilder.start()
-					.inStore(TRADES_STORE_NAME)
-					.add(LocalDate.parse("2019-03-13"), "T1", 100d)
-					.add(LocalDate.parse("2019-03-13"), "T2", 350d)
-					.add(LocalDate.parse("2019-03-13"), "T3", 300d)
-					.end();
-
 		}
 	}
 	@Autowired
@@ -119,13 +104,12 @@ class MeasuresTest {
 	 */
 	@Test
 	void tradesNotionalTotal_withSlicer_test() {
-		tester.mdxQuery("SELECT" +
-						"  [Measures].[Notional] ON COLUMNS" +
-						"  FROM [Cube]" +
-						"  WHERE [TradeID].[TradeID].[ALL].[AllMember].[T1]")
-				.getTester()
-				.hasOnlyOneCell()
-				.containingFormattedValue("100");
+        tester.mdxQuery("SELECT [Measures].[Notional] ON COLUMNS\n"
+                        + "  FROM [Cube]\n"
+                        + "  WHERE [TradeID].[TradeID].[AllMember].[T1]")
+                .getTester()
+                .hasOnlyOneCell()
+                .containingFormattedValue("100");
 	}
 
 }
