@@ -15,9 +15,9 @@
 
     <properties>
         <java.version>11</java.version>
-        <activePivotVersion>5.11.1</activePivotVersion>
+        <activePivotVersion>5.11.5</activePivotVersion>
         <activeui.version>5.0.10</activeui.version>
-        <content-server-ui.version>2.0.1</content-server-ui.version>
+        <admin-ui.version>5.1.1</admin-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -76,11 +76,11 @@
             <artifactId>hibernate-hikaricp</artifactId>
         </dependency>
 
-        <!-- Embedded content server UI -->
+        <!-- Embedded Admin  UI -->
         <dependency>
             <groupId>com.activeviam.tech</groupId>
-            <artifactId>content-server-ui</artifactId>
-            <version>${content-server-ui.version}</version>
+            <artifactId>admin-ui</artifactId>
+            <version>${admin-ui.version}</version>
         </dependency>
 
         <!-- Embedded ActiveUI -->
