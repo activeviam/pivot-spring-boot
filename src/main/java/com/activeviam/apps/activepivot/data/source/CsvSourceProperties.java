@@ -6,11 +6,11 @@
  */
 package com.activeviam.apps.activepivot.data.source;
 
-import com.qfs.msg.csv.ICSVSourceConfiguration;
+import com.qfs.msg.csv.impl.CSVSourceConfiguration;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.Properties;
+import java.nio.file.Path;
 
 /**
  * @author ActiveViam
@@ -25,12 +25,12 @@ public class CsvSourceProperties {
 
 	private boolean synchronousMode = false;
 
-	public Properties toProperties() {
-		final var sourceProps = new Properties();
-		sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, Integer.toString(getParserThreads()));
-		sourceProps.put(ICSVSourceConfiguration.SYNCHRONOUS_MODE_PROPERTY, Boolean.toString(isSynchronousMode()));
-		sourceProps.put(ICSVSourceConfiguration.BUFFER_SIZE_PROPERTY, Integer.toString(getBufferSize()));
-		return sourceProps;
+	public CSVSourceConfiguration.CSVSourceConfigurationBuilder<Path> toProperties() {
+		CSVSourceConfiguration.CSVSourceConfigurationBuilder<Path> sourceConfigurationBuilder = new CSVSourceConfiguration.CSVSourceConfigurationBuilder<>();
+		sourceConfigurationBuilder.parserThreads(getParserThreads());
+		sourceConfigurationBuilder.synchronousMode(Boolean.valueOf(Boolean.toString(isSynchronousMode())));
+		sourceConfigurationBuilder.bufferSize(getBufferSize());
+		return sourceConfigurationBuilder;
 	}
 
 }

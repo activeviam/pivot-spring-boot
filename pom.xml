@@ -15,9 +15,9 @@
 
     <properties>
         <java.version>11</java.version>
-        <active-pivot.version>5.11.4</active-pivot.version>
-        <active-ui.version>5.0.17</active-ui.version>
-        <admin-ui.version>5.0.6</admin-ui.version>
+        <active-pivot.version>6.0.0</active-pivot.version>
+        <active-ui.version>5.1.1</active-ui.version>
+        <admin-ui.version>5.1.1</admin-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -75,6 +75,11 @@
             <artifactId>activeui</artifactId>
             <version>${active-ui.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.activeviam.activeui</groupId>
+            <artifactId>activeui-initial-content</artifactId>
+            <version>${active-ui.version}</version>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>
@@ -82,6 +87,11 @@
             <artifactId>activepivot-copper2-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.activeviam.tech</groupId>
+            <artifactId>datastore-test</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

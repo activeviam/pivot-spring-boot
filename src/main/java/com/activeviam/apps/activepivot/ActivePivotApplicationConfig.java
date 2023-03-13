@@ -1,15 +1,17 @@
 package com.activeviam.apps.activepivot;
 
-import com.activeviam.apps.activepivot.pivot.ActivePivotManagerConfiguration;
+import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
+import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
 import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
+import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.i18n.impl.LocalI18nConfig;
 import com.qfs.server.cfg.impl.*;
-import com.qfs.service.store.impl.NoSecurityDatastoreServiceConfig;
-import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
+
+import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
@@ -21,7 +23,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Spring configuration of the ActivePivot Application services
@@ -31,7 +32,8 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @Import(value = {
 		// Core stuff
-		ActivePivotConfig.class,
+		ActivePivotWithDatastoreConfig.class,
+
 
 		// Cube
 		FullAccessBranchPermissionsManagerConfig.class,
@@ -40,15 +42,20 @@ import java.util.concurrent.TimeUnit;
 		ContentServerWebSocketServicesConfig.class,
 
 		// Data
-		NoSecurityDatastoreServiceConfig.class,
-		DatastoreConfig.class,
+		FullAccessBranchPermissionsManagerConfig.class,
+		NoSecurityDatabaseServiceConfig.class,
+
 
 		// Services
 		ActivePivotServicesConfig.class,
 		ActivePivotWebSocketServicesConfig.class,
 		ActiveViamRestServicesConfig.class,
 		ActivePivotXmlaServletConfig.class,
-		LocalI18nConfig.class
+		LocalI18nConfig.class,
+		// Expose Admin UI
+		AdminUIResourceServerConfig.class,
+		// Expose the ActiveUI web application
+		ActiveUIResourceServerConfig.class,
 })
 public class ActivePivotApplicationConfig {
 
@@ -58,7 +65,7 @@ public class ActivePivotApplicationConfig {
 	}
 
 	@Autowired
-	protected ActivePivotConfig apConfig;
+	protected IActivePivotConfig apConfig;
 
 	/**
 	 * ActivePivot content service spring configuration
@@ -80,7 +87,7 @@ public class ActivePivotApplicationConfig {
 	 */
 	@Bean
 	public JMXEnabler jmxDatastoreEnabler() {
-		return new JMXEnabler(datastoreConfig.datastore());
+		return new JMXEnabler(datastoreConfig.database());
 	}
 
 	/**
@@ -116,9 +123,8 @@ public class ActivePivotApplicationConfig {
 	@Bean
 	public JMXEnabler jmxMemoryMonitoringServiceEnabler() {
 		return new JMXEnabler(new MemoryAnalysisService(
-				this.datastoreConfig.datastore(),
+				this.datastoreConfig.database(),
 				this.apConfig.activePivotManager(),
-				this.datastoreConfig.datastore().getEpochManager(),
 				Paths.get(System.getProperty("java.io.tmpdir"))));
 	}
 

@@ -6,15 +6,12 @@
  */
 package com.activeviam.apps.security;
 
+import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
+import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
 import com.qfs.QfsWebUtils;
 import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
-import com.qfs.jwt.impl.JwtFilter;
-import com.qfs.pivot.servlet.impl.ContextValueFilter;
-import com.qfs.server.cfg.IActivePivotConfig;
-import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.server.cfg.impl.JwtRestServiceConfig;
 import com.qfs.server.cfg.impl.VersionServicesConfig;
-import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +22,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
-import org.springframework.web.filter.CorsFilter;
 
-import static com.activeviam.apps.activepivot.admin.AdminUIWebMvcConfiguration.ADMIN_UI_NAMESPACE;
-import static com.activeviam.apps.activepivot.ui.ActiveUIWebMvcConfiguration.ACTIVEUI_NAMESPACE;
+
 import static com.activeviam.apps.security.BasicAuthenticationConfig.ROLE_ADMIN;
 import static com.activeviam.apps.security.BasicAuthenticationConfig.ROLE_USER;
 import static com.qfs.QfsWebUtils.url;
@@ -87,7 +81,7 @@ public class WebSecurityConfig {
 	@Bean
 	@Order(4)
 	public SecurityFilterChain embeddedCSFilterChain(HttpSecurity http) throws Exception {
-		final String pattern = "/" + ContentServerRestServicesConfig.NAMESPACE;
+		final String pattern = "/" + ContentServerRestServicesConfig.REST_API_URL_PREFIX;
 		http
 				// Only theses URLs must be handled by this HttpSecurity
 				.antMatcher(pattern + "/**")
@@ -136,7 +130,7 @@ public class WebSecurityConfig {
 	@Bean
 	@Order(7)
 	public SecurityFilterChain adminUISecurityFilterChain(HttpSecurity http) throws Exception {
-		final String pattern = "^(.{0}|\\/|\\/" + ADMIN_UI_NAMESPACE + "(\\/.*)?)$";
+		final String pattern = "^(.{0}|\\/|\\/" + AdminUIResourceServerConfig.DEFAULT_NAMESPACE + "(\\/.*)?)$";
 		http
 				// Only theses URLs must be handled by this HttpSecurity
 				.regexMatcher(pattern)
@@ -153,7 +147,7 @@ public class WebSecurityConfig {
 	@Bean
 	@Order(20)
 	public SecurityFilterChain activeUIFilterChain(HttpSecurity http) throws Exception {
-		final var pattern = "^(.{0}|\\/|\\/" + ACTIVEUI_NAMESPACE + "(\\/.*)?)$";
+		final var pattern = "^(.{0}|\\/|\\/" + ActiveUIResourceServerConfig.DEFAULT_NAMESPACE + "(\\/.*)?)$";
 		http
 				.regexMatcher(pattern)
 				.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions().disable())

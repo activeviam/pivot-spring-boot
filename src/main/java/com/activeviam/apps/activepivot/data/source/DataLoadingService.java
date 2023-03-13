@@ -54,7 +54,8 @@ public class DataLoadingService {
             // TODO: we could do this for every file
             csvSource.addTopic(createTopic(TRADES_STORE_NAME, TRADES_STORE_NAME));
             csvSource.addTopic(createTopic(TRADES_DETAILS_STORE_NAME, TRADES_DETAILS_STORE_NAME));
-            csvSource.configure(csvDataProperties.getCsvSourceProperties().toProperties());
+
+            csvSource.configure(csvDataProperties.getCsvSourceProperties().toProperties().build());
         } catch (IOException e) {
             throw new ActiveViamRuntimeException("Failed to create CSV sources", e);
         }

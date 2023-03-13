@@ -27,26 +27,36 @@ import static com.activeviam.apps.activepivot.pivot.CubeConstants.CUBE_NAME;
 @SpringJUnitConfig
 class MeasuresTest {
 
-    /**
-     * 	 NOTE: in this test, we setup the cube and load the data once. We then create a Tester as a bean and reuse it
-     * 	 for each test.
-     * 	 Also note we are not registering the CubeTesterBuilderExtension as an actual Extension (using @RegisterExtension)
-     * 	 because we don't want it to create and destroy the test cube before each test
-     * 	 (see {@link CubeTesterBuilderExtension#beforeEach(ExtensionContext)}
-     * 	 and {@link CubeTesterBuilderExtension#afterEach(ExtensionContext)})
-     *
-     * 	 If for some reason we need to recreate the cube before each test (because e.g. the data has been modified in
-     * 	 the test), then it is better to use the approach in {@link MeasuresTestAlternative}
-     */
-    @TestConfiguration
-    @Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
-    public static class MeasuresTestConfiguration {
+	/**
+	 * 	 NOTE: in this test, we setup the cube and load the data once. We then create a Tester as a bean and reuse it
+	 * 	 for each test.
+	 * 	 Also note we are not registering the CubeTesterBuilderExtension as an actual Extension (using @RegisterExtension)
+	 * 	 because we don't want it to create and destroy the test cube before each test
+	 * 	 (see {@link CubeTesterBuilderExtension#beforeEach(ExtensionContext)}
+	 * 	 and {@link CubeTesterBuilderExtension#afterEach(ExtensionContext)})
+	 *
+	 * 	 If for some reason we need to recreate the cube before each test (because e.g. the data has been modified in
+	 * 	 the test), then it is better to use the approach in {@link MeasuresTestAlternative}
+	 */
+	@TestConfiguration
+	@Import(value = {DatastoreConfigurer.class, SchemaSelectionConfigurer.class, DimensionsConfigurer.class, MeasuresConfigurer.class})
+	public static class MeasuresTestConfiguration {
 
 		// Add customer plugins (e.g. PostProcessors etc) here if needed!
 		static {
 			CopperRegistrations.setupRegistryForTests();
 		}
+		@Autowired
+		private SchemaSelectionConfigurer selectionConfigurer;
 
+		@Autowired
+		private DimensionsConfigurer dimensionsConfigurer;
+
+		@Autowired
+		private DatastoreConfigurer datastoreConfigurer;
+
+		@Autowired
+		private MeasuresConfigurer measuresConfigurer;
 
 		/**
 		 * Creates the tester using the descriptions of the project.
@@ -54,10 +64,7 @@ class MeasuresTest {
 		 * @return The tester.
 		 */
 		@Bean
-		CubeTesterBuilder testerBuilder(
-				DatastoreConfigurer datastoreConfigurer,
-				SchemaSelectionConfigurer selectionConfigurer,
-				DimensionsConfigurer dimensionsConfigurer) {
+		CubeTesterBuilder testerBuilder() {
 			final var datastoreDescription = datastoreConfigurer.datastoreSchemaDescription();
 			final var selectionDescription = selectionConfigurer.createSchemaSelectionDescription(datastoreDescription);
 			final var cubeDescription = StartBuilding.cube()
@@ -71,15 +78,15 @@ class MeasuresTest {
 		}
 
 		@Bean
-		public CubeTesterBuilderExtension cubeTesterBuilderExtension(CubeTesterBuilder cubeTesterBuilder){
-			return new CubeTesterBuilderExtension(cubeTesterBuilder);
+		public CubeTesterBuilderExtension cubeTesterBuilderExtension(){
+			return new CubeTesterBuilderExtension(()->testerBuilder());
 		}
 
 		@Bean
-		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension, MeasuresConfigurer measures) {
+		public CubeTester createTester(CubeTesterBuilderExtension cubeTesterBuilderExtension) {
 			return cubeTesterBuilderExtension
 					.setData(TestUtils.createTestData())
-					.build(measures::add);
+					.build(measuresConfigurer::add);
 		}
 	}
 	@Autowired
@@ -104,12 +111,12 @@ class MeasuresTest {
 	 */
 	@Test
 	void tradesNotionalTotal_withSlicer_test() {
-        tester.mdxQuery("SELECT [Measures].[Notional] ON COLUMNS\n"
-                        + "  FROM [Cube]\n"
-                        + "  WHERE [TradeID].[TradeID].[AllMember].[T1]")
-                .getTester()
-                .hasOnlyOneCell()
-                .containingFormattedValue("100");
+		tester.mdxQuery("SELECT [Measures].[Notional] ON COLUMNS\n"
+						+ "  FROM [Cube]\n"
+						+ "  WHERE [TradeID].[TradeID].[AllMember].[T1]")
+				.getTester()
+				.hasOnlyOneCell()
+				.containingFormattedValue("100");
 	}
 
 }

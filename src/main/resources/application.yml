@@ -46,7 +46,7 @@ active-pivot:
 
 # Properties used to configure the authentication based on JWT.
 # You can execute JwtUtil to generate new keys.
-qfs:
+activeviam:
   jwt:
     key:
       public: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1KH0mXsDJr92kP06qxP/qOH+0+iFTYwjPL1Z+JfdRcTajyUhvJd4U7Gc5AQLc5RD2YwdTWSuo0FVRLajC/vnKm9revA3XXdvFv8IJKX6Ob79+yfje8JIpceNNJBj6TWM2S2NifG3cpASWBPk7T+7fPlpNWeAFw8hT400vQYhSGk9ePuTu2odU99T4KxHXGW1rk/PlAusqdw18Cvq/FzTWEcreW5mG3jQloHvUJWUfs/27EpWnTrMsFMH4ziKh7aKWFhY6sW3WKA6fsM1OgaWDBqKrudcPtBYshMEN1jM0KPhcmLcYo4YBhKSa1cpzna5pY7YFbqpbsvl6OQHSsyOMQIDAQAB
