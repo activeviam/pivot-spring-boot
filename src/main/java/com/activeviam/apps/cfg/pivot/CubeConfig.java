@@ -38,7 +38,7 @@ public class CubeConfig {
 
 				// Aggregate provider
 				.withAggregateProvider()
-				.jit()
+				.bitmap()
 
 				// Shared context values
 				// Query maximum execution time (before timeout cancellation): 30s
@@ -63,7 +63,12 @@ public class CubeConfig {
 
 		return builder
 				.withSingleLevelDimensions(
-						StoreAndFieldConstants.TRADES_TRADEID)
+						StoreAndFieldConstants.TRADES_TRADEID,
+						"Attribute",
+						"Attribute2",
+						"Attribute3",
+						"Attribute4"
+				)
 
 				// Make the AsOfDate hierarchy slicing - we do not aggregate across dates
 				// Also show the dates in reverse order ie most recent date first

@@ -21,7 +21,12 @@ public class DatastoreDescriptionConfig {
 		return new StoreDescriptionBuilder().withStoreName(StoreAndFieldConstants.TRADES_STORE_NAME)
 				.withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE).asKeyField()
 				.withField(StoreAndFieldConstants.TRADES_TRADEID, STRING).asKeyField()
+				.withField("Attribute")
+				.withField("Attribute2")
+				.withField("Attribute3")
+				.withField("Attribute4")
 				.withField(StoreAndFieldConstants.TRADES_NOTIONAL, DOUBLE)
+				.withValuePartitioningOn(StoreAndFieldConstants.ASOFDATE)
 				.build();
 	}
 

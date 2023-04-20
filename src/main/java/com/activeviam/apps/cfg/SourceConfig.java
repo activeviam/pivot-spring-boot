@@ -1,6 +1,7 @@
 package com.activeviam.apps.cfg;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -93,7 +94,16 @@ public class SourceConfig {
 		final var before = System.nanoTime();
 
 		datastore.edit(t -> {
-			csvSource().fetch(csvChannels);
+//			csvSource().fetch(csvChannels);
+			final var tuples = new ArrayList<Object[]>();
+			final var asOfDate = LocalDate.now();
+			for (int i = 0; i < 10; i++) {
+				final var asOf = asOfDate.plusDays(i);
+				for (int j = 0; j < 5000; j++) {
+					tuples.add(buildTuple(asOf, j));
+				}
+			}
+			t.addAll(StoreAndFieldConstants.TRADES_STORE_NAME, tuples);
 			t.forceCommit();
 		});
 		final var elapsed = System.nanoTime() - before;
@@ -101,6 +111,18 @@ public class SourceConfig {
 
 		printStoreSizes();
 		return null;
+	}
+
+	private Object[] buildTuple(LocalDate asOfDate, int id) {
+		return new Object[]{
+				asOfDate,
+				"Trade_" + id,
+				"Attr_" + id % 12,
+				"Attr2_" + id % 12,
+				"Att3_" + id % 100,
+				"Att4_" + id % 7,
+				Math.random()
+		};
 	}
 
 	private ICSVParserConfiguration createParserConfig(final int columnCount, final List<String> columns) {
