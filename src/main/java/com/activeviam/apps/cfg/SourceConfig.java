@@ -129,6 +129,7 @@ public class SourceConfig {
 		StopWatch.get().printTimingLegend();
 
 		// print sizes
-		SchemaPrinter.printStoresSizes(datastore.getHead().getSchema());
+		SchemaPrinter.printStoresSizes(datastore.getMostRecentVersion());
+
 	}
 }
