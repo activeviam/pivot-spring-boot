@@ -89,6 +89,11 @@
             <artifactId>activeui</artifactId>
             <version>${activeui.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.activeviam.activeui</groupId>
+            <artifactId>activeui-initial-content</artifactId>
+            <version>${activeui.version}</version>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>
