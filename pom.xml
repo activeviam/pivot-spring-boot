@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.activeviam.apps</groupId>
-    <artifactId>pivot-springboot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <description>Demo project for Spring Boot</description>
+    <artifactId>pivot-spring-boot</artifactId>
+    <version>6.0.4</version>
+    <description>Template project for Spring Boot</description>
 
     <properties>
         <java.version>11</java.version>
