@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmdx_drawer_extension=self.webpackChunkmdx_drawer_extension||[]).push([[7,179],{7:(e,r,a)=>{a.r(r),a.d(r,{default:()=>d});var t=a(655);const d={activate:async e=>{e.drawers=[...e.drawers,t.drawerQueryContextEditor,t.drawerStateEditor,t.drawerQueryEditor]}}}}]);

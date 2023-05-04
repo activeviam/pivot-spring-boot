@@ -1,6 +1,8 @@
 package com.activeviam.apps.cfg;
 
 import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
+import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
+import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
 import com.qfs.server.cfg.IActivePivotConfig;
@@ -36,8 +38,11 @@ import java.util.concurrent.TimeUnit;
 		SourceConfig.class,
 		PivotManagerConfig.class,
 		LocalContentServiceConfig.class,
+		NoSecurityDatabaseServiceConfig.class,
+		// Expose Admin UI
+		AdminUIResourceServerConfig.class,
+		// Expose the ActiveUI web application
 		ActiveUIResourceServerConfig.class,
-		NoSecurityDatabaseServiceConfig.class
 })
 public class ApplicationConfig {
 

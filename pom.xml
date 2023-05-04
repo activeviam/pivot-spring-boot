@@ -9,15 +9,15 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.activeviam.apps</groupId>
-    <artifactId>pivot-springboot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <description>Demo project for Spring Boot</description>
+    <artifactId>pivot-spring-boot</artifactId>
+    <version>6.0.4</version>
+    <description>Template project for Spring Boot</description>
 
     <properties>
         <java.version>11</java.version>
-        <activePivotVersion>6.0.0</activePivotVersion>
-        <activeui.version>5.0.18</activeui.version>
-        <content-server-ui.version>2.0.1</content-server-ui.version>
+        <activePivotVersion>6.0.4</activePivotVersion>
+        <activeui.version>5.1.3</activeui.version>
+        <admin-ui.version>5.1.1</admin-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -79,14 +79,19 @@
         <!-- Embedded content server UI -->
         <dependency>
             <groupId>com.activeviam.tech</groupId>
-            <artifactId>content-server-ui</artifactId>
-            <version>${content-server-ui.version}</version>
+            <artifactId>admin-ui</artifactId>
+            <version>${admin-ui.version}</version>
         </dependency>
 
         <!-- Embedded ActiveUI -->
         <dependency>
             <groupId>com.activeviam.activeui</groupId>
             <artifactId>activeui</artifactId>
+            <version>${activeui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.activeviam.activeui</groupId>
+            <artifactId>activeui-initial-content</artifactId>
             <version>${activeui.version}</version>
         </dependency>
 

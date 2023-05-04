@@ -2,6 +2,7 @@ package com.activeviam.apps.cfg;
 
 import com.activeviam.collections.impl.Immutable;
 import com.activeviam.security.cfg.ICorsConfig;
+import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
 import com.qfs.content.service.IContentService;
 import com.qfs.jwt.service.IJwtService;
 import com.qfs.server.cfg.ActivePivotRestServices;
@@ -396,7 +397,7 @@ public class SecurityConfig implements ICorsConfig {
         @Override
         protected void doConfigure(HttpSecurity http) throws Exception {
             // Permit all on ActiveUI resources and the root (/) that redirects to ActiveUI index.html.
-            final String pattern = "^(.{0}|\\/|\\/" + ActiveUIResourceServerConfig.UI_NAMESPACE + "(\\/.*)?)$";
+            final String pattern = "^(.{0}|\\/|\\/" + ActiveUIResourceServerConfig.DEFAULT_NAMESPACE + "(\\/.*)?)$";
             http
                     // Only theses URLs must be handled by this HttpSecurity
                     .regexMatcher(pattern)
