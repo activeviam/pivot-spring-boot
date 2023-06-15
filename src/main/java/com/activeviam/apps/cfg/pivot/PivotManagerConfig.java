@@ -36,6 +36,8 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig,
     /* ********** */
     public static final String DOUBLE_FORMATTER = "DOUBLE[#,###.##]";
     public static final String INT_FORMATTER = "INT[#,###]";
+    public static final String TIMESTAMP_FORMATTER = "DATE[HH:mm:ss]";
+
     public static final String NATIVE_MEASURES = "Native Measures";
 
     @Override

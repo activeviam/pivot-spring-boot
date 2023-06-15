@@ -15,7 +15,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <activePivotVersion>6.0.4</activePivotVersion>
+        <activePivotVersion>6.0.5</activePivotVersion>
         <activeui.version>5.1.4</activeui.version>
         <admin-ui.version>5.1.1</admin-ui.version>
     </properties>
