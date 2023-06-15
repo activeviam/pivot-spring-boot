@@ -2,6 +2,7 @@ package com.activeviam.apps.cfg.pivot;
 
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.INT_FORMATTER;
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.NATIVE_MEASURES;
+import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.TIMESTAMP_FORMATTER;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +33,11 @@ public class CubeConfig {
 				.withinFolder(NATIVE_MEASURES)
 				.withAlias("Count")
 				.withFormatter(INT_FORMATTER)
+
+				.withUpdateTimestamp()
+				.withinFolder(NATIVE_MEASURES)
+				.withAlias("Update.Timestamp")
+				.withFormatter(TIMESTAMP_FORMATTER)
 
 				.withCalculations(Measures::build)
 				.withDimensions(CubeConfig::dimensions)
