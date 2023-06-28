@@ -15,9 +15,9 @@
 
     <properties>
         <java.version>11</java.version>
-        <activePivotVersion>5.11.1</activePivotVersion>
-        <activeui.version>5.0.10</activeui.version>
-        <content-server-ui.version>2.0.1</content-server-ui.version>
+        <activePivotVersion>5.11.8</activePivotVersion>
+        <activeui.version>5.1.4</activeui.version>
+        <content-server-ui.version>5.1.1</content-server-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -79,7 +79,7 @@
         <!-- Embedded content server UI -->
         <dependency>
             <groupId>com.activeviam.tech</groupId>
-            <artifactId>content-server-ui</artifactId>
+            <artifactId>admin-ui</artifactId>
             <version>${content-server-ui.version}</version>
         </dependency>
 

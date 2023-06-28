@@ -1,21 +1,6 @@
 package com.activeviam.apps.cfg;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.env.Environment;
-
 import com.activeviam.apps.constants.StoreAndFieldConstants;
-import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.csv.ICSVParserConfiguration;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
@@ -28,6 +13,19 @@ import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.util.timing.impl.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
 
 @Configuration
 public class SourceConfig {
@@ -115,7 +113,7 @@ public class SourceConfig {
 		if (Boolean.parseBoolean(env.getProperty("schema.printer", "true"))) {
 			// display the graph
 			System.setProperty("java.awt.headless", "false");
-			new JungSchemaPrinter(false).print("Datastore", datastore);
+//			new JungSchemaPrinter(false).print("Datastore", datastore);
 		}
 
 		// Print stop watch profiling

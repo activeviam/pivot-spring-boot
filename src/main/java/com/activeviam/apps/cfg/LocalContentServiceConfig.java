@@ -53,22 +53,22 @@ public class LocalContentServiceConfig implements IActivePivotContentServiceConf
 	private static final String UI_FOLDER = "/ui";
 	private static final String CS_INIT_FILE = "ContentServerInit/contentserver-init.json";
 
-	@Bean
-	public void initActiveUIFolder() {
-		final var service = contentService().withRootPrivileges();
-
-		if (service.get(UI_FOLDER) == null) {
-
-			try {
-				new ContentServiceSnapshotter(service).importSubtree(
-						UI_FOLDER, QfsFiles.getResourceAsStream(CS_INIT_FILE));
-				logger.info("Initializing the contentServer with the file: [{}].", CS_INIT_FILE);
-			} catch (final Exception e) {
-				logger.error("Failed to initialize the /ui folder in the contentServer with the file: [{}].", CS_INIT_FILE, e);
-
-				throw new ActiveViamRuntimeException(
-						"Failed to initialize the /ui folder in the contentServer.", e);
-			}
-		}
-	}
+//	@Bean
+//	public void initActiveUIFolder() {
+//		final var service = contentService().withRootPrivileges();
+//
+//		if (service.get(UI_FOLDER) == null) {
+//
+//			try {
+//				new ContentServiceSnapshotter(service).importSubtree(
+//						UI_FOLDER, QfsFiles.getResourceAsStream(CS_INIT_FILE));
+//				logger.info("Initializing the contentServer with the file: [{}].", CS_INIT_FILE);
+//			} catch (final Exception e) {
+//				logger.error("Failed to initialize the /ui folder in the contentServer with the file: [{}].", CS_INIT_FILE, e);
+//
+//				throw new ActiveViamRuntimeException(
+//						"Failed to initialize the /ui folder in the contentServer.", e);
+//			}
+//		}
+//	}
 }
