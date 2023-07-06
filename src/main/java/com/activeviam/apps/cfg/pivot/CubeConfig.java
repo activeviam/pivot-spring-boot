@@ -34,6 +34,7 @@ public class CubeConfig {
 				.withAlias("Count")
 				.withFormatter(INT_FORMATTER)
 
+				// WARN: This will not be available for AggregateProvider `jit`
 				.withUpdateTimestamp()
 				.withinFolder(NATIVE_MEASURES)
 				.withAlias("Update.Timestamp")

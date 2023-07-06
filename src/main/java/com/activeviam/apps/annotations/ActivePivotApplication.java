@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @EnableAutoConfiguration
-@ComponentScan("com.activeviam.apps.controllers")
+@ComponentScan
 @Configuration
 @Import(value = {
         // Core stuff

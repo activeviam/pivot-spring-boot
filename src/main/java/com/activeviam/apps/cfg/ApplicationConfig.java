@@ -10,7 +10,6 @@ import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.impl.ActivePivotServicesConfig;
 import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
-import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
@@ -20,9 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
-
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Spring configuration of the ActivePivot Application services
@@ -48,6 +45,7 @@ public class ApplicationConfig {
 
 	/* Before anything else we statically initialize the Quartet FS Registry. */
 	static {
+		// TODO: Remember to include your package, such as `com.yourdomain`, otherwise the custom plugins from that package will not be available in the application.
 		Registry.setContributionProvider(new ClasspathContributionProvider("com.qfs", "com.quartetfs", "com.activeviam"));
 	}
 
@@ -115,21 +113,6 @@ public class ApplicationConfig {
 	}
 
 	/**
-	 * Example of bean which periodically rebuild the cubes.
-	 * <p>
-	 * This method is OPTIONAL to the function of ActivePivot. In fact, the ActivePivot rebuild feature is used to reclaim space from append only structure of
-	 * ActivePivot. It does not need to be called very often.
-	 *
-	 * @return a bean which periodically rebuild the cubes
-	 */
-	@Bean(initMethod = "start", destroyMethod = "stop")
-	public PeriodicActivePivotSchemaRebuilder rebuild() {
-		return new PeriodicActivePivotSchemaRebuilder().setManager(apConfig.activePivotManager())
-				.setSchemaName(PivotManagerConfig.SCHEMA_NAME)
-				.setPeriod(1, TimeUnit.HOURS);
-	}
-
-	/**
 	 *
 	 * Initialize and start the ActivePivot Manager, after performing all the injections into the ActivePivot plug-ins.
 	 *
@@ -162,7 +145,10 @@ public class ApplicationConfig {
 	 *             any exception that occurred during the injection
 	 */
 	protected void apManagerInitPrerequisitePluginInjections() throws Exception {
-
+        // Example:
+		// var provider = (ICustomAHDescProvider) Registry.getPluginValue(
+		// 								IAnalysisHierarchyDescriptionProvider.class, "YOUR_KEY");
+        // ExtendedPluginInjector.inject(IMultiVersionHierarchy.class, "YOUR_KEY", customService);
 	}
 
 }
