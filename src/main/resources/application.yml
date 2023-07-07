@@ -20,6 +20,9 @@ schema:
 file:
   trades: "data/trades.csv"
 
+# Postpone data loading until application started
+initial-load:
+  postpone: true
 
 # Content hibernate properties
 content:
