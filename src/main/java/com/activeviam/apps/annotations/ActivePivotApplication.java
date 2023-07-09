@@ -1,37 +1,59 @@
 package com.activeviam.apps.annotations;
 
-import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
+import com.activeviam.properties.cfg.impl.ActiveViamPropertyFromSpringConfig;
+import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
+import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
 import com.qfs.server.cfg.i18n.impl.LocalI18nConfig;
-import com.qfs.server.cfg.impl.*;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
+import com.qfs.server.cfg.impl.ActivePivotServicesConfig;
+import com.qfs.server.cfg.impl.ActivePivotWithDatastoreConfig;
+import com.qfs.server.cfg.impl.ActivePivotXmlaServletConfig;
+import com.qfs.server.cfg.impl.ActiveViamRestServicesConfig;
+import com.qfs.server.cfg.impl.ActiveViamWebSocketServicesConfig;
+import com.qfs.server.cfg.impl.FullAccessBranchPermissionsManagerConfig;
+import com.qfs.server.cfg.impl.JwtConfig;
+import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @EnableAutoConfiguration
 @ComponentScan
 @Configuration
-@Import(value = {
-        // Core stuff
-        ActivePivotWithDatastoreConfig.class,
-        FullAccessBranchPermissionsManagerConfig.class,
+@Import(
+        value = {
+            // Configuration to define core properties from Spring
+            ActiveViamPropertyFromSpringConfig.class,
 
-        ActivePivotServicesConfig.class,
-        ActivePivotWebSocketServicesConfig.class,
-        ContentServerWebSocketServicesConfig.class,
-        ActiveViamRestServicesConfig.class,
-        JwtConfig.class,
+            // Core imports
+            ActivePivotWithDatastoreConfig.class,
+            ActivePivotServicesConfig.class,
 
-        ActivePivotXmlaServletConfig.class,
-        LocalI18nConfig.class
-})
-public @interface ActivePivotApplication {
+            // Security
+            JwtConfig.class,
+            FullAccessBranchPermissionsManagerConfig.class,
+            NoSecurityDatabaseServiceConfig.class,
 
-}
+            // REST services for ActiveUI
+            ActiveViamRestServicesConfig.class,
+            ActiveViamWebSocketServicesConfig.class,
+
+            // Configuration for Excel
+            ActivePivotXmlaServletConfig.class,
+
+            // Internationalization
+            LocalI18nConfig.class,
+
+            // Expose Admin UI web application
+            AdminUIResourceServerConfig.class,
+
+            // Expose the Atoti UI web application
+            ActiveUIResourceServerConfig.class,
+        })
+public @interface ActivePivotApplication {}

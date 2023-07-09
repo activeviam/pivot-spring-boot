@@ -1,26 +1,21 @@
 package com.activeviam.apps.cfg.pivot;
 
-import com.activeviam.apps.cfg.DatastoreDescriptionConfig;
+import com.activeviam.apps.cfg.PluginConfig;
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.activeviam.builders.StartBuilding;
-import com.activeviam.desc.build.ICanBuildCubeDescription;
-import com.activeviam.desc.build.ICubeDescriptionBuilder;
-import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
-import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
 import com.qfs.server.cfg.IDatastoreSchemaDescriptionConfig;
-import com.quartetfs.biz.pivot.cube.dimension.IDimension;
-import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.biz.pivot.definitions.IActivePivotManagerDescription;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
-import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
+@RequiredArgsConstructor
 @Configuration
-public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig, IDatastoreSchemaDescriptionConfig {
+@DependsOn(PluginConfig.BEAN_NAME)
+public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig {
 
     /* *********************/
     /* OLAP Property names */
@@ -40,13 +35,16 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig,
 
     public static final String NATIVE_MEASURES = "Native Measures";
 
+    private final IDatastoreSchemaDescriptionConfig datastoreSchemaDescConfig;
+    private final CubeConfig cubeConfig;
+
     @Override
     public IActivePivotManagerDescription managerDescription() {
         return StartBuilding.managerDescription(MANAGER_NAME)
                 .withCatalog(CATALOG_NAME)
                 .containingAllCubes()
                 .withSchema(SCHEMA_NAME)
-                .withSelection(createSchemaSelectionDescription(datastoreSchemaDescription()))
+                .withSelection(createSchemaSelectionDescription())
                 .withCube(createCubeDescription())
                 .build();
     }
@@ -54,24 +52,16 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig,
     /**
      * Creates the {@link ISelectionDescription} for Pivot Schema.
      *
-     * @param datastoreDescription : The datastore description
      * @return The created selection description
      */
-    public static ISelectionDescription createSchemaSelectionDescription(
-            final IDatastoreSchemaDescription datastoreDescription) {
-        return StartBuilding.selection(datastoreDescription)
+    ISelectionDescription createSchemaSelectionDescription() {
+        return StartBuilding.selection(datastoreSchemaDescConfig.datastoreSchemaDescription())
                 .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
                 .withAllFields()
                 .build();
     }
 
-    public static IActivePivotInstanceDescription createCubeDescription() {
-        return CubeConfig.configureCubeBuilder(StartBuilding.cube(CUBE_NAME)).build();
+    IActivePivotInstanceDescription createCubeDescription() {
+        return cubeConfig.configureCubeBuilder(StartBuilding.cube(CUBE_NAME)).build();
     }
-
-    @Override
-    public IDatastoreSchemaDescription datastoreSchemaDescription() {
-        return DatastoreDescriptionConfig.schemaDescription();
-    }
-
 }

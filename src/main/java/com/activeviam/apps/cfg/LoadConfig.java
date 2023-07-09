@@ -29,7 +29,7 @@ public class LoadConfig {
     private final CSVMessageChannelFactory<Path> csvChannelFactory;
     private final boolean schemaPrinter;
 
-    public LoadConfig(
+    LoadConfig(
             IDatastore datastore,
             CSVSource<Path> csvSource,
             CSVMessageChannelFactory<Path> csvChannelFactory,
@@ -74,7 +74,9 @@ public class LoadConfig {
         }
 
         // Print stop watch profiling
-        StopWatch.get().printTimings();
+        final var timingsOutput = new StringBuilder();
+        StopWatch.get().appendTimings(timingsOutput);
+        log.info(timingsOutput.toString());
         StopWatch.get().printTimingLegend();
 
         // print sizes
