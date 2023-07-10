@@ -4,15 +4,11 @@ import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.INT_FORMATTER;
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.NATIVE_MEASURES;
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.TIMESTAMP_FORMATTER;
 
-import com.activeviam.apps.constants.StoreAndFieldConstants;
+import com.activeviam.builders.StartBuilding;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.ICubeDescriptionBuilder;
-import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
-import com.quartetfs.biz.pivot.cube.dimension.IDimension;
-import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
-import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +16,9 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 @Configuration
 public class CubeConfig {
+    public static final String CUBE_NAME = "Cube";
 
+    private final DimensionConfig dimensionConfig;
     private final MeasureConfig measureConfig;
 
     /**
@@ -30,7 +28,7 @@ public class CubeConfig {
      *            The builder to configure
      * @return The configured builder
      */
-    public ICanBuildCubeDescription<IActivePivotInstanceDescription> configureCubeBuilder(
+    private ICanBuildCubeDescription<IActivePivotInstanceDescription> configureCubeBuilder(
             final ICubeDescriptionBuilder.INamedCubeDescriptionBuilder builder) {
 
         return builder.withContributorsCount()
@@ -44,7 +42,7 @@ public class CubeConfig {
                 .withAlias("Update.Timestamp")
                 .withFormatter(TIMESTAMP_FORMATTER)
                 .withCalculations(measureConfig::build)
-                .withDimensions(this::dimensions)
+                .withDimensions(dimensionConfig::build)
 
                 // Aggregate provider
                 .withAggregateProvider()
@@ -61,25 +59,7 @@ public class CubeConfig {
                 .end();
     }
 
-    /**
-     * Adds the dimensions descriptions to the input builder.
-     *
-     * @param builder
-     *            The cube builder
-     * @return The builder for chained calls
-     */
-    public ICanBuildCubeDescription<IActivePivotInstanceDescription> dimensions(ICanStartBuildingDimensions builder) {
-
-        return builder.withSingleLevelDimensions(StoreAndFieldConstants.TRADES_TRADEID)
-
-                // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
-                // Also show the dates in reverse order ie most recent date first
-                .withDimension(StoreAndFieldConstants.ASOFDATE)
-                .withType(IDimension.DimensionType.TIME)
-                .withHierarchy(StoreAndFieldConstants.ASOFDATE)
-                .slicing()
-                .withLevelOfSameName()
-                .withType(ILevelInfo.LevelType.TIME)
-                .withComparator(ReverseOrderComparator.type);
+    public IActivePivotInstanceDescription createCubeDescription() {
+        return configureCubeBuilder(StartBuilding.cube(CUBE_NAME)).build();
     }
 }

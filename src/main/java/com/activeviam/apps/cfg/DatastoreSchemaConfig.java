@@ -14,10 +14,12 @@ import com.qfs.server.cfg.IDatastoreSchemaDescriptionConfig;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DatastoreDescriptionConfig implements IDatastoreSchemaDescriptionConfig {
+@RequiredArgsConstructor
+public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig {
 
     private IStoreDescription createTradesStoreDescription() {
         return StoreDescription.builder()
