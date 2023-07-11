@@ -63,7 +63,8 @@ public class CubeConfig {
 
 		return builder
 				.withSingleLevelDimensions(
-						StoreAndFieldConstants.TRADES_TRADEID)
+						StoreAndFieldConstants.TRADES_TRADEID,
+						"Level")
 
 				// Make the AsOfDate hierarchy slicing - we do not aggregate across dates
 				// Also show the dates in reverse order ie most recent date first
