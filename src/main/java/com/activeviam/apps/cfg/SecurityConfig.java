@@ -1,5 +1,8 @@
 package com.activeviam.apps.cfg;
 
+import static com.qfs.QfsWebUtils.url;
+import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
+
 import com.activeviam.collections.impl.Immutable;
 import com.activeviam.security.cfg.ICorsConfig;
 import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
@@ -14,6 +17,9 @@ import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
 import com.quartetfs.biz.pivot.security.IAuthorityComparator;
 import com.quartetfs.biz.pivot.security.impl.AuthorityComparatorAdapter;
 import com.quartetfs.fwk.ordering.impl.CustomComparator;
+import java.util.Arrays;
+import java.util.List;
+import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -26,16 +32,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
@@ -44,17 +44,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
-import javax.servlet.Filter;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.qfs.QfsWebUtils.url;
-import static com.qfs.server.cfg.impl.ActivePivotRemotingServicesConfig.*;
-import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
-import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
-import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.*;
-
 
 @EnableGlobalAuthentication
 @EnableWebSecurity(debug = false)
@@ -98,10 +87,8 @@ public class SecurityConfig implements ICorsConfig {
     @Autowired
     protected IJwtConfig jwtConfig;
 
-
     @Autowired
     UserDetailsServiceConfig userDetailsService;
-
 
     /**
      * Returns the default {@link AuthenticationEntryPoint} to use
