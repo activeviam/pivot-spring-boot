@@ -1,5 +1,7 @@
 package com.activeviam.apps.cfg;
 
+import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_ADMIN;
+
 import com.activeviam.spring.config.activeui.ActiveUIContentServiceUtil;
 import com.qfs.content.service.IContentService;
 import com.qfs.pivot.content.IActivePivotContentService;
@@ -48,7 +50,7 @@ public class LocalContentServiceConfig implements IActivePivotContentServiceConf
                 .withAudit()
                 .withCacheForEntitlements(
                         Long.parseLong(env.getProperty("contentServer.security.cache.entitlementsTTL", "3600")))
-                .needInitialization(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_ADMIN)
+                .needInitialization(ROLE_ADMIN, ROLE_ADMIN)
                 .build();
     }
 }

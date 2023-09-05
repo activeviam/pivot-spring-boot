@@ -10,13 +10,13 @@ import com.qfs.server.cfg.impl.ActivePivotXmlaServletConfig;
 import com.qfs.server.cfg.impl.ActiveViamRestServicesConfig;
 import com.qfs.server.cfg.impl.ActiveViamWebSocketServicesConfig;
 import com.qfs.server.cfg.impl.FullAccessBranchPermissionsManagerConfig;
-import com.qfs.server.cfg.impl.JwtConfig;
 import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @EnableAutoConfiguration
 @ComponentScan
+@ConfigurationPropertiesScan
 @Configuration
 @Import(
         value = {
@@ -36,7 +37,6 @@ import org.springframework.context.annotation.Import;
             ActivePivotServicesConfig.class,
 
             // Security
-            JwtConfig.class,
             FullAccessBranchPermissionsManagerConfig.class,
             NoSecurityDatabaseServiceConfig.class,
 
