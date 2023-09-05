@@ -1,8 +1,5 @@
 package com.activeviam.apps.cfg.security;
 
-import static com.activeviam.apps.cfg.security.TechnicalUsersProperties.MONITOR_USERNAME;
-import static com.activeviam.apps.cfg.security.TechnicalUsersProperties.PIVOT_USERNAME;
-
 import com.qfs.content.service.IContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +12,11 @@ import org.springframework.security.provisioning.UserDetailsManager;
 @Configuration
 @RequiredArgsConstructor
 public class TechnicalAuthenticationSecurityConfig {
+    public static final String PIVOT_TECH_USER_LOGIN = "pivot";
+    public static final String SBA_TECH_USER_LOGIN = "sba";
 
     private final PasswordEncoder passwordEncoder;
-    private final TechnicalUsersProperties technicalUsers;
+    private final SecurityTechUserPasswordsProperties techUserPasswordsProperties;
 
     @Bean
     public AuthenticationProvider technicalAuthenticationProvider() {
@@ -31,13 +30,12 @@ public class TechnicalAuthenticationSecurityConfig {
     public UserDetailsManager technicalUserDetailsService() {
         var builder = new InMemoryUserDetailsManagerBuilder();
         // Technical user for ActivePivot server
-        builder.passwordEncoder(passwordEncoder)
-                .withUser(PIVOT_USERNAME)
-                .password(passwordEncoder.encode(technicalUsers.getPivot()))
-                .authorities(SecurityConstants.ROLE_TECH, IContentService.ROLE_ROOT)
-                .and()
-                .withUser(MONITOR_USERNAME)
-                .password(passwordEncoder.encode(technicalUsers.getMonitor()))
+        builder.passwordEncoder(passwordEncoder);
+        builder.withUser(PIVOT_TECH_USER_LOGIN)
+                .password(techUserPasswordsProperties.getPivot())
+                .authorities(SecurityConstants.ROLE_TECH, IContentService.ROLE_ROOT);
+        builder.withUser(SBA_TECH_USER_LOGIN)
+                .password(techUserPasswordsProperties.getSba())
                 .authorities(SecurityConstants.ROLE_ACTUATOR);
         return builder.build();
     }

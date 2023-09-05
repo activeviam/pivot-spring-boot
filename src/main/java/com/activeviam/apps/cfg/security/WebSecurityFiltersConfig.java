@@ -101,7 +101,6 @@ public class WebSecurityFiltersConfig {
                         .requestMatchers(
                                 mvc.pattern(url(ContentServerRestServicesConfig.REST_API_URL_PREFIX, WILDCARD)))
                         .hasAnyAuthority(ROLE_USER)
-
                         // Content server websocket
                         .requestMatchers(mvc.pattern(ContentServerWebSocketServicesConfig.CONTENT_ENDPOINT))
                         .hasAnyAuthority(ROLE_USER)
