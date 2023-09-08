@@ -20,10 +20,10 @@ schema:
 file:
   trades: "data/trades.csv"
 
-# Technical user credentials
-tech-user.passwords:
-  pivot: pivot
-  sba: s3cret
+tech-user:
+  passwords:
+    pivot: "{bcrypt}$2a$10$87iR319r7HvSvs5k9.jutuDzjuKqO6riilSjl/9u2LGDpn4/7.1he"
+    sba: "{bcrypt}$2a$10$QX8Im2Qh3s/qS9ypLlpEnuaVXtQTUz1XNS7goa9Ya7ofcZyuo2IdW"
 
 # Properties used to configure the authentication based on JWT.
 # You can execute JwtUtil to generate new keys.

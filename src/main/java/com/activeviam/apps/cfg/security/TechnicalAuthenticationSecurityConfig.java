@@ -32,10 +32,10 @@ public class TechnicalAuthenticationSecurityConfig {
         // Technical user for ActivePivot server
         builder.passwordEncoder(passwordEncoder);
         builder.withUser(PIVOT_TECH_USER_LOGIN)
-                .password(passwordEncoder.encode(techUserPasswordsProperties.getPivot()))
+                .password(techUserPasswordsProperties.getPivot())
                 .authorities(SecurityConstants.ROLE_TECH, IContentService.ROLE_ROOT);
         builder.withUser(SBA_TECH_USER_LOGIN)
-                .password(passwordEncoder.encode(techUserPasswordsProperties.getSba()))
+                .password(techUserPasswordsProperties.getSba())
                 .authorities(SecurityConstants.ROLE_ACTUATOR);
         return builder.build();
     }
