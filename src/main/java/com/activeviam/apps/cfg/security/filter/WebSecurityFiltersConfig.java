@@ -113,16 +113,7 @@ public class WebSecurityFiltersConfig {
 
                             // datastore rest service to delete branches (no restrictions) and see branches names (no restrictions)
                             auth.requestMatchers(mvc.pattern(url(
-                                    REST_API_URL_PREFIX,
-                                    IDatabaseRestService.DATABASE_NAMESPACE,
-                                    IDatabaseRestService.BRANCHES,
-                                    WILDCARD)))
-                            .hasAnyAuthority(ROLE_USER)
-                                    .requestMatchers(mvc.pattern(url(
-                                    REST_API_URL_PREFIX,
-                                    IDatabaseRestService.DATABASE_NAMESPACE,
-                                    IDatabaseRestService.DISCOVERY,
-                                    IDatabaseRestService.BRANCHES,
+                                    IDatabaseRestService.DATABASE_API_URL_PREFIX,
                                     WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
