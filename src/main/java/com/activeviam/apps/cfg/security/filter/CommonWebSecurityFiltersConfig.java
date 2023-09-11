@@ -46,7 +46,7 @@ public class CommonWebSecurityFiltersConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configure CORS
                 .cors(Customizer.withDefaults())
-                .securityMatcher(mvc.servletPath("actuator").pattern(url(WILDCARD)))
+                .securityMatcher(mvc.pattern(url("actuator", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.anyRequest().hasAnyAuthority(ROLE_ACTUATOR))
                 .httpBasic(Customizer.withDefaults())
                 .build();
