@@ -111,7 +111,7 @@ public class WebSecurityFiltersConfig {
                             auth.requestMatchers(mvc.pattern(url(WEB_SOCKET_ENDPOINT, WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
-                            // datastore rest service to delete branches (no restrictions) and see branches names (no restrictions)
+                            // datastore rest service
                             auth.requestMatchers(mvc.pattern(url(
                                     IDatabaseRestService.DATABASE_API_URL_PREFIX,
                                     WILDCARD)))
