@@ -74,6 +74,12 @@
             <version>${activepivot.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.activeviam.apm</groupId>
+            <artifactId>apm</artifactId>
+            <version>${activepivot.version}</version>
+        </dependency>
+
         <!-- Dependencies for the content service persistence -->
         <dependency>
             <groupId>org.hibernate</groupId>
