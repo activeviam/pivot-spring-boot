@@ -31,7 +31,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.kerberos.web.authentication.SpnegoAuthenticationProcessingFilter;
+import org.springframework.security.kerberos.web.authentication.SpnegoEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
@@ -40,6 +43,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @RequiredArgsConstructor
 public class WebSecurityFiltersConfig {
     private final JwtAuthenticationConfigurer jwtAuthenticationConfigurer;
+    private final SpnegoAuthenticationProcessingFilter spnegoAuthenticationProcessingFilter;
 
     @Scope("prototype")
     @Bean
@@ -84,6 +88,45 @@ public class WebSecurityFiltersConfig {
                         httpSecurityHeadersConfigurer.frameOptions().disable())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .build();
+    }
+
+    @Bean
+    @Order(30)
+    public SecurityFilterChain kerberosFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+        http.securityMatcher(mvc.pattern(url("kerb", WILDCARD)))
+                .exceptionHandling()
+                .authenticationEntryPoint(new SpnegoEntryPoint("/kerb/login"))
+                .and()
+                .authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern("/"), mvc.pattern("/home"))
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
+                .formLogin()
+                .loginPage("/kerb/login")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll()
+                .and()
+                .addFilterBefore(spnegoAuthenticationProcessingFilter, BasicAuthenticationFilter.class);
+        return http.build();
+//        http.securityMatcher(mvc.pattern(url("kerb", "home")))
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+//                http.securityMatcher(mvc.pattern(url("kerb", WILDCARD)))
+//                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+//                .exceptionHandling()
+//                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+//                .authenticationEntryPoint(new SpnegoEntryPoint("/kerb/login"))
+//                .and()
+//                .formLogin()
+//                .loginPage("/kerb/login")
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll()
+//                .and()
+//                .addFilterBefore(spnegoAuthenticationProcessingFilter, BasicAuthenticationFilter.class);
+//        return http.build();
     }
 
     @Bean

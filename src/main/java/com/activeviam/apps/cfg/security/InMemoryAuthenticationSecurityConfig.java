@@ -12,7 +12,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class InMemoryAuthenticationSecurityConfig {
     private static final String ADMIN = "admin";

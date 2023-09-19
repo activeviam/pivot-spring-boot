@@ -60,3 +60,11 @@ contentServer:
 #  remote:
 #    api:
 #      uri:
+
+# make sure the same data is configured in KerberosMiniKdc
+# otherwise configuration/communication error will occur
+kerberos:
+  service-principal: "HTTP/localhost"
+  user-principal: "client/localhost"
+  keytab-location: "file:^project.basedir^/krb-test-workdir/local.keytab"
+  access-url: "http://localhost:${server.port}/endpoint"
