@@ -1,6 +1,21 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg;
 
 import static com.activeviam.apps.cfg.SourceConfig.TRADES_TOPIC;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.gui.impl.JungSchemaPrinter;
@@ -12,14 +27,8 @@ import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.util.timing.impl.StopWatch;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.EventListener;
 
 @Slf4j
 @Configuration

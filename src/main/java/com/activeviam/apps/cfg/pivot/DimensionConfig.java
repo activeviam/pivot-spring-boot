@@ -1,4 +1,12 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg.pivot;
+
+import org.springframework.context.annotation.Configuration;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
@@ -7,8 +15,8 @@ import com.quartetfs.biz.pivot.cube.dimension.IDimension;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration

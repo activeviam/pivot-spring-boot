@@ -1,0 +1,13 @@
+*.xml
+shelf
+!inspectionProfiles/*.xml
+!palantir-java-format.xml
+
+codeStyles/*.xml
+!codeStyles/codeStyleConfig.xml
+!codeStyles/Project.xml
+copyright/*.xml
+!copyright/ActiveViam.xml
+!copyright/profiles_settings.xml
+!runConfigurations/*.xml
+sonarlint

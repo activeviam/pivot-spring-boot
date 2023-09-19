@@ -5,13 +5,24 @@ server:
     enabled: true
     mime-types: application/json,application/xml,application/javascript,text/html,text/xml,text/plain,text/css,text/javascript,image/jpeg,image/png,image/svg+xml
 
+spring:
+  application:
+    name: "Pivot Spring Boot"
+  main:
+    banner-mode: log
+    allow-bean-definition-overriding: true
+  jmx.enabled: true
+  output:
+    ansi:
+      enabled: ALWAYS
+
 # Spring Boot actuator config
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-        
+
 # Print the stores schema
 schema:
   printer: false
