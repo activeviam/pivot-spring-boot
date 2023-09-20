@@ -1,9 +1,11 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg.security;
 
-import com.activeviam.apps.cfg.security.filter.IUserLogoutSuccessHandler;
-import com.qfs.server.cfg.IActivePivotConfig;
-import com.qfs.server.cfg.impl.JwtConfig;
-import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -16,6 +18,11 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CorsFilter;
+
+import com.activeviam.apps.cfg.security.filter.IUserLogoutSuccessHandler;
+import com.qfs.server.cfg.IActivePivotConfig;
+import com.qfs.server.cfg.impl.JwtConfig;
+import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
 
 @Component
 public class JwtAuthenticationConfigurer extends AbstractHttpConfigurer<JwtAuthenticationConfigurer, HttpSecurity> {

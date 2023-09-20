@@ -1,17 +1,16 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg.pivot;
 
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_NOTIONAL;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
 
-import com.activeviam.apps.cfg.DatastoreSchemaConfig;
-import com.activeviam.apps.cfg.DatastoreSelectionConfig;
-import com.activeviam.builders.StartBuilding;
-import com.activeviam.copper.builders.ITransactionsBuilder;
-import com.activeviam.copper.builders.impl.SimpleTransactionBuilder;
-import com.activeviam.copper.testing.CubeTester;
-import com.activeviam.copper.testing.CubeTesterBuilder;
-import com.activeviam.copper.testing.CubeTesterBuilderExtension;
 import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -21,16 +20,17 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import com.activeviam.apps.cfg.DatastoreSchemaConfig;
+import com.activeviam.apps.cfg.DatastoreSelectionConfig;
+import com.activeviam.builders.StartBuilding;
+import com.activeviam.copper.builders.ITransactionsBuilder;
+import com.activeviam.copper.builders.impl.SimpleTransactionBuilder;
+import com.activeviam.copper.testing.CubeTester;
+import com.activeviam.copper.testing.CubeTesterBuilder;
+import com.activeviam.copper.testing.CubeTesterBuilderExtension;
+
 @SpringJUnitConfig
 class AlternativeMeasuresTest {
-
-    @TestConfiguration
-    @Import({
-        MeasureConfig.class,
-    })
-    public static class Configuration {
-        // Mock beans and services here
-    }
 
     /**
      * NOTE: by registering the CubeTesterBuilderExtension as an extension, we let it create and destroy the test cube
@@ -99,5 +99,13 @@ class AlternativeMeasuresTest {
                 .getTester()
                 .hasOnlyOneCellWith()
                 .containing(1150d);
+    }
+
+    @TestConfiguration
+    @Import({
+        MeasureConfig.class,
+    })
+    public static class Configuration {
+        // Mock beans and services here
     }
 }

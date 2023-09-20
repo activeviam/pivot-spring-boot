@@ -1,0 +1,7 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="keyword" value="\(C\) ActiveViam" />
+    <option name="notice" value="Copyright (C) ActiveViam &amp;#36;originalComment.match(&quot;Copyright \(C\) ActiveViam (\d+)&quot;, 1, &quot;-&quot;)&amp;#36;today.year&#10;ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY&#10;property of ActiveViam Limited. Any unauthorized use,&#10;reproduction or transfer of this material is strictly prohibited" />
+    <option name="myName" value="ActiveViam" />
+  </copyright>
+</component>

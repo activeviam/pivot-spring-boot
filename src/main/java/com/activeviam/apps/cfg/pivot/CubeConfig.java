@@ -1,17 +1,26 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg.pivot;
 
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.INT_FORMATTER;
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.NATIVE_MEASURES;
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.TIMESTAMP_FORMATTER;
 
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.context.annotation.Configuration;
+
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.ICubeDescriptionBuilder;
 import com.quartetfs.biz.pivot.context.impl.QueriesTimeLimit;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
-import java.util.concurrent.TimeUnit;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration

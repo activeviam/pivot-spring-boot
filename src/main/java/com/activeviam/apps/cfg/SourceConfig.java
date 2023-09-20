@@ -1,4 +1,20 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg;
+
+import java.nio.file.Path;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.msg.csv.ICSVParserConfiguration;
@@ -9,18 +25,11 @@ import com.qfs.msg.csv.impl.CSVSourceConfiguration;
 import com.qfs.platform.IPlatform;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
-import java.nio.file.Path;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 @Configuration
 public class SourceConfig {
 
+    public static final String TRADES_TOPIC = "Trades";
     private static final Logger logger = LoggerFactory.getLogger(SourceConfig.class);
 
     @Autowired
@@ -28,8 +37,6 @@ public class SourceConfig {
 
     @Autowired
     protected IDatastore datastore;
-
-    public static final String TRADES_TOPIC = "Trades";
 
     /*
      * **************************** CSV Source *********************************

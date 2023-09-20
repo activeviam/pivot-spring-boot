@@ -1,5 +1,18 @@
-/target/
+**/target/
+**/node_modules/
 !.mvn/wrapper/maven-wrapper.jar
+deployment-v*
+*.mv.db
+**/*.mv.db
+*.trace.db
+**/package-lock.json
+**/yarn.lock
+**/.yarnrc
+**/*.log
+**/*.log.gz
+activepivot/src/main/resources/data/
+activepivot/src/main/resources/data_poc/new_data/mc.csv
+content-server-temp/
 
 ### STS ###
 .apt_generated
@@ -11,10 +24,12 @@
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
 *.iws
 *.iml
 *.ipr
+
+### Eclipse ###
+/.metadata/
 
 ### NetBeans ###
 /nbproject/private/
@@ -23,3 +38,4 @@
 /nbdist/
 /.nb-gradle/
 /build/
+data.zip

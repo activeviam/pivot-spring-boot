@@ -1,13 +1,21 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg.pivot;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import com.activeviam.apps.cfg.DatastoreSelectionConfig;
 import com.activeviam.apps.cfg.PluginConfig;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
 import com.quartetfs.biz.pivot.definitions.IActivePivotManagerDescription;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 @RequiredArgsConstructor
 @Configuration

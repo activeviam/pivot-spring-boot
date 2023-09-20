@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Example LOGBACK Configuration File http://logback.qos.ch/manual/configuration.html -->
-<configuration debug="false">
+<configuration debug="true">
+  <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+  <jmxConfigurator/>
+  <conversionRule conversionWord="user" converterClass="com.activeviam.apm.logging.impl.LogUserConverter"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%n%date{yyyy-MM-dd HH:mm:ss.SSS z} %relative [%thread] %logger - %level: %message %throwable</pattern>
-        </encoder>
-    </appender>
+  <property name="PID" value="[%user]"/>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <logger name="org.springframework.security" level="DEBUG"/>
+  <!-- ############################################################################# -->
+  <!-- # Explicit configuration of the various loggers (core and custom)           # -->
+  <!-- #                                                                           # -->
+  <!-- # Available levels are:                                                     # -->
+  <!-- # ERROR (highest filtering)                                                 # -->
+  <!-- # WARN                                                                      # -->
+  <!-- # INFO                                                                      # -->
+  <!-- # DEBUG                                                                     # -->
+  <!-- # TRACE (lowest filtering)                                                  # -->
+  <!-- # ALL (lowest filtering)                                                    # -->
+  <!-- ############################################################################# -->
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT" />
-    </root>
+  <logger name="brave.Tracer" level="ERROR"/>
 
-    <!--
-        Apply the levels defined here to the JUL loggers.
-        Has to be called at the end, once all the loggers are defined
-    -->
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+  </root>
 
-    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
-        <resetJUL>true</resetJUL>
-    </contextListener>
+  <!--
+      Apply the levels defined here to the JUL loggers.
+      Has to be called at the end, once all the loggers are defined
+  -->
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <resetJUL>true</resetJUL>
+  </contextListener>
 </configuration>

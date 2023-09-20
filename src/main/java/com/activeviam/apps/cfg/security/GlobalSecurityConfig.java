@@ -1,16 +1,14 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg.security;
 
-import com.qfs.jwt.service.IJwtService;
-import com.qfs.security.spring.impl.CompositeUserDetailsService;
-import com.quartetfs.biz.pivot.security.IAuthorityComparator;
-import com.quartetfs.biz.pivot.security.impl.AuthorityComparatorAdapter;
-import com.quartetfs.biz.pivot.security.impl.UserDetailsServiceWrapper;
-import com.quartetfs.fwk.ordering.impl.CustomComparator;
-import com.quartetfs.fwk.security.IUserDetailsService;
 import java.util.Arrays;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,6 +18,17 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.UserDetailsManager;
+
+import com.qfs.jwt.service.IJwtService;
+import com.qfs.security.spring.impl.CompositeUserDetailsService;
+import com.quartetfs.biz.pivot.security.IAuthorityComparator;
+import com.quartetfs.biz.pivot.security.impl.AuthorityComparatorAdapter;
+import com.quartetfs.biz.pivot.security.impl.UserDetailsServiceWrapper;
+import com.quartetfs.fwk.ordering.impl.CustomComparator;
+import com.quartetfs.fwk.security.IUserDetailsService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @EnableGlobalAuthentication
 @Configuration

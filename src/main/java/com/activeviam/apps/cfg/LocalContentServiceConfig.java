@@ -1,20 +1,30 @@
+/*
+ * Copyright (C) ActiveViam 2023
+ * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+ * property of ActiveViam Limited. Any unauthorized use,
+ * reproduction or transfer of this material is strictly prohibited
+ */
 package com.activeviam.apps.cfg;
 
 import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_ADMIN;
 
-import com.activeviam.spring.config.activeui.ActiveUIContentServiceUtil;
-import com.qfs.content.service.IContentService;
-import com.qfs.pivot.content.IActivePivotContentService;
-import com.qfs.pivot.content.impl.ActivePivotContentServiceBuilder;
-import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
+
+import com.activeviam.pivot.tracing.TracingConfig;
+import com.activeviam.spring.config.activeui.ActiveUIContentServiceUtil;
+import com.qfs.content.service.IContentService;
+import com.qfs.pivot.content.IActivePivotContentService;
+import com.qfs.pivot.content.impl.ActivePivotContentServiceBuilder;
+import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 
 @Configuration
 public class LocalContentServiceConfig implements IActivePivotContentServiceConfig {
@@ -32,6 +42,7 @@ public class LocalContentServiceConfig implements IActivePivotContentServiceConf
 
     @Override
     @Bean
+    @DependsOn(TracingConfig.TRACING_BEAN)
     public IContentService contentService() {
         final var contentService =
                 activePivotContentService().getContentService().getUnderlying();

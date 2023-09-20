@@ -4,24 +4,17 @@
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-
 package com.activeviam.apps.cfg.security.filter;
 
+import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_ADMIN;
+import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_TECH;
+import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_USER;
 import static com.activeviam.apps.cfg.security.filter.CommonWebSecurityFiltersConfig.WILDCARD;
-import static com.activeviam.apps.cfg.security.SecurityConstants.*;
 import static com.qfs.QfsWebUtils.url;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
 import static com.qfs.server.cfg.impl.ActivePivotWebSocketServicesConfig.WEB_SOCKET_ENDPOINT;
 
-import com.activeviam.apps.cfg.security.JwtAuthenticationConfigurer;
-import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
-
-import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
-import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
-import com.qfs.content.rest.impl.ARestContentServer;
-import com.qfs.service.store.IDatabaseRestService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -34,6 +27,15 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import com.activeviam.apps.cfg.security.JwtAuthenticationConfigurer;
+import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
+import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
+import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
+import com.qfs.content.rest.impl.ARestContentServer;
+import com.qfs.service.store.IDatabaseRestService;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -91,39 +93,36 @@ public class WebSecurityFiltersConfig {
     public SecurityFilterChain coreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
         http.authorizeHttpRequests(auth -> {
-                            // Allow OPTIONS requests
-                            auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(REST_API_URL_PREFIX, WILDCARD)))
+                    // Allow OPTIONS requests
+                    auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(REST_API_URL_PREFIX, WILDCARD)))
                             .permitAll();
 
-                            // The ping service is temporarily authenticated (see PIVOT-3149)
-                            auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, PING_SUFFIX)))
+                    // The ping service is temporarily authenticated (see PIVOT-3149)
+                    auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, PING_SUFFIX)))
                             .hasAnyAuthority(ROLE_USER, ROLE_TECH);
 
-                            // Content server rest call
-                            auth.requestMatchers(
+                    // Content server rest call
+                    auth.requestMatchers(
                                     mvc.pattern(url(ContentServerRestServicesConfig.REST_API_URL_PREFIX, WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
-                            // Content server websocket
-                            auth.requestMatchers(mvc.pattern(ContentServerWebSocketServicesConfig.CONTENT_ENDPOINT))
+                    // Content server websocket
+                    auth.requestMatchers(mvc.pattern(ContentServerWebSocketServicesConfig.CONTENT_ENDPOINT))
                             .hasAnyAuthority(ROLE_USER);
 
-                            // pivot websocket
-                            auth.requestMatchers(mvc.pattern(url(WEB_SOCKET_ENDPOINT, WILDCARD)))
+                    // pivot websocket
+                    auth.requestMatchers(mvc.pattern(url(WEB_SOCKET_ENDPOINT, WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
-                            // datastore rest service
-                            auth.requestMatchers(mvc.pattern(url(
-                                    IDatabaseRestService.DATABASE_API_URL_PREFIX,
-                                    WILDCARD)))
+                    // datastore rest service
+                    auth.requestMatchers(mvc.pattern(url(IDatabaseRestService.DATABASE_API_URL_PREFIX, WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
-                            // No existing constant for cube in the core
-                            auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, "cube", WILDCARD)))
+                    // No existing constant for cube in the core
+                    auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, "cube", WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
-                            // One has to be an admin for all the other URLs
-                            auth.requestMatchers(mvc.pattern(url(WILDCARD)))
-                            .hasAnyAuthority(ROLE_ADMIN);
+                    // One has to be an admin for all the other URLs
+                    auth.requestMatchers(mvc.pattern(url(WILDCARD))).hasAnyAuthority(ROLE_ADMIN);
                 })
                 .apply(jwtAuthenticationConfigurer);
         return http.build();

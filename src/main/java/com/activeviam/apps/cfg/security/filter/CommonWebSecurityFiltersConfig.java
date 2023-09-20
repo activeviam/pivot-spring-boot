@@ -4,19 +4,10 @@
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-
 package com.activeviam.apps.cfg.security.filter;
 
 import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_ACTUATOR;
-import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_ADMIN;
 import static com.qfs.QfsWebUtils.url;
-
-import com.activeviam.apps.cfg.security.JwtAuthenticationConfigurer;
-import com.activeviam.apps.cfg.security.SecurityConstants;
-import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
-import com.qfs.server.cfg.impl.JwtRestServiceConfig;
-import com.qfs.server.cfg.impl.VersionServicesConfig;
-import lombok.RequiredArgsConstructor;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
@@ -31,6 +22,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+
+import com.activeviam.apps.cfg.security.SecurityConstants;
+import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
+import com.qfs.server.cfg.impl.JwtRestServiceConfig;
+import com.qfs.server.cfg.impl.VersionServicesConfig;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
