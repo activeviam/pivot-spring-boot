@@ -10,7 +10,6 @@ spring:
     name: "Pivot Spring Boot"
   main:
     banner-mode: log
-    allow-bean-definition-overriding: true
   jmx.enabled: true
   output:
     ansi:
@@ -22,6 +21,8 @@ management:
     web:
       exposure:
         include: "*"
+  health:
+    elasticsearch.enabled: false
 
 # Print the stores schema
 schema:
