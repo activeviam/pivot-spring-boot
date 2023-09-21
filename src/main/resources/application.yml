@@ -71,3 +71,8 @@ contentServer:
 #  remote:
 #    api:
 #      uri:
+
+# --- Springdoc url to list all the Rest endpoints ---
+springdoc:
+  swagger-ui:
+    path: /activeviam/swagger-ui.html
