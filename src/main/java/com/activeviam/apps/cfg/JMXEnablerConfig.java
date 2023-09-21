@@ -4,39 +4,36 @@
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-
 package com.activeviam.apps.cfg;
 
 import static com.activeviam.apps.cfg.ApplicationConfig.START_MANAGER;
 
 import java.nio.file.Paths;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import com.qfs.pivot.content.IActivePivotContentService;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
-import com.qfs.server.cfg.IActivePivotConfig;
-import com.qfs.server.cfg.IDatastoreConfig;
-import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
+import com.qfs.store.IDatastore;
+import com.quartetfs.biz.pivot.IActivePivotManager;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 
-@Configuration
-public class JMXEnablerConfig {
-    @Autowired
-    protected IActivePivotConfig apConfig;
+import lombok.RequiredArgsConstructor;
 
+@Configuration
+@RequiredArgsConstructor
+public class JMXEnablerConfig {
+    private final IActivePivotManager activePivotManager;
     /**
      * ActivePivot content service spring configuration
      */
-    @Autowired
-    protected IActivePivotContentServiceConfig apCSConfig;
+    private final IActivePivotContentService activePivotContentService;
 
-    @Autowired
-    protected IDatastoreConfig datastoreConfig;
+    private final IDatastore datastore;
 
     /**
      * Enable JMX Monitoring for the Datastore
@@ -45,7 +42,7 @@ public class JMXEnablerConfig {
      */
     @Bean
     public JMXEnabler jmxDatastoreEnabler() {
-        return new JMXEnabler(datastoreConfig.database());
+        return new JMXEnabler(datastore);
     }
 
     /**
@@ -56,7 +53,7 @@ public class JMXEnablerConfig {
     @Bean
     @DependsOn(START_MANAGER)
     public JMXEnabler jmxActivePivotEnabler() {
-        return new JMXEnabler(new DynamicActivePivotManagerMBean(apConfig.activePivotManager()));
+        return new JMXEnabler(new DynamicActivePivotManagerMBean(activePivotManager));
     }
 
     /**
@@ -67,8 +64,7 @@ public class JMXEnablerConfig {
     @Bean
     public JMXEnabler jmxActivePivotContentServiceEnabler() {
         // to allow operations from the JMX bean
-        return new JMXEnabler(new DynamicActivePivotContentServiceMBean(
-                apCSConfig.activePivotContentService(), apConfig.activePivotManager()));
+        return new JMXEnabler(new DynamicActivePivotContentServiceMBean(activePivotContentService, activePivotManager));
     }
 
     /**
@@ -79,8 +75,6 @@ public class JMXEnablerConfig {
     @Bean
     public JMXEnabler jmxMemoryMonitoringServiceEnabler() {
         return new JMXEnabler(new MemoryAnalysisService(
-                this.datastoreConfig.database(),
-                this.apConfig.activePivotManager(),
-                Paths.get(System.getProperty("java.io.tmpdir"))));
+                datastore, activePivotManager, Paths.get(System.getProperty("java.io.tmpdir"))));
     }
 }

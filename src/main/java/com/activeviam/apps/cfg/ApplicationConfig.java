@@ -6,14 +6,15 @@
  */
 package com.activeviam.apps.cfg;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import com.qfs.server.cfg.IActivePivotConfig;
+import com.quartetfs.biz.pivot.IActivePivotManager;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Spring configuration of the ActivePivot Application services
@@ -22,6 +23,7 @@ import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
  *
  */
 @Configuration
+@RequiredArgsConstructor
 public class ApplicationConfig {
     public static final String START_MANAGER = "startManager";
 
@@ -34,8 +36,7 @@ public class ApplicationConfig {
                 new ClasspathContributionProvider("com.activeviam.apm", "com.qfs", "com.quartetfs", "com.activeviam"));
     }
 
-    @Autowired
-    protected IActivePivotConfig apConfig;
+    private final IActivePivotManager activePivotManager;
 
     /**
      *
@@ -51,8 +52,8 @@ public class ApplicationConfig {
         /* *********************************************** */
         /* Initialize the ActivePivot Manager and start it */
         /* *********************************************** */
-        apConfig.activePivotManager().init(null);
-        apConfig.activePivotManager().start();
+        activePivotManager.init(null);
+        activePivotManager.start();
 
         return null;
     }

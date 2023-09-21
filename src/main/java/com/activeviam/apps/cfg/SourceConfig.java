@@ -9,9 +9,6 @@ package com.activeviam.apps.cfg;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -26,21 +23,17 @@ import com.qfs.platform.IPlatform;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
+@RequiredArgsConstructor
+@Slf4j
 public class SourceConfig {
-
     public static final String TRADES_TOPIC = "Trades";
-    private static final Logger logger = LoggerFactory.getLogger(SourceConfig.class);
 
-    @Autowired
-    protected Environment env;
-
-    @Autowired
-    protected IDatastore datastore;
-
-    /*
-     * **************************** CSV Source *********************************
-     */
+    private final Environment env;
+    private final IDatastore datastore;
 
     /**
      * Topic factory bean. Allows to create CSV topics and watch changes to directories. Autocloseable.
@@ -54,21 +47,20 @@ public class SourceConfig {
 
     @Bean(destroyMethod = "close")
     public CSVSource<Path> csvSource() {
-        final var schemaMetadata = datastore.getQueryMetadata().getMetadata();
-        final var csvTopicFactory = csvTopicFactory();
-        final var csvSource = new CSVSource<Path>();
+        var schemaMetadata = datastore.getQueryMetadata().getMetadata();
+        var csvTopicFactory = csvTopicFactory();
+        var csvSource = new CSVSource<Path>();
 
-        final var tradesColumns = schemaMetadata.getFields(StoreAndFieldConstants.TRADES_STORE_NAME);
-        final var tradesTopic = csvTopicFactory.createTopic(
+        var tradesColumns = schemaMetadata.getFields(StoreAndFieldConstants.TRADES_STORE_NAME);
+        var tradesTopic = csvTopicFactory.createTopic(
                 TRADES_TOPIC, env.getProperty("file.trades"), createParserConfig(tradesColumns.size(), tradesColumns));
         csvSource.addTopic(tradesTopic);
 
-        // Allocate half the the machine cores to CSV parsing
-        Integer parserThreads = Math.max(2, IPlatform.CURRENT_PLATFORM.getProcessorCount() / 2);
-        logger.info("Allocating " + parserThreads + " parser threads.");
+        // Allocate half the machine cores to CSV parsing
+        var parserThreads = Math.max(2, IPlatform.CURRENT_PLATFORM.getProcessorCount() / 2);
+        log.info("Allocating " + parserThreads + " parser threads.");
 
-        CSVSourceConfiguration.CSVSourceConfigurationBuilder<Path> sourceConfigurationBuilder =
-                new CSVSourceConfiguration.CSVSourceConfigurationBuilder<>();
+        var sourceConfigurationBuilder = new CSVSourceConfiguration.CSVSourceConfigurationBuilder<Path>();
         sourceConfigurationBuilder.parserThreads(parserThreads);
         sourceConfigurationBuilder.synchronousMode(Boolean.valueOf(env.getProperty("synchronousMode", "false")));
         csvSource.configure(sourceConfigurationBuilder.build());
@@ -80,8 +72,8 @@ public class SourceConfig {
         return new CSVMessageChannelFactory<>(csvSource(), datastore);
     }
 
-    private ICSVParserConfiguration createParserConfig(final int columnCount, final List<String> columns) {
-        final var cfg = columns == null ? new CSVParserConfiguration(columnCount) : new CSVParserConfiguration(columns);
+    private ICSVParserConfiguration createParserConfig(int columnCount, List<String> columns) {
+        var cfg = columns == null ? new CSVParserConfiguration(columnCount) : new CSVParserConfiguration(columns);
         cfg.setNumberSkippedLines(1); // skip the first line
         return cfg;
     }

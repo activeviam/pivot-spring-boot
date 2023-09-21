@@ -6,13 +6,14 @@
  */
 package com.activeviam.apps.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.store.IDatastore;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * This is an example of creating a custom REST services which queries the datastore
@@ -21,10 +22,9 @@ import com.qfs.store.query.impl.DatastoreQueryHelper;
  * REST services in ActivePivot
  */
 @RestController
+@RequiredArgsConstructor
 public class DayController {
-
-    @Autowired
-    IDatastore datastore;
+    private final IDatastore datastore;
 
     @GetMapping("/daysLoaded")
     public long getNumberOfDays() {
