@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.activeviam.apm.cfg.impl.ExtraLoggingConfig;
+import com.activeviam.apm.cfg.impl.LoggingConfig;
 import com.activeviam.apm.cfg.impl.MonitoredDataLoadingConfig;
 import com.activeviam.apm.cfg.impl.MonitoringJmxConfig;
 import com.activeviam.apm.cfg.impl.QueryPerformanceEvaluatorConfig;
@@ -63,6 +64,7 @@ import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
 
     // APM
     // (https://docs.activeviam.com/products/atoti/server/latest/docs/monitoring/application_performance_monitoring/#monitored-spring-configuration)
+    LoggingConfig.class,
     MonitoringJmxConfig.class,
     MonitoredDataLoadingConfig.class,
     QueryPerformanceEvaluatorConfig.class,
