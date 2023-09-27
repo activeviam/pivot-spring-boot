@@ -6,25 +6,22 @@
  */
 package com.activeviam.apps.cfg.security;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.kerberos.web.authentication.SpnegoAuthenticationProcessingFilter;
-
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class SpnegoFilterConfig {
-	private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-	@Bean
-	public SpnegoAuthenticationProcessingFilter spnegoAuthenticationProcessingFilter() {
-		SpnegoAuthenticationProcessingFilter filter = new SpnegoAuthenticationProcessingFilter();
-		filter.setAuthenticationManager(authenticationManager);
-		return filter;
-	}
+    @Bean
+    public SpnegoAuthenticationProcessingFilter spnegoAuthenticationProcessingFilter() {
+        SpnegoAuthenticationProcessingFilter filter = new SpnegoAuthenticationProcessingFilter();
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
+    }
 
 }
