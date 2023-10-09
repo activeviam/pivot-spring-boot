@@ -9,7 +9,6 @@ package com.activeviam.apps.cfg.security;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
@@ -25,12 +24,13 @@ import lombok.RequiredArgsConstructor;
 public class ApplicationJwtConfig extends JwtConfig {
     private final SecurityJwtProperties jwtProperties;
 
-    @Bean
+    //    @Bean
     @Override
     public JwtAuthenticationProvider jwtAuthenticationProvider() {
-        var provider = super.jwtAuthenticationProvider();
-        provider.setFailOnDifferentAuthorities(jwtProperties.isFailOnDifferentAuthorities());
-        return provider;
+        return null;
+        //        var provider = super.jwtAuthenticationProvider();
+        //        provider.setFailOnDifferentAuthorities(jwtProperties.isFailOnDifferentAuthorities());
+        //        return provider;
     }
 
     @Override

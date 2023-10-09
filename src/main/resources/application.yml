@@ -1,9 +1,17 @@
+trace: true
+
 # Spring Boot server port and compression
 server:
   port: 9090
   compression:
     enabled: true
     mime-types: application/json,application/xml,application/javascript,text/html,text/xml,text/plain,text/css,text/javascript,image/jpeg,image/png,image/svg+xml
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: NONE
+        secure: true
 
 spring:
   application:

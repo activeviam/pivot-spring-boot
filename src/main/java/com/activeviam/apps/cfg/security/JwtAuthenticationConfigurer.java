@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CorsFilter;
 
 import com.activeviam.apps.cfg.security.filter.IUserLogoutSuccessHandler;
@@ -24,7 +23,7 @@ import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.impl.JwtConfig;
 import com.qfs.servlet.handlers.impl.NoRedirectLogoutSuccessHandler;
 
-@Component
+// @Component
 public class JwtAuthenticationConfigurer extends AbstractHttpConfigurer<JwtAuthenticationConfigurer, HttpSecurity> {
     public static final String COOKIE_NAME = "JSESSIONID";
     private static final String COOKIE_NAME_PROPERTY = "server.servlet.session.cookie.name";

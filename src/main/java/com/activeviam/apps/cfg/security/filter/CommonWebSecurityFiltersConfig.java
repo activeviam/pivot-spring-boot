@@ -15,12 +15,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 
 import com.activeviam.apps.cfg.security.SecurityConstants;
@@ -31,9 +30,12 @@ import com.qfs.server.cfg.impl.VersionServicesConfig;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class CommonWebSecurityFiltersConfig {
     public static final String WILDCARD = "**";
+
+    private final IEnvSpecificSecurityFilter envSpecificSecurityFilter;
 
     @Bean
     @Order(1)
@@ -43,7 +45,7 @@ public class CommonWebSecurityFiltersConfig {
                 // As of Spring Security 4.0, CSRF protection is enabled by default.
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configure CORS
-                .cors(Customizer.withDefaults())
+                //                .cors(Customizer.withDefaults())
                 .securityMatcher(mvc.pattern(url("actuator", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.anyRequest().hasAnyAuthority(ROLE_ACTUATOR))
                 .httpBasic(Customizer.withDefaults())
@@ -60,17 +62,18 @@ public class CommonWebSecurityFiltersConfig {
     @Bean
     @Order(2)
     protected SecurityFilterChain jwtFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http
-                // As of Spring Security 4.0, CSRF protection is enabled by default.
-                .csrf(AbstractHttpConfigurer::disable)
-                // Configure CORS
-                .cors(Customizer.withDefaults())
-                .securityMatcher(mvc.pattern(url(JwtRestServiceConfig.REST_API_URL_PREFIX, WILDCARD)))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(WILDCARD)))
-                        .permitAll()
-                        .anyRequest()
-                        .hasAnyAuthority(SecurityConstants.ROLE_USER))
-                .httpBasic(basic -> basic.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+        return envSpecificSecurityFilter
+                .applyAuthentication(http
+                        // As of Spring Security 4.0, CSRF protection is enabled by default.
+                        .csrf(AbstractHttpConfigurer::disable)
+                        // Configure CORS
+                        //                        .cors(Customizer.withDefaults())
+                        .securityMatcher(mvc.pattern(url(JwtRestServiceConfig.REST_API_URL_PREFIX, WILDCARD)))
+                        .authorizeHttpRequests(
+                                auth -> auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(WILDCARD)))
+                                        .permitAll()
+                                        .anyRequest()
+                                        .hasAnyAuthority(SecurityConstants.ROLE_USER)))
                 .build();
     }
 
@@ -85,7 +88,7 @@ public class CommonWebSecurityFiltersConfig {
 
     @ConditionalOnProperty(prefix = "spring.h2.console", name = "enabled", havingValue = "true")
     @Bean
-    @Order(7)
+    @Order(4)
     public SecurityFilterChain h2ConsoleSecurityFilterChain(
             HttpSecurity http, MvcRequestMatcher.Builder mvc, H2ConsoleProperties h2ConsoleProperties)
             throws Exception {
@@ -102,13 +105,17 @@ public class CommonWebSecurityFiltersConfig {
     }
 
     @Bean
-    @Order(8)
+    @Order(5)
     public SecurityFilterChain adminUISecurityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.securityMatcher(mvc.pattern(url(AdminUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
-                .headers(httpSecurityHeadersConfigurer ->
-                        httpSecurityHeadersConfigurer.frameOptions().disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        return envSpecificSecurityFilter
+                .applyAuthentication(http.securityMatcher(
+                                mvc.pattern(url(AdminUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
+                        // As of Spring Security 4.0, CSRF protection is enabled by default.
+                        .csrf(AbstractHttpConfigurer::disable)
+                        .headers(httpSecurityHeadersConfigurer ->
+                                httpSecurityHeadersConfigurer.frameOptions().disable())
+                        .authorizeHttpRequests(auth -> auth.anyRequest().authenticated()))
                 .build();
     }
 }
