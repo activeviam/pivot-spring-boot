@@ -31,7 +31,6 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import com.activeviam.apps.cfg.security.JwtAuthenticationConfigurer;
 import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
 import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
-import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.content.rest.impl.ARestContentServer;
 import com.qfs.service.store.IDatabaseRestService;
 
@@ -49,6 +48,7 @@ public class WebSecurityFiltersConfig {
         return new MvcRequestMatcher.Builder(introspector);
     }
 
+    @Bean
     @Order(4)
     public SecurityFilterChain embeddedCSFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
@@ -100,14 +100,6 @@ public class WebSecurityFiltersConfig {
                     // The ping service is temporarily authenticated (see PIVOT-3149)
                     auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, PING_SUFFIX)))
                             .hasAnyAuthority(ROLE_USER, ROLE_TECH);
-
-                    // Content server rest call
-                    auth.requestMatchers(
-                                    mvc.pattern(url(ContentServerRestServicesConfig.REST_API_URL_PREFIX, WILDCARD)))
-                            .hasAnyAuthority(ROLE_USER);
-                    // Content server websocket
-                    auth.requestMatchers(mvc.pattern(ContentServerWebSocketServicesConfig.CONTENT_ENDPOINT))
-                            .hasAnyAuthority(ROLE_USER);
 
                     // pivot websocket
                     auth.requestMatchers(mvc.pattern(url(WEB_SOCKET_ENDPOINT, WILDCARD)))
