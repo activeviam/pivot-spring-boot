@@ -1,4 +1,4 @@
-trace: true
+#trace: true
 
 # Spring Boot server port and compression
 server:
