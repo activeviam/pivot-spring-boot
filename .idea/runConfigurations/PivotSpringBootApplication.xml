@@ -2,7 +2,7 @@
   <configuration default="false" name="PivotSpringBootApplication" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.activeviam.apps.PivotSpringBootApplication" />
     <module name="pivot-spring-boot" />
-    <option name="VM_PARAMETERS" value="--add-opens java.base/java.util.concurrent=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED" />
+    <option name="VM_PARAMETERS" value="--add-opens java.base/java.util.concurrent=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED -Dactiveviam.chunkAllocatorClass=com.qfs.chunk.direct.allocator.impl.MmapDirectChunkAllocator" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.activeviam.apps.*" />
