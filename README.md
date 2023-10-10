@@ -61,3 +61,5 @@ The default security credentials are `admin:admin`, but can be modified in the `
 You should change this before going into production.<br>
 You are also recommended to change the jwt key pair in `application.yaml` by running the class `JwtUtil` and generating new key pair.
 
+### resource-server
+https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_specifying_the_authorization_server

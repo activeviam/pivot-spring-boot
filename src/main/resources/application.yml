@@ -15,7 +15,16 @@ spring:
     ansi:
       enabled: ALWAYS
 
-# Spring Boot actuator config
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          #Connects to <issuer-uri>/.well-known/openid-configuration
+          issuer-uri: http://localhost:8083/auth/realms/baeldung
+          # optional aud audiences
+          audiences: fooClient
+  # Spring Boot actuator config
 management:
   endpoints:
     web:
@@ -67,3 +76,10 @@ content-service:
         dataSource:
           url: "jdbc:h2:mem:content_service;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE"
         poolName: ContentServer-ConnectionPool
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
