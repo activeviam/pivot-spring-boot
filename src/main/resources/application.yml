@@ -79,3 +79,8 @@ content-service:
         dataSource:
           url: "jdbc:h2:mem:content_service;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE"
         poolName: ContentServer-ConnectionPool
+
+# --- Springdoc url to list all the Rest endpoints ---
+springdoc:
+  swagger-ui:
+    path: /activeviam/swagger-ui.html
