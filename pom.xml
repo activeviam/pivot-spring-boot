@@ -23,6 +23,7 @@
 
     <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
     <palantir-java-format.version>2.35.0</palantir-java-format.version>
+    <springdoc.version>1.7.0</springdoc.version>
   </properties>
 
   <dependencyManagement>
@@ -139,6 +140,12 @@
     <dependency>
       <groupId>com.activeviam.tech</groupId>
       <artifactId>datastore-test</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>${springdoc.version}</version>
     </dependency>
   </dependencies>
 
