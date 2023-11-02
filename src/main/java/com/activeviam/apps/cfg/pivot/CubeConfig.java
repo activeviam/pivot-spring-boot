@@ -46,9 +46,7 @@ public class CubeConfig {
 
                 .withSharedDrillthroughProperties()
                 .withMaxRows(10000)
-                .end()
-
-                ;
+                .end();
     }
 
     /**
@@ -60,20 +58,10 @@ public class CubeConfig {
      */
     public static ICanBuildCubeDescription<IActivePivotInstanceDescription> dimensions(ICanStartBuildingDimensions builder) {
 
-        //TODO Training CubeDimensionsConfig + TrainingCubeConfig
-
         return builder
                 .withSingleLevelDimensions(
                         StoreAndFieldConstants.TRADE_ID
-                )
-
-                // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
-                // Also show the dates in reverse order ie most recent date first
-                .withDimension(StoreAndFieldConstants.AS_OF_DATE).withType(IDimension.DimensionType.TIME)
-                    .withHierarchy(StoreAndFieldConstants.AS_OF_DATE).slicing()
-                    .withLevelOfSameName()
-                        .withType(ILevelInfo.LevelType.TIME).withComparator(ReverseOrderComparator.type)
-                ;
+                );
 
     }
 

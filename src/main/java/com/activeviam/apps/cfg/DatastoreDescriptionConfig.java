@@ -19,7 +19,6 @@ public class DatastoreDescriptionConfig {
 
     public static IStoreDescription createTradesStoreDescription() {
         return new StoreDescriptionBuilder().withStoreName(StoreAndFieldConstants.TRADES_STORE_NAME)
-                .withField(StoreAndFieldConstants.AS_OF_DATE, LOCAL_DATE).asKeyField()
                 .withField(StoreAndFieldConstants.TRADE_ID, STRING).asKeyField()
                 .withField(StoreAndFieldConstants.NOTIONAL, DOUBLE)
                 .build();

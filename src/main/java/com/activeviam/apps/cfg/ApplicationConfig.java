@@ -1,16 +1,23 @@
 package com.activeviam.apps.cfg;
 
 
-import com.activeviam.apps.cfg.pivot.ActivePivotVersionJMXServices;
 import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
+import com.activeviam.apps.trades.TradesConfiguration;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.impl.ActivePivotConfig;
 import com.qfs.server.cfg.impl.ActivePivotServicesConfig;
+import com.qfs.store.selection.ISelection;
+import com.qfs.store.selection.ISelectionListener;
+import com.quartetfs.biz.pivot.IMultiVersionActivePivot;
 import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
+import com.quartetfs.biz.pivot.transaction.IActivePivotSchemaTransactionInfo;
+import com.quartetfs.biz.pivot.transaction.IActivePivotTransactionInfo;
+import com.quartetfs.biz.pivot.transaction.ITransactionListener;
+import com.quartetfs.biz.pivot.transaction.impl.ActivePivotTransactionInfo;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
@@ -18,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,7 +42,7 @@ import java.util.concurrent.TimeUnit;
         DatastoreDescriptionConfig.class,
         PivotManagerConfig.class,
         LocalContentServiceConfig.class,
-        TradeGeneratorConfiguration.class,
+        TradesConfiguration.class,
         ActiveUIResourceServerConfig.class
 })
 public class ApplicationConfig {
@@ -57,6 +66,9 @@ public class ApplicationConfig {
 
     @Autowired
     protected ActivePivotServicesConfig apServiceConfig;
+
+    @Autowired
+    protected ITransactionListener<IActivePivotTransactionInfo> tradeStoreTransactionListener;
 
     /**
      * Enable JMX Monitoring for the Datastore
@@ -140,8 +152,12 @@ public class ApplicationConfig {
         /* *********************************************** */
         /* Initialize the ActivePivot Manager and start it */
         /* *********************************************** */
+        //apConfig.activePivotManager().getActivePivots().get(0)
+        //apConfig.activePivotManager().getSchemas().get(0).getTransactionManager().getListeners().add(tradeStoreTransactionListener);
         apConfig.activePivotManager().init(null);
         apConfig.activePivotManager().start();
+
+        apConfig.activePivotManager().getActivePivots().get("Cube").getListeners().add(tradeStoreTransactionListener);
 
         return null;
     }
@@ -157,14 +173,5 @@ public class ApplicationConfig {
 
     }
 
-    /**
-     * For testing of GAQ on ActivePivotVersions
-     */
-    @Bean
-    public JMXEnabler testActivePivotVersion() {
-        final var jmx = new JMXEnabler();
-        jmx.setMonitoredComponent(new ActivePivotVersionJMXServices());
-        jmx.setName("Manage capture ActivePivotVersion and run GAQ");
-        return jmx;
-    }
+
 }

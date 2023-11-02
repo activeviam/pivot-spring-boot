@@ -8,9 +8,11 @@ import static com.activeviam.apps.constants.StoreAndFieldConstants.NOTIONAL;
 
 public class Measures {
 
+    public static final String NOTIONAL_SUM = NOTIONAL + ".SUM";
+
     public static void build(final ICopperContext context) {
         Copper.sum(NOTIONAL)
-                .as(NOTIONAL)
+                .as(NOTIONAL_SUM)
                 .withFormatter(DOUBLE_FORMATTER)
                 .publish(context);
     }
