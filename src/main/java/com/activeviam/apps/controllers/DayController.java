@@ -21,6 +21,6 @@ public class DayController {
 
     @GetMapping("/daysLoaded")
     public long getNumberOfDays() {
-        return DatastoreQueryHelper.selectDistinct(datastore.getMostRecentVersion(), StoreAndFieldConstants.TRADES_STORE_NAME, StoreAndFieldConstants.ASOFDATE).size();
+        return DatastoreQueryHelper.selectDistinct(datastore.getMostRecentVersion(), StoreAndFieldConstants.TRADES_STORE_NAME, StoreAndFieldConstants.AS_OF_DATE).size();
     }
 }

@@ -67,7 +67,7 @@ public class MeasuresTest {
     public void testSimpleSum() {
         final CubeTester tester = builder.build(Measures::build);
         tester.query()
-                .forMeasures(TRADES__NOTIONAL)
+                .forMeasures(NOTIONAL)
                 .run()
                 .getTester()
                 .hasOnlyOneCellWith()

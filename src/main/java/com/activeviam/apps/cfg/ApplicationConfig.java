@@ -30,10 +30,10 @@ import java.util.concurrent.TimeUnit;
 @Import(value = {
         ActivePivotWebMvcConfigurer.class,
         SecurityConfig.class,
-        SourceConfig.class,
         DatastoreDescriptionConfig.class,
         PivotManagerConfig.class,
         LocalContentServiceConfig.class,
+        TradeGeneratorConfiguration.class,
         ActiveUIResourceServerConfig.class
 })
 public class ApplicationConfig {

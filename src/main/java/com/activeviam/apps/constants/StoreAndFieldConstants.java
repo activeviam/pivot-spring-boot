@@ -2,10 +2,10 @@ package com.activeviam.apps.constants;
 public class StoreAndFieldConstants {
 
     /*********************** Stores names **********************/
-    public static final String TRADES_STORE_NAME = "Trades";
+    public static final String TRADES_STORE_NAME = "TradesStore";
 
     /********************* Stores fields ***********************/
-    public static final String ASOFDATE = "AsOfDate";
-    public static final String TRADES__TRADEID = "TradeID";
-    public static final String TRADES__NOTIONAL = "Notional";
+    public static final String AS_OF_DATE = "AsOfDate";
+    public static final String TRADE_ID = "TradeId";
+    public static final String NOTIONAL = "Notional";
 }

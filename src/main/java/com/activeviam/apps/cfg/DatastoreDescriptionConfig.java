@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import static com.qfs.literal.ILiteralType.*;
 
@@ -18,15 +19,14 @@ public class DatastoreDescriptionConfig {
 
     public static IStoreDescription createTradesStoreDescription() {
         return new StoreDescriptionBuilder().withStoreName(StoreAndFieldConstants.TRADES_STORE_NAME)
-                .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE).asKeyField()
-                .withField(StoreAndFieldConstants.TRADES__TRADEID, STRING).asKeyField()
-                .withField(StoreAndFieldConstants.TRADES__NOTIONAL, DOUBLE)
+                .withField(StoreAndFieldConstants.AS_OF_DATE, LOCAL_DATE).asKeyField()
+                .withField(StoreAndFieldConstants.TRADE_ID, STRING).asKeyField()
+                .withField(StoreAndFieldConstants.NOTIONAL, DOUBLE)
                 .build();
     }
 
     public static Collection<IReferenceDescription> references() {
-        final Collection<IReferenceDescription> references = new LinkedList<>();
-        return references;
+        return List.of();
     }
 
     /**
@@ -39,9 +39,6 @@ public class DatastoreDescriptionConfig {
      */
     public static IDatastoreSchemaDescription schemaDescription() {
 
-        final Collection<IStoreDescription> stores = new LinkedList<>();
-        stores.add(createTradesStoreDescription());
-
-        return new DatastoreSchemaDescription(stores, references());
+        return new DatastoreSchemaDescription(List.of(createTradesStoreDescription()), references());
     }
 }
