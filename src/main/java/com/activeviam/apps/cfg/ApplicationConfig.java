@@ -1,6 +1,7 @@
 package com.activeviam.apps.cfg;
 
 
+import com.activeviam.apps.cfg.pivot.ActivePivotVersionJMXServices;
 import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
@@ -156,4 +157,14 @@ public class ApplicationConfig {
 
     }
 
+    /**
+     * For testing of GAQ on ActivePivotVersions
+     */
+    @Bean
+    public JMXEnabler testActivePivotVersion() {
+        final var jmx = new JMXEnabler();
+        jmx.setMonitoredComponent(new ActivePivotVersionJMXServices());
+        jmx.setName("Manage capture ActivePivotVersion and run GAQ");
+        return jmx;
+    }
 }

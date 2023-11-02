@@ -61,3 +61,12 @@ The default security credentials are `admin:admin`, but can be modified in the `
 You should change this before going into production.<br>
 You are also recommended to change the jwt key pair in `application.yaml` by running the class `JwtUtil` and generating new key pair.
 
+### Testing for https://activeviam.atlassian.net/browse/APACS-4305
+
+- After starting up the application, run jconsole or JMX client.
+- Go to MBeans under com.quartetfs
+- In Training Generator, run generateTrade with asOfDate eg. 2019-01-04, tradeId and notional to add/update a trade. Refer to trades.csv on initial data loaded.
+- In Manage capture ActivePivotVersion and run GAQ, run Capture latest ActivePivotVersion with a name as the key of the latest version.
+- Repeat above 2 steps to add another trade and capture the version. We should have 2 versions corresponding to 2 different transactions.
+- run Execute GetAggregateQuery with the names of the 2 versions captured in reverse chronological order.
+- Check that the results of the GAQ are based on the most recent versions instead of the specific version captured (this is the bug in 5.9).

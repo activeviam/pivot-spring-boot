@@ -15,7 +15,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <activePivotVersion>5.9.6</activePivotVersion>
+        <activePivotVersion>5.9.15</activePivotVersion>
         <activeui.version>4.3.13</activeui.version>
         <content-server-ui.version>2.0.0</content-server-ui.version>
     </properties>
@@ -88,6 +88,12 @@
             <groupId>com.activeviam.activeui</groupId>
             <artifactId>activeui</artifactId>
             <version>${activeui.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- Test dependencies -->
