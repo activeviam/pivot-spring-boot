@@ -7,6 +7,9 @@ import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.ICubeDescriptionBuilder;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.qfs.desc.IDatastoreSchemaDescription;
+import com.qfs.multiversion.IEpochManagementPolicy;
+import com.qfs.multiversion.impl.KeepAllEpochPolicy;
+import com.qfs.multiversion.impl.KeepLastEpochPolicy;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
@@ -17,6 +20,9 @@ import com.quartetfs.fwk.ordering.impl.ReverseOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 
 @Configuration
 public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig {
@@ -71,4 +77,9 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
         return DatastoreDescriptionConfig.schemaDescription();
     }
 
+    @Override
+    public IEpochManagementPolicy epochManagementPolicy() {
+     //   return new KeepLastEpochPolicy(Duration.ofHours(6));
+        return new KeepAllEpochPolicy();
+    }
 }

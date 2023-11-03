@@ -67,8 +67,6 @@ public class ApplicationConfig {
     @Autowired
     protected ActivePivotServicesConfig apServiceConfig;
 
-    @Autowired
-    protected ITransactionListener<IActivePivotTransactionInfo> tradeStoreTransactionListener;
 
     /**
      * Enable JMX Monitoring for the Datastore
@@ -152,12 +150,11 @@ public class ApplicationConfig {
         /* *********************************************** */
         /* Initialize the ActivePivot Manager and start it */
         /* *********************************************** */
-        //apConfig.activePivotManager().getActivePivots().get(0)
-        //apConfig.activePivotManager().getSchemas().get(0).getTransactionManager().getListeners().add(tradeStoreTransactionListener);
+
         apConfig.activePivotManager().init(null);
         apConfig.activePivotManager().start();
 
-        apConfig.activePivotManager().getActivePivots().get("Cube").getListeners().add(tradeStoreTransactionListener);
+
 
         return null;
     }
