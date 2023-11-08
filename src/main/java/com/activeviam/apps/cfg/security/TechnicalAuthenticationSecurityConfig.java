@@ -13,8 +13,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 
-import com.qfs.content.service.IContentService;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -41,7 +39,7 @@ public class TechnicalAuthenticationSecurityConfig {
         builder.passwordEncoder(passwordEncoder);
         builder.withUser(PIVOT_TECH_USER_LOGIN)
                 .password(techUserPasswordsProperties.getPivot())
-                .authorities(SecurityConstants.ROLE_TECH, IContentService.ROLE_ROOT);
+                .authorities(SecurityConstants.ROLE_TECH);
         builder.withUser(SBA_TECH_USER_LOGIN)
                 .password(techUserPasswordsProperties.getSba())
                 .authorities(SecurityConstants.ROLE_ACTUATOR);

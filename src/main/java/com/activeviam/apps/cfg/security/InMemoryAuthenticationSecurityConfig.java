@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InMemoryAuthenticationSecurityConfig {
     private static final String ADMIN = "admin";
+    private static final String USER = "user";
 
     private final PasswordEncoder passwordEncoder;
 
@@ -41,7 +42,11 @@ public class InMemoryAuthenticationSecurityConfig {
                 // Default user for ActivePivot server
                 .withUser(ADMIN)
                 .password(passwordEncoder.encode(ADMIN))
-                .authorities(ROLE_ADMIN, ROLE_USER, ROLE_CS_ROOT);
+                .authorities(ROLE_ADMIN, ROLE_USER, ROLE_CS_ROOT)
+                .and()
+                .withUser(USER)
+                .password(passwordEncoder.encode(USER))
+                .authorities(ROLE_USER);
         return builder.build();
     }
 }
