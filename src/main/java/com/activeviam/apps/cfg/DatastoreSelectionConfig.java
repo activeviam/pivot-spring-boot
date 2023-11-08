@@ -28,7 +28,7 @@ public class DatastoreSelectionConfig {
     public ISelectionDescription createSchemaSelectionDescription() {
         return StartBuilding.selection(datastoreSchemaConfig.datastoreSchemaDescription())
                 .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
-                .withAllFields()
+                .withAllReachableFields()
                 .build();
     }
 }

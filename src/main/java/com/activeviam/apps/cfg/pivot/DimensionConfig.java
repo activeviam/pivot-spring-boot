@@ -32,6 +32,7 @@ public class DimensionConfig {
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> build(ICanStartBuildingDimensions builder) {
 
         return builder.withSingleLevelDimensions(StoreAndFieldConstants.TRADES_TRADEID)
+                .withSingleLevelDimension(StoreAndFieldConstants.DESKS_STORE_NAME)
 
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
                 // Also show the dates in reverse order ie most recent date first

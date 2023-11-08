@@ -57,16 +57,11 @@ public class LoadConfig {
 
     private void initialLoad() throws Exception {
         log.info("Initial data load started.");
-        final Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
-        csvChannels.add(csvChannelFactory.createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
 
         // do the transactions
         final var before = System.nanoTime();
 
-        datastore.edit(t -> {
-            csvSource.fetch(csvChannels);
-            t.forceCommit();
-        });
+        // TODO
 
         final var elapsed = System.nanoTime() - before;
         log.info("Initial data load completed in {} ms.", elapsed / 1000000L);
