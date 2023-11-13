@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -49,7 +50,9 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
 
     @Override
     public HttpSecurity applyAuthentication(HttpSecurity http) throws Exception {
-        return http.logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
+        return http.headers(headers -> headers.referrerPolicy(
+                        referrerPolicy -> referrerPolicy.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.UNSAFE_URL)))
+                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .permitAll()
                         .deleteCookies(cookieName)
                         .invalidateHttpSession(true))
@@ -60,7 +63,9 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
 
     @Override
     public HttpSecurity applyCoreAuthentication(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern(url("login"))))
+        return http.headers(headers -> headers.referrerPolicy(
+                        referrerPolicy -> referrerPolicy.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.UNSAFE_URL)))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern(url("login"))))
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .permitAll()
                         .deleteCookies(cookieName)
