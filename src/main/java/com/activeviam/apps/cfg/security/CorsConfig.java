@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -37,7 +38,9 @@ public class CorsConfig implements ICorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
-        configuration.setAllowedHeaders(getAllowedHeaders());
+        var allowedHeader = getAllowedHeaders();
+        allowedHeader.add(HttpHeaders.REFERER);
+        configuration.setAllowedHeaders(allowedHeader);
         configuration.setExposedHeaders(getExposedHeaders());
         configuration.setAllowedMethods(getAllowedMethods());
         configuration.setAllowedOriginPatterns(getAllowedOrigins());
