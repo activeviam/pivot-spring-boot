@@ -39,7 +39,9 @@ public class CorsConfig implements ICorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
-        configuration.setAllowedHeaders(getAllowedHeaders());
+        var allowedHeader = new ArrayList<>(getAllowedHeaders());
+        allowedHeader.add("Referrer-Policy");
+        configuration.setAllowedHeaders(allowedHeader);
         configuration.setExposedHeaders(getExposedHeaders());
         configuration.setAllowedMethods(getAllowedMethods());
         configuration.setAllowedOriginPatterns(getAllowedOrigins());
