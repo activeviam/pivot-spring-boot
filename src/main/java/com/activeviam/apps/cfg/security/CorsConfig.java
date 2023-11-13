@@ -6,6 +6,7 @@
  */
 package com.activeviam.apps.cfg.security;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class CorsConfig implements ICorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
-        var allowedHeader = getAllowedHeaders();
+        var allowedHeader = new ArrayList<>(getAllowedHeaders());
         allowedHeader.add(HttpHeaders.REFERER);
         configuration.setAllowedHeaders(allowedHeader);
         configuration.setExposedHeaders(getExposedHeaders());
