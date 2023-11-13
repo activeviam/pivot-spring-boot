@@ -50,28 +50,24 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
 
     @Override
     public HttpSecurity applyAuthentication(HttpSecurity http) throws Exception {
-        return http.headers(headers -> headers.referrerPolicy(
-                        referrerPolicy -> referrerPolicy.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.UNSAFE_URL)))
+        return http
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .permitAll()
                         .deleteCookies(cookieName)
                         .invalidateHttpSession(true))
                 .formLogin()
-                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
                 .and();
     }
 
     @Override
     public HttpSecurity applyCoreAuthentication(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.headers(headers -> headers.referrerPolicy(
-                        referrerPolicy -> referrerPolicy.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.UNSAFE_URL)))
+        return http
                 .authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern(url("login"))))
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .permitAll()
                         .deleteCookies(cookieName)
                         .invalidateHttpSession(true))
                 .formLogin()
-                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
                 .permitAll()
                 .and();
     }
@@ -79,36 +75,5 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
     @Override
     public HttpSecurity applyExcelAuthentication(HttpSecurity http) throws Exception {
         return http.httpBasic().and();
-    }
-
-    private static class HeaderRefererAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-        private RequestCache requestCache = new HttpSessionRequestCache();
-
-        @Override
-        public void onAuthenticationSuccess(
-                HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-                throws ServletException, IOException {
-            var savedRequest = requestCache.getRequest(request, response);
-            if (savedRequest == null) {
-                super.onAuthenticationSuccess(request, response, authentication);
-                return;
-            }
-            var targetUrlParameter = getTargetUrlParameter();
-            if (isAlwaysUseDefaultTargetUrl()
-                    || (targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
-                requestCache.removeRequest(request, response);
-                super.onAuthenticationSuccess(request, response, authentication);
-                return;
-            }
-            clearAuthenticationAttributes(request);
-            // Use the DefaultSavedRequest URL
-            var referers = savedRequest.getHeaderValues(HttpHeaders.REFERER);
-            var targetUrl = !CollectionUtils.isEmpty(referers) ? referers.get(0) : savedRequest.getRedirectUrl();
-            getRedirectStrategy().sendRedirect(request, response, targetUrl);
-        }
-
-        public void setRequestCache(RequestCache requestCache) {
-            this.requestCache = requestCache;
-        }
     }
 }
