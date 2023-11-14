@@ -83,6 +83,8 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
         public void onAuthenticationSuccess(
                 HttpServletRequest request, HttpServletResponse response, Authentication authentication)
                 throws ServletException, IOException {
+            // Inspired from SavedRequestAwareAuthenticationSuccessHandler.
+            // The difference is that the Referer header of the saved request is prioritized for the redirect URL, over its URL itself.
             var savedRequest = requestCache.getRequest(request, response);
             if (savedRequest == null) {
                 super.onAuthenticationSuccess(request, response, authentication);
@@ -96,7 +98,6 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
                 return;
             }
             clearAuthenticationAttributes(request);
-            // Use the DefaultSavedRequest URL
             var referers = savedRequest.getHeaderValues(HttpHeaders.REFERER);
             var targetUrl = !CollectionUtils.isEmpty(referers) ? referers.get(0) : savedRequest.getRedirectUrl();
             getRedirectStrategy().sendRedirect(request, response, targetUrl);
