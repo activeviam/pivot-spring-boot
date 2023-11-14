@@ -14,7 +14,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,6 +23,8 @@ import com.activeviam.security.cfg.ICorsConfig;
 
 @Configuration
 public class CorsConfig implements ICorsConfig {
+    private static final String REFERRER_POLICY_HEADER = "Referrer-Policy";
+
     @Override
     public List<String> getAllowedOrigins() {
         return Collections.singletonList(CorsConfiguration.ALL);
@@ -40,7 +41,7 @@ public class CorsConfig implements ICorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
         var allowedHeader = new ArrayList<>(getAllowedHeaders());
-        allowedHeader.add("Referrer-Policy");
+        allowedHeader.add(REFERRER_POLICY_HEADER);
         configuration.setAllowedHeaders(allowedHeader);
         configuration.setExposedHeaders(getExposedHeaders());
         configuration.setAllowedMethods(getAllowedMethods());
