@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import com.activeviam.apps.cfg.DatabaseSelectionConfig;
+import com.activeviam.apps.cfg.IDistributedInfo;
 import com.activeviam.apps.cfg.PluginConfig;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
@@ -41,15 +42,25 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
 
     private final DatabaseSelectionConfig databaseSelectionConfig;
     private final CubeConfig cubeConfig;
+    private final IDistributedInfo distributionInfo;
+
 
     @Override
     public IActivePivotManagerDescription managerDescription() {
-        return StartBuilding.managerDescription(MANAGER_NAME)
-                .withCatalog(CATALOG_NAME)
-                .containingAllCubes()
-                .withSchema(SCHEMA_NAME)
-                .withSelection(databaseSelectionConfig.createSchemaSelectionDescription())
-                .withCube(cubeConfig.createCubeDescription())
-                .build();
+        if (this.distributionInfo.isDatacube()) {
+            return StartBuilding.managerDescription(MANAGER_NAME)
+                    .withCatalog(CATALOG_NAME)
+                    .containingAllCubes()
+                    .withSchema(SCHEMA_NAME)
+                    .withSelection(databaseSelectionConfig.createSchemaSelectionDescription())
+                    .withCube(cubeConfig.createCubeDescription())
+                    .build();
+        } else {
+            return StartBuilding.managerDescription(MANAGER_NAME)
+                    .withCatalog(CATALOG_NAME)
+                    .containingAllCubes()
+                    .withDistributedCube(cubeConfig.createQueryCubeDescription())
+                    .build();
+        }
     }
 }

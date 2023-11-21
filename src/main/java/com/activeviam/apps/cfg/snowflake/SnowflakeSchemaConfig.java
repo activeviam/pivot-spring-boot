@@ -25,30 +25,26 @@ import com.activeviam.directquery.snowflake.api.Table;
 import com.activeviam.fwk.ActiveViamRuntimeException;
 import com.google.common.base.CaseFormat;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 @Profile("snowflake")
 public class SnowflakeSchemaConfig implements IDatabaseSchemaConfig {
 
     public static final String TEST_DATABASE_NAME = "TEST_RESOURCES";
     public static final String TEST_SCHEMA_NAME = "DEMO";
-    public static final String TABLE_NAME = "TRADES";
-    public static final Map<String, String> mapping = Map.of(
-            "TRADEID", "TradeID",
-            "AsOf", "AsOf",
-            "NOTIONAL", "Notional"
-    );
+    public static final String EXTERNAL_TABLE_NAME = "TRADES";
 
-    @Autowired
-    private SnowflakeSessionConfig databaseSessionConfig;
+    private final SnowflakeSessionConfig databaseSessionConfig;
 
     @Bean
     @Override
     public Schema getSchema() {
-        final String externalTableName = "TRADES";
         Logger.getLogger(SnowflakeApplicationConfig.class.getName())
-                .info(() -> "Loading data from table " + externalTableName);
+                .info(() -> "Loading data from table " + EXTERNAL_TABLE_NAME);
         final Table table =
-                databaseSessionConfig.session().discoverTable(new SqlTableId(TEST_DATABASE_NAME, TEST_SCHEMA_NAME, externalTableName))
+                databaseSessionConfig.session().discoverTable(new SqlTableId(TEST_DATABASE_NAME, TEST_SCHEMA_NAME, EXTERNAL_TABLE_NAME))
                         .renameLocally(StoreAndFieldConstants.TRADES_STORE_NAME);
 
         return Schema.builder()

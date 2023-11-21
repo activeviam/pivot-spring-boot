@@ -6,14 +6,19 @@
  */
 package com.activeviam.apps.cfg;
 
+import static com.quartetfs.fwk.types.impl.ExtendedPluginInjector.inject;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Profile;
 
+import com.qfs.distribution.security.IDistributedSecurityManager;
+import com.qfs.messenger.IDistributedMessenger;
+import com.qfs.server.cfg.IActivePivotConfig;
 import com.quartetfs.biz.pivot.IActivePivotManager;
 import com.quartetfs.fwk.Registry;
 import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
+import com.quartetfs.fwk.security.IUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +43,26 @@ public class ApplicationConfig {
     }
 
     private final IActivePivotManager activePivotManager;
+    private final IActivePivotConfig apConfig;
+
+
+    @Bean
+    protected Void apManagerInitPrerequisitePluginInjections(IUserDetailsService userDetailsService) {
+        /* ********************************************************* */
+        /* Core injections for distributed architecture (when used). */
+        /* ********************************************************* */
+        // Inject the distributed messenger with security services
+        for (final Object key : Registry.getExtendedPlugin(IDistributedMessenger.class).keys()) {
+            inject(IDistributedMessenger.class, String.valueOf(key), apConfig.contextValueManager());
+        }
+
+        // Inject the distributed security manager with security services
+        for (final Object key : Registry.getExtendedPlugin(IDistributedSecurityManager.class).keys()) {
+            inject(IDistributedSecurityManager.class, String.valueOf(key), userDetailsService);
+        }
+        return null;
+    }
+
 
     /**
      *
@@ -49,7 +74,6 @@ public class ApplicationConfig {
      */
     @Bean(START_MANAGER)
     @DependsOn(PluginConfig.BEAN_NAME)
-    @Profile("datastore")
     public Void startManager() throws Exception {
         /* *********************************************** */
         /* Initialize the ActivePivot Manager and start it */

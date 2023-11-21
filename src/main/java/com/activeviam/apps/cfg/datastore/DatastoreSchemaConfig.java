@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("datastore")
+@Profile({"datastore", "query"})
 public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig, IDatabaseSchemaConfig {
 
     private IStoreDescription createTradesStoreDescription() {

@@ -28,9 +28,6 @@ public class SnowflakeApplicationConfig extends ASnowflakeConfig {
     private Environment env;
 
     @Autowired
-    private CubeConfig cubeConfig;
-
-    @Autowired
     private SnowflakeSchemaConfig databaseSchemaConfig;
 
     @Autowired
