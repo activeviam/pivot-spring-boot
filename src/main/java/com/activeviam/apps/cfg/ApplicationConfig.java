@@ -9,6 +9,7 @@ package com.activeviam.apps.cfg;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Profile;
 
 import com.quartetfs.biz.pivot.IActivePivotManager;
 import com.quartetfs.fwk.Registry;
@@ -48,6 +49,7 @@ public class ApplicationConfig {
      */
     @Bean(START_MANAGER)
     @DependsOn(PluginConfig.BEAN_NAME)
+    @Profile("datastore")
     public Void startManager() throws Exception {
         /* *********************************************** */
         /* Initialize the ActivePivot Manager and start it */

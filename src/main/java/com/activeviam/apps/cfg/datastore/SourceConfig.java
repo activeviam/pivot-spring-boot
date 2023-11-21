@@ -4,13 +4,14 @@
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.cfg;
+package com.activeviam.apps.cfg.datastore;
 
 import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
+@Profile("datastore")
 public class SourceConfig {
     public static final String TRADES_TOPIC = "Trades";
 

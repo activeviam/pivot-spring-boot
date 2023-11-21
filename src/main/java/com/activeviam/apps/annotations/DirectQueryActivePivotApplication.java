@@ -4,6 +4,7 @@
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
+
 package com.activeviam.apps.annotations;
 
 import java.lang.annotation.ElementType;
@@ -27,7 +28,6 @@ import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
 import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
 import com.qfs.server.cfg.i18n.impl.LocalI18nConfig;
 import com.qfs.server.cfg.impl.ActivePivotServicesConfig;
-import com.qfs.server.cfg.impl.ActivePivotWithDatastoreConfig;
 import com.qfs.server.cfg.impl.ActivePivotXmlaServletConfig;
 import com.qfs.server.cfg.impl.ActiveViamRestServicesConfig;
 import com.qfs.server.cfg.impl.ActiveViamWebSocketServicesConfig;
@@ -41,39 +41,39 @@ import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
 @ConfigurationPropertiesScan
 @Configuration
 @Import({
-    // Configuration to define core properties from Spring
-    ActiveViamPropertyFromSpringConfig.class,
+        // Configuration to define core properties from Spring
+        ActiveViamPropertyFromSpringConfig.class,
 
-    // Core imports
-    ActivePivotWithDatastoreConfig.class,
-    ActivePivotServicesConfig.class,
+        // Core imports
+        // ActivePivotWithDatastoreConfig.class,
+        ActivePivotServicesConfig.class,
 
-    // Security
-    FullAccessBranchPermissionsManagerConfig.class,
-    NoSecurityDatabaseServiceConfig.class,
+        // Security
+        FullAccessBranchPermissionsManagerConfig.class,
+        NoSecurityDatabaseServiceConfig.class,
 
-    // REST services for ActiveUI
-    ActiveViamRestServicesConfig.class,
-    ActiveViamWebSocketServicesConfig.class,
+        // REST services for ActiveUI
+        ActiveViamRestServicesConfig.class,
+        ActiveViamWebSocketServicesConfig.class,
 
-    // Configuration for Excel
-    ActivePivotXmlaServletConfig.class,
+        // Configuration for Excel
+        ActivePivotXmlaServletConfig.class,
 
-    // Internationalization
-    LocalI18nConfig.class,
+        // Internationalization
+        LocalI18nConfig.class,
 
-    // APM
-    // (https://docs.activeviam.com/products/atoti/server/latest/docs/monitoring/application_performance_monitoring/#monitored-spring-configuration)
-    LoggingConfig.class,
-    MonitoringJmxConfig.class,
-    MonitoredDataLoadingConfig.class,
-    QueryPerformanceEvaluatorConfig.class,
-    ExtraLoggingConfig.class,
+        // APM
+        // (https://docs.activeviam.com/products/atoti/server/latest/docs/monitoring/application_performance_monitoring/#monitored-spring-configuration)
+        LoggingConfig.class,
+        MonitoringJmxConfig.class,
+        MonitoredDataLoadingConfig.class,
+        QueryPerformanceEvaluatorConfig.class,
+        ExtraLoggingConfig.class,
 
-    // Expose Admin UI web application
-    AdminUIResourceServerConfig.class,
+        // Expose Admin UI web application
+        AdminUIResourceServerConfig.class,
 
-    // Expose the Atoti UI web application
-    ActiveUIResourceServerConfig.class,
+        // Expose the Atoti UI web application
+        ActiveUIResourceServerConfig.class,
 })
-public @interface ActivePivotApplication {}
+public @interface DirectQueryActivePivotApplication {}

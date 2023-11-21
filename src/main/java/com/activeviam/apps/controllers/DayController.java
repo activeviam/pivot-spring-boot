@@ -6,11 +6,16 @@
  */
 package com.activeviam.apps.controllers;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
+import com.activeviam.database.api.query.AliasedField;
+import com.activeviam.database.api.query.DistinctQuery;
+import com.qfs.server.cfg.IDatabaseConfig;
 import com.qfs.store.IDatastore;
+import com.qfs.store.query.ICursor;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 
 import lombok.RequiredArgsConstructor;
@@ -24,14 +29,22 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class DayController {
-    private final IDatastore datastore;
+    private final IDatabaseConfig databaseConfig;
 
     @GetMapping("/daysLoaded")
     public long getNumberOfDays() {
-        return DatastoreQueryHelper.selectDistinct(
-                        datastore.getMostRecentVersion(),
-                        StoreAndFieldConstants.TRADES_STORE_NAME,
-                        StoreAndFieldConstants.ASOFDATE)
-                .size();
+        final DistinctQuery query = databaseConfig.database().getQueryManager().distinctQuery()
+                .forTable(StoreAndFieldConstants.TRADES_STORE_NAME)
+                .withoutCondition()
+                .withAliasedFields(AliasedField.fromFieldName(StoreAndFieldConstants.ASOFDATE))
+                .toQuery();
+        try (ICursor cursor = databaseConfig.database().getMasterHead().getQueryRunner()
+                .distinctQuery(query).run()) {
+            int i = 0;
+            while (cursor.next()) {
+                i++;
+            }
+            return i;
+        }
     }
 }

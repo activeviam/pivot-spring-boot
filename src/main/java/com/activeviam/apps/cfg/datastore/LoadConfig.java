@@ -4,9 +4,9 @@
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.activeviam.apps.cfg;
+package com.activeviam.apps.cfg.datastore;
 
-import static com.activeviam.apps.cfg.SourceConfig.TRADES_TOPIC;
+import static com.activeviam.apps.cfg.datastore.SourceConfig.TRADES_TOPIC;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
+@Profile("datastore")
 public class LoadConfig {
     private final IDatastore datastore;
     private final CSVSource<Path> csvSource;

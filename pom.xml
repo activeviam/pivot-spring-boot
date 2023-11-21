@@ -54,6 +54,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
+      <dependency>
+        <groupId>com.activeviam.directquery</groupId>
+        <artifactId>api-snowflake</artifactId>
+        <version>${activepivot.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -85,6 +91,10 @@
       <groupId>com.activeviam.apm</groupId>
       <artifactId>apm</artifactId>
       <version>${activepivot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.activeviam.directquery</groupId>
+      <artifactId>api-snowflake</artifactId>
     </dependency>
 
     <!-- Dependencies for the content service persistence -->

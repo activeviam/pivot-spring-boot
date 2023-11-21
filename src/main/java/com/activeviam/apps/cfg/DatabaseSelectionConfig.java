@@ -16,9 +16,9 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-public class DatastoreSelectionConfig {
+public class DatabaseSelectionConfig {
 
-    private final DatastoreSchemaConfig datastoreSchemaConfig;
+    private final IDatabaseSchemaConfig databaseSchemaConfig;
 
     /**
      * Creates the {@link ISelectionDescription} for Pivot Schema.
@@ -26,9 +26,9 @@ public class DatastoreSelectionConfig {
      * @return The created selection description
      */
     public ISelectionDescription createSchemaSelectionDescription() {
-        return StartBuilding.selection(datastoreSchemaConfig.datastoreSchemaDescription())
+        return StartBuilding.selection(databaseSchemaConfig.getSchema())
                 .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
-                .withAllFields()
+                .withAllReachableFields()
                 .build();
     }
 }

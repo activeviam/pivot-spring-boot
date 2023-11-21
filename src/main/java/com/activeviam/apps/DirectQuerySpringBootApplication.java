@@ -7,15 +7,19 @@
 package com.activeviam.apps;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.activeviam.apps.annotations.ActivePivotApplication;
+import com.activeviam.apps.annotations.DatastoreActivePivotApplication;
+import com.activeviam.apps.annotations.DirectQueryActivePivotApplication;
 
-@ActivePivotApplication
+@DirectQueryActivePivotApplication
 @EnableWebMvc
-public class PivotSpringBootApplication {
+@Profile("snowflake")
+public class DirectQuerySpringBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PivotSpringBootApplication.class, args);
+        System.setProperty("spring.profiles.default", "snowflake");
+        SpringApplication.run(DirectQuerySpringBootApplication.class, args);
     }
 }

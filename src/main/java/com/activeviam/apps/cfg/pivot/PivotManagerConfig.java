@@ -9,7 +9,7 @@ package com.activeviam.apps.cfg.pivot;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import com.activeviam.apps.cfg.DatastoreSelectionConfig;
+import com.activeviam.apps.cfg.DatabaseSelectionConfig;
 import com.activeviam.apps.cfg.PluginConfig;
 import com.activeviam.builders.StartBuilding;
 import com.qfs.server.cfg.IActivePivotManagerDescriptionConfig;
@@ -39,7 +39,7 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
 
     public static final String NATIVE_MEASURES = "Native Measures";
 
-    private final DatastoreSelectionConfig datastoreSelectionConfig;
+    private final DatabaseSelectionConfig databaseSelectionConfig;
     private final CubeConfig cubeConfig;
 
     @Override
@@ -48,7 +48,7 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
                 .withCatalog(CATALOG_NAME)
                 .containingAllCubes()
                 .withSchema(SCHEMA_NAME)
-                .withSelection(datastoreSelectionConfig.createSchemaSelectionDescription())
+                .withSelection(databaseSelectionConfig.createSchemaSelectionDescription())
                 .withCube(cubeConfig.createCubeDescription())
                 .build();
     }

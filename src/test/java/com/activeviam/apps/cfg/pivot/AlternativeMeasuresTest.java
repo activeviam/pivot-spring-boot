@@ -20,8 +20,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.activeviam.apps.cfg.DatastoreSchemaConfig;
-import com.activeviam.apps.cfg.DatastoreSelectionConfig;
+import com.activeviam.apps.cfg.datastore.DatastoreSchemaConfig;
+import com.activeviam.apps.cfg.DatabaseSelectionConfig;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.builders.ITransactionsBuilder;
 import com.activeviam.copper.builders.impl.SimpleTransactionBuilder;
@@ -55,7 +55,7 @@ class AlternativeMeasuresTest {
     public static CubeTesterBuilder testerBuilder() {
         final var datastoreDescConfig = new DatastoreSchemaConfig();
         final var datastoreSchemaDesc = datastoreDescConfig.datastoreSchemaDescription();
-        final var datastoreSelectionDesc = new DatastoreSelectionConfig(datastoreDescConfig);
+        final var datastoreSelectionDesc = new DatabaseSelectionConfig(datastoreDescConfig);
         final var dimensionConfig = new DimensionConfig();
         final var cubeDescription = StartBuilding.cube()
                 .withName("Cube")

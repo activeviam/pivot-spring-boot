@@ -13,11 +13,12 @@ import java.nio.file.Paths;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Profile;
 
 import com.qfs.pivot.content.IActivePivotContentService;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.pivot.monitoring.impl.MemoryAnalysisService;
-import com.qfs.store.IDatastore;
+import com.qfs.server.cfg.IDatabaseConfig;
 import com.quartetfs.biz.pivot.IActivePivotManager;
 import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
@@ -33,7 +34,7 @@ public class JMXEnablerConfig {
      */
     private final IActivePivotContentService activePivotContentService;
 
-    private final IDatastore datastore;
+    private final IDatabaseConfig databaseConfig;
 
     /**
      * Enable JMX Monitoring for the Datastore
@@ -42,7 +43,7 @@ public class JMXEnablerConfig {
      */
     @Bean
     public JMXEnabler jmxDatastoreEnabler() {
-        return new JMXEnabler(datastore);
+        return new JMXEnabler(databaseConfig.database());
     }
 
     /**
@@ -52,6 +53,7 @@ public class JMXEnablerConfig {
      */
     @Bean
     @DependsOn(START_MANAGER)
+    @Profile("datastore")
     public JMXEnabler jmxActivePivotEnabler() {
         return new JMXEnabler(new DynamicActivePivotManagerMBean(activePivotManager));
     }
@@ -75,6 +77,6 @@ public class JMXEnablerConfig {
     @Bean
     public JMXEnabler jmxMemoryMonitoringServiceEnabler() {
         return new JMXEnabler(new MemoryAnalysisService(
-                datastore, activePivotManager, Paths.get(System.getProperty("java.io.tmpdir"))));
+                databaseConfig.database(), activePivotManager, Paths.get(System.getProperty("java.io.tmpdir"))));
     }
 }

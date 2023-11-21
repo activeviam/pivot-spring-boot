@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.activeviam.apps.cfg.DatastoreSchemaConfig;
-import com.activeviam.apps.cfg.DatastoreSelectionConfig;
+import com.activeviam.apps.cfg.datastore.DatastoreSchemaConfig;
+import com.activeviam.apps.cfg.DatabaseSelectionConfig;
 import com.activeviam.builders.StartBuilding;
 import com.activeviam.copper.CopperRegistrations;
 import com.activeviam.copper.builders.ITransactionsBuilder;
@@ -82,7 +82,7 @@ class MeasuresTest {
     @TestConfiguration
     @Import({
         DatastoreSchemaConfig.class,
-        DatastoreSelectionConfig.class,
+        DatabaseSelectionConfig.class,
         DimensionConfig.class,
         MeasureConfig.class,
     })
@@ -112,10 +112,10 @@ class MeasuresTest {
         @Bean
         CubeTesterBuilder testerBuilder(
                 DatastoreSchemaConfig datastoreSchemaConfig,
-                DatastoreSelectionConfig datastoreSelectionConfig,
+                DatabaseSelectionConfig databaseSelectionConfig,
                 DimensionConfig dimensionConfig) {
             final var datastoreDescription = datastoreSchemaConfig.datastoreSchemaDescription();
-            final var selectionDescription = datastoreSelectionConfig.createSchemaSelectionDescription();
+            final var selectionDescription = databaseSelectionConfig.createSchemaSelectionDescription();
             final var cubeDescription = StartBuilding.cube()
                     .withName("Cube")
                     .withDimensions(dimensionConfig::build)
