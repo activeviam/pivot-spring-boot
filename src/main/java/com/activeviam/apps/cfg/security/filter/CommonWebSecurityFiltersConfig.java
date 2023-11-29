@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +21,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 
-import com.activeviam.apps.cfg.security.SecurityConstants;
 import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
 import com.qfs.server.cfg.impl.JwtRestServiceConfig;
 import com.qfs.server.cfg.impl.VersionServicesConfig;
@@ -62,18 +60,13 @@ public class CommonWebSecurityFiltersConfig {
     @Bean
     @Order(2)
     protected SecurityFilterChain jwtFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return envSpecificSecurityFilter
-                .applyAuthentication(http
-                        // As of Spring Security 4.0, CSRF protection is enabled by default.
-                        .csrf(AbstractHttpConfigurer::disable)
-                        // Configure CORS
-                        //                        .cors(Customizer.withDefaults())
-                        .securityMatcher(mvc.pattern(url(JwtRestServiceConfig.REST_API_URL_PREFIX, WILDCARD)))
-                        .authorizeHttpRequests(
-                                auth -> auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(WILDCARD)))
-                                        .permitAll()
-                                        .anyRequest()
-                                        .hasAnyAuthority(SecurityConstants.ROLE_USER)))
+        return http
+                // As of Spring Security 4.0, CSRF protection is enabled by default.
+                .csrf(AbstractHttpConfigurer::disable)
+                // Configure CORS
+                //                        .cors(Customizer.withDefaults())
+                .securityMatcher(mvc.pattern(url(JwtRestServiceConfig.REST_API_URL_PREFIX, WILDCARD)))
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .build();
     }
 

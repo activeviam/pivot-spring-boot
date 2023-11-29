@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,10 +37,13 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
     private static final String COOKIE_NAME_PROPERTY = "server.servlet.session.cookie.name";
 
     private final ApplicationContext applicationContext;
+    private final TargetUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     private String cookieName;
 
     public LocalEnvSpecificSecurityFilter(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        authenticationSuccessHandler = new TargetUrlAuthenticationSuccessHandler();
+        authenticationSuccessHandler.setTargetUrlParameter("redirectUrl");
     }
 
     @PostConstruct
@@ -54,7 +58,8 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
                         .deleteCookies(cookieName)
                         .invalidateHttpSession(true))
                 .formLogin()
-                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
+                //                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
+                .successHandler(authenticationSuccessHandler)
                 .and();
     }
 
@@ -66,7 +71,8 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
                         .deleteCookies(cookieName)
                         .invalidateHttpSession(true))
                 .formLogin()
-                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
+                //                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
+                .successHandler(authenticationSuccessHandler)
                 .permitAll()
                 .and();
     }
@@ -100,6 +106,30 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
             clearAuthenticationAttributes(request);
             var referers = savedRequest.getHeaderValues(HttpHeaders.REFERER);
             var targetUrl = !CollectionUtils.isEmpty(referers) ? referers.get(0) : savedRequest.getRedirectUrl();
+            getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        }
+
+        public void setRequestCache(RequestCache requestCache) {
+            this.requestCache = requestCache;
+        }
+    }
+
+    private static class TargetUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+        private RequestCache requestCache = new HttpSessionRequestCache();
+
+        @Override
+        public void onAuthenticationSuccess(
+                HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+                throws ServletException, IOException {
+            var savedRequest = requestCache.getRequest(request, response);
+            if (savedRequest == null) {
+                super.onAuthenticationSuccess(request, response, authentication);
+                return;
+            }
+            clearAuthenticationAttributes(request);
+            // Use the DefaultSavedRequest URL
+            var targets = savedRequest.getParameterValues(getTargetUrlParameter());
+            var targetUrl = ArrayUtils.isNotEmpty(targets) ? targets[0] : savedRequest.getRedirectUrl();
             getRedirectStrategy().sendRedirect(request, response, targetUrl);
         }
 
