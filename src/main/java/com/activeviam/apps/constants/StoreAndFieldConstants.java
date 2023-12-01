@@ -16,4 +16,7 @@ public class StoreAndFieldConstants {
 
     public static final String TRADES_TRADEID = "TradeID";
     public static final String TRADES_NOTIONAL = "Notional";
+
+    public static final String INSTRUMENTS_STORE_NAME = "Instruments";
+    public static final String INSTRUMENT = "Instrument";
 }

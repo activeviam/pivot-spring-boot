@@ -24,13 +24,23 @@ management:
   health:
     elasticsearch.enabled: false
 
+
+data-load:
+  initial-load:
+    enabled: true
+    requests:
+      - dataSets: ALL
+  csv:
+    directory-pattern: "data/"
+    tables:
+      Trades:
+        filePattern: "glob:**trades.csv"
+      Instruments:
+        filePattern: "glob:**instruments.csv"
+
 # Print the stores schema
 schema:
   printer: false
-
-# File to parse
-file:
-  trades: "data/trades.csv"
 
 tech-user:
   passwords:

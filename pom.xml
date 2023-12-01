@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.activeviam.apps</groupId>
   <artifactId>pivot-spring-boot</artifactId>
-  <version>6.0.7</version>
+  <version>6.0.9</version>
   <description>Template project for Spring Boot</description>
 
   <properties>
@@ -20,7 +20,7 @@
     <activepivot.version>6.0.7</activepivot.version>
     <activeui.version>5.1.8</activeui.version>
     <admin-ui.version>5.1.2</admin-ui.version>
-
+    <atoti-server-tools.version>6.0.9.3</atoti-server-tools.version>
     <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
     <palantir-java-format.version>2.35.0</palantir-java-format.version>
     <springdoc.version>1.7.0</springdoc.version>
@@ -37,6 +37,11 @@
         <scope>import</scope>
       </dependency>
 
+      <dependency>
+        <groupId>com.activeviam.config</groupId>
+        <artifactId>atoti-server-tools</artifactId>
+        <version>${atoti-server-tools.version}</version>
+      </dependency>
       <!-- Force the usage of the latest Spring Security version -->
       <dependency>
         <groupId>org.springframework.security</groupId>
@@ -85,6 +90,11 @@
       <groupId>com.activeviam.apm</groupId>
       <artifactId>apm</artifactId>
       <version>${activepivot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.activeviam.config</groupId>
+      <artifactId>atoti-server-tools</artifactId>
     </dependency>
 
     <!-- Dependencies for the content service persistence -->

@@ -31,7 +31,6 @@ import com.qfs.util.timing.impl.StopWatch;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Configuration
 public class LoadConfig {
     private final IDatastore datastore;
     private final CSVSource<Path> csvSource;
