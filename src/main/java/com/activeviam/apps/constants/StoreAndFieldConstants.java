@@ -19,4 +19,6 @@ public class StoreAndFieldConstants {
 
     public static final String INSTRUMENTS_STORE_NAME = "Instruments";
     public static final String INSTRUMENT = "Instrument";
+
+    public static final String SCOPE_CONSTANT = "ScopeConstant";
 }

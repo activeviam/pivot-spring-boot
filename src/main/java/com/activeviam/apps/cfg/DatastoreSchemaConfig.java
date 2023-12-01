@@ -51,6 +51,7 @@ public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig 
                 .asKeyField()
                 .withField(StoreAndFieldConstants.INSTRUMENT, STRING)
                 .asKeyField()
+                .withField(StoreAndFieldConstants.SCOPE_CONSTANT, STRING)
                 .build();
     }
 

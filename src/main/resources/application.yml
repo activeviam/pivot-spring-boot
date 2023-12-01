@@ -30,13 +30,15 @@ data-load:
     enabled: true
     requests:
       - dataSets: ALL
+        scope:
+          CONSTANT: "hello"
   csv:
-    directory-pattern: "data/"
+    directory-pattern: "'data/'"
     tables:
       Trades:
-        filePattern: "glob:**trades.csv"
+        filePattern: "'glob:**trades.csv'"
       Instruments:
-        filePattern: "glob:**instruments.csv"
+        filePattern: "'glob:**instruments.csv'"
 
 # Print the stores schema
 schema:
