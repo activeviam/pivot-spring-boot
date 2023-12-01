@@ -26,14 +26,17 @@ management:
 
 
 data-load:
+  default-scope:
+    CONSTANT: "Constant!"
   initial-load:
     enabled: true
     requests:
       - dataSets: ALL
         scope:
-          CONSTANT: "hello"
+          CONSTANT: "First day"
+          AS_OF_DATE: "2019-01-01"
   csv:
-    directory-pattern: "'data/'"
+    directory-pattern: "'databydate/' + #scope.get('AS_OF_DATE') + '/'"
     tables:
       Trades:
         filePattern: "'glob:**trades.csv'"

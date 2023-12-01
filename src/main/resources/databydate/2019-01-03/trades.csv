@@ -1,0 +1,6 @@
+TradeId,Instrument,Notional
+1,F,10000
+2,D,20000
+3,C,-10000
+4,A,50000
+5,B,-20000
