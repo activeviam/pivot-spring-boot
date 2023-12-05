@@ -66,7 +66,7 @@ public class DataLoadCustomisations {
                     return cols;
                 })
                 // this could be done with a column calculator but wanted to show how to use tuple publishers!
-                .tuplePublisherConfiguration(CsvStoresDataLoadConfigurer.tuplePublisherSupplierBuilder()
+                .tuplePublisherConfiguration(CsvStoresDataLoadConfigurer.startBuildingTuplePublisherConfiguration()
                         .accumulateTuples(false)
                         .creationFunction(
                                 (datastore, s) -> new LambdaTuplePublisher<>(datastore, s, (message, rows) -> {

@@ -28,7 +28,7 @@
     <activepivot.version>6.0.7</activepivot.version>
     <activeui.version>5.1.8</activeui.version>
     <admin-ui.version>5.1.2</admin-ui.version>
-    <atoti-server-tools.version>6.0.9.4</atoti-server-tools.version>
+    <atoti-server-tools.version>6.0.9.5</atoti-server-tools.version>
     <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
     <palantir-java-format.version>2.35.0</palantir-java-format.version>
     <springdoc.version>1.7.0</springdoc.version>
