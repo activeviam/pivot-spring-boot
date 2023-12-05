@@ -14,6 +14,8 @@ import static com.activeviam.apps.constants.StoreAndFieldConstants.INSTRUMENTS_S
 import static com.activeviam.apps.constants.StoreAndFieldConstants.SCOPE_CONSTANT;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -36,8 +38,8 @@ public class DataLoadCustomisations {
 
     public static final String AS_OF_DATE_SCOPE_PARAMETER = "AS_OF_DATE";
 
-    private static IColumnCalculator<ILineReader> asOfDateColumnCalculator() {
-        return new ScopedColumnCalculator<>(ASOFDATE, (context, scope) -> {
+    private static IColumnCalculator<ILineReader> asOfDateColumnCalculator(String columnName) {
+        return new ScopedColumnCalculator<>(columnName, (context, scope) -> {
             if (scope.hasParameter(AS_OF_DATE_SCOPE_PARAMETER)) {
                 return scope.get(AS_OF_DATE_SCOPE_PARAMETER);
             } else {
@@ -52,8 +54,10 @@ public class DataLoadCustomisations {
                     cols.remove(ASOFDATE);
                     return cols;
                 })
-                .columnCalculator(asOfDateColumnCalculator())
-                .columnCalculator(new LambdaCsvColumnParser<>(CPTY, val -> "CPTY " + val.toString())));
+                // can pass a list or add one by one
+                .columnCalculators(List.of(
+                        asOfDateColumnCalculator(ASOFDATE),
+                        new LambdaCsvColumnParser<>(CPTY, val -> "CPTY " + val.toString()))));
         configurer.configure(INSTRUMENTS_STORE_NAME, config -> config.editColumns(cols -> {
                     cols.remove(SCOPE_CONSTANT);
                     cols.remove(ASOFDATE);
@@ -61,7 +65,7 @@ public class DataLoadCustomisations {
                 })
                 .columnCalculator(new ScopedColumnCalculator<>(
                         SCOPE_CONSTANT, (context, scope) -> scope.get(CONSTANT_SCOPE_PARAMETER)))
-                .columnCalculator(asOfDateColumnCalculator()));
+                .columnCalculator(asOfDateColumnCalculator(ASOFDATE)));
         configurer.configure(CPTY_STORE_NAME, config -> config.editColumns(cols -> {
                     cols.remove(ASOFDATE);
                     return cols;
@@ -75,7 +79,7 @@ public class DataLoadCustomisations {
                                     return rows;
                                 }))
                         .build())
-                .columnCalculator(asOfDateColumnCalculator()));
+                .columnCalculator(asOfDateColumnCalculator(ASOFDATE)));
         return null;
     }
 }
