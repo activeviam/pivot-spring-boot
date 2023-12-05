@@ -26,6 +26,7 @@ import com.activeviam.data.load.source.csv.LambdaCsvColumnParser;
 import com.activeviam.data.load.source.csv.model.CsvStoresDataLoadConfigurer;
 import com.activeviam.fwk.ActiveViamRuntimeException;
 import com.qfs.msg.IColumnCalculator;
+import com.qfs.msg.csv.ILineReader;
 
 @Configuration
 @Import({DataLoadConfiguration.class, CsvDatasourceConfiguration.class})
@@ -35,7 +36,7 @@ public class DataLoadCustomisations {
 
     public static final String AS_OF_DATE_SCOPE_PARAMETER = "AS_OF_DATE";
 
-    private static IColumnCalculator asOfDateColumnCalculator() {
+    private static IColumnCalculator<ILineReader> asOfDateColumnCalculator() {
         return new ScopedColumnCalculator<>(ASOFDATE, (context, scope) -> {
             if (scope.hasParameter(AS_OF_DATE_SCOPE_PARAMETER)) {
                 return scope.get(AS_OF_DATE_SCOPE_PARAMETER);
@@ -52,7 +53,7 @@ public class DataLoadCustomisations {
                     return cols;
                 })
                 .columnCalculator(asOfDateColumnCalculator())
-                .columnCalculator(new LambdaCsvColumnParser(CPTY, val -> "CPTY " + val.toString())));
+                .columnCalculator(new LambdaCsvColumnParser<>(CPTY, val -> "CPTY " + val.toString())));
         configurer.configure(INSTRUMENTS_STORE_NAME, config -> config.editColumns(cols -> {
                     cols.remove(SCOPE_CONSTANT);
                     cols.remove(ASOFDATE);
