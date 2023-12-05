@@ -1,6 +1,6 @@
-TradeId,Instrument,Notional
-1,D,10000
-2,A,20000
-3,C,-10000
-4,D,50000
-5,G,-20000
+TradeId,Instrument,Cpty,Notional
+1,D,X,10000
+2,A,Y,20000
+3,C,Z,-10000
+4,D,Z,50000
+5,G,Y,-20000

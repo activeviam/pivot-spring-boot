@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+  ~ Copyright (C) ActiveViam 2023
+  ~ ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+  ~ property of ActiveViam Limited. Any unauthorized use,
+  ~ reproduction or transfer of this material is strictly prohibited
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -20,7 +28,7 @@
     <activepivot.version>6.0.7</activepivot.version>
     <activeui.version>5.1.8</activeui.version>
     <admin-ui.version>5.1.2</admin-ui.version>
-    <atoti-server-tools.version>6.0.9.3</atoti-server-tools.version>
+    <atoti-server-tools.version>6.0.9.4</atoti-server-tools.version>
     <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
     <palantir-java-format.version>2.35.0</palantir-java-format.version>
     <springdoc.version>1.7.0</springdoc.version>

@@ -18,7 +18,11 @@ public class StoreAndFieldConstants {
     public static final String TRADES_NOTIONAL = "Notional";
 
     public static final String INSTRUMENTS_STORE_NAME = "Instruments";
-    public static final String INSTRUMENT = "Instrument";
+    public static final String INSTRUMENT = "InstrumentID";
 
     public static final String SCOPE_CONSTANT = "ScopeConstant";
+
+    public static final String CPTY_STORE_NAME = "Counterparties";
+
+    public static final String CPTY = "CounterpartyID";
 }

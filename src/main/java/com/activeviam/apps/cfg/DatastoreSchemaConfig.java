@@ -7,6 +7,8 @@
 package com.activeviam.apps.cfg;
 
 import static com.activeviam.apps.constants.StoreAndFieldConstants.ASOFDATE;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.CPTY;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.CPTY_STORE_NAME;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.INSTRUMENT;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.INSTRUMENTS_STORE_NAME;
 import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_STORE_NAME;
@@ -40,6 +42,7 @@ public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig 
                 .withField(StoreAndFieldConstants.TRADES_TRADEID, STRING)
                 .asKeyField()
                 .withField(StoreAndFieldConstants.INSTRUMENT, STRING)
+                .withField(StoreAndFieldConstants.CPTY, STRING)
                 .withField(StoreAndFieldConstants.TRADES_NOTIONAL, DOUBLE)
                 .build();
     }
@@ -55,6 +58,16 @@ public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig 
                 .build();
     }
 
+    private IStoreDescription counterpartyStoreDescription() {
+        return StartBuilding.store()
+                .withStoreName(StoreAndFieldConstants.CPTY_STORE_NAME)
+                .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE)
+                .asKeyField()
+                .withField(StoreAndFieldConstants.CPTY, STRING)
+                .asKeyField()
+                .build();
+    }
+
     private IReferenceDescription tradesToInstrumentReference() {
         return StartBuilding.reference()
                 .fromStore(TRADES_STORE_NAME)
@@ -65,10 +78,20 @@ public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig 
                 .build();
     }
 
+    private IReferenceDescription tradesToCptyReference() {
+        return StartBuilding.reference()
+                .fromStore(TRADES_STORE_NAME)
+                .toStore(CPTY_STORE_NAME)
+                .withName("TradesToCpty")
+                .withMapping(ASOFDATE, ASOFDATE)
+                .withMapping(CPTY, CPTY)
+                .build();
+    }
+
     @Override
     public IDatastoreSchemaDescription datastoreSchemaDescription() {
-        var stores = Set.of(tradesStoreDescription(), instrumentStoreDescription());
-        var references = Set.of(tradesToInstrumentReference());
+        var stores = Set.of(tradesStoreDescription(), instrumentStoreDescription(), counterpartyStoreDescription());
+        var references = Set.of(tradesToInstrumentReference(), tradesToCptyReference());
         return new DatastoreSchemaDescription(stores, references);
     }
 }

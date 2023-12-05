@@ -6,6 +6,10 @@
  */
 package com.activeviam.apps.cfg.pivot;
 
+import static com.activeviam.apps.constants.StoreAndFieldConstants.CPTY;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.INSTRUMENT;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.SCOPE_CONSTANT;
+
 import org.springframework.context.annotation.Configuration;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
@@ -41,6 +45,15 @@ public class DimensionConfig {
                 .slicing()
                 .withLevelOfSameName()
                 .withType(ILevelInfo.LevelType.TIME)
-                .withComparator(ReverseOrderComparator.type);
+                .withComparator(ReverseOrderComparator.type)
+                .withDimension(INSTRUMENT)
+                .withHierarchyOfSameName()
+                .withLevelOfSameName()
+                .withDimension(CPTY)
+                .withHierarchyOfSameName()
+                .withLevelOfSameName()
+                .withDimension(SCOPE_CONSTANT)
+                .withHierarchyOfSameName()
+                .withLevelOfSameName();
     }
 }

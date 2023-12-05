@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.activeviam.builders.StartBuilding;
+import com.activeviam.desc.build.ISelectionDescriptionBuilder;
 import com.quartetfs.biz.pivot.definitions.ISelectionDescription;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class DatastoreSelectionConfig {
     public ISelectionDescription createSchemaSelectionDescription() {
         return StartBuilding.selection(datastoreSchemaConfig.datastoreSchemaDescription())
                 .fromBaseStore(StoreAndFieldConstants.TRADES_STORE_NAME)
-                .withAllFields()
+                .withAllReachableFields(ISelectionDescriptionBuilder.FieldsCollisionHandler.CLOSEST)
                 .build();
     }
 }

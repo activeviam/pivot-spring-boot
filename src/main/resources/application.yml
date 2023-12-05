@@ -26,9 +26,6 @@ management:
 
 
 data-load:
-  data-sets:
-    ONLY_INSTR:
-      tables: Trades
   default-scope:
     CONSTANT: "Constant!"
   initial-load:
@@ -38,25 +35,17 @@ data-load:
         scope:
           CONSTANT: "First day"
           AS_OF_DATE: "2019-01-01"
-      - dataSets: ONLY_INSTR
-        scope:
-          CONSTANT: "For today only instruments"
-          AS_OF_DATE: "2019-01-02"
   csv:
     directory-pattern: "'databydate/' + #scope.get('AS_OF_DATE') + '/'"
-    tables:
+    data:
       Trades:
         filePattern: "'glob:**trades.csv'"
       Instruments:
         filePattern: "'glob:**instruments.csv'"
-  unload-scope-mapping:
-    Trades:
-      fieldToScope:
-        AsOfDate: AS_OF_DATE
-    Instruments:
-      fieldToScope:
-        AsOfDate: AS_OF_DATE
-    # Print the stores schema
+      Counterparties:
+        filePattern: "'glob:**counterparties.csv'"
+
+# Print the stores schema
 schema:
   printer: false
 
