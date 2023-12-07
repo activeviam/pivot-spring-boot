@@ -79,6 +79,16 @@ public class WebSecurityFiltersConfig {
     }
 
     @Bean
+    @Order(10)
+    public SecurityFilterChain rootFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+        return http.securityMatcher(mvc.pattern(url("/")))
+                .headers(httpSecurityHeadersConfigurer ->
+                        httpSecurityHeadersConfigurer.frameOptions().disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .build();
+    }
+
+    @Bean
     @Order(20)
     public SecurityFilterChain activeUIFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         return http.securityMatcher(mvc.pattern(url(ActiveUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
