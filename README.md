@@ -57,6 +57,8 @@ java -DchunkAllocatorClass=com.qfs.chunk.direct.allocator.impl.MmapDirectChunkAl
 
 - ActiveUI, ActiveViam's user interface for exploring the cube, will be available from `http://localhost:9090/ui`
 
+- List of REST endpoints provided can be found at `http://localhost:9090/activeviam/swagger-ui/index.html`
+
 The default security credentials are `admin:admin`, but can be modified in the `SecurityConfig` class (we use Spring Security).<br>
 You should change this before going into production.<br>
 You are also recommended to change the jwt key pair in `application.yaml` by running the class `JwtUtil` and generating new key pair.
