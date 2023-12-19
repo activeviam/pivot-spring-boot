@@ -27,6 +27,9 @@ import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.CorsFilter;
+
+import com.qfs.server.cfg.impl.JwtConfig;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,11 +40,13 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
     private static final String COOKIE_NAME_PROPERTY = "server.servlet.session.cookie.name";
 
     private final ApplicationContext applicationContext;
+    private final JwtConfig jwtConfig;
     private final TargetUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     private String cookieName;
 
-    public LocalEnvSpecificSecurityFilter(ApplicationContext applicationContext) {
+    public LocalEnvSpecificSecurityFilter(ApplicationContext applicationContext, JwtConfig jwtConfig) {
         this.applicationContext = applicationContext;
+        this.jwtConfig = jwtConfig;
         authenticationSuccessHandler = new TargetUrlAuthenticationSuccessHandler();
         authenticationSuccessHandler.setTargetUrlParameter("redirectUrl");
     }
@@ -60,7 +65,8 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
                 .formLogin()
                 //                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
                 .successHandler(authenticationSuccessHandler)
-                .and();
+                .and()
+                .addFilterAfter(jwtConfig.jwtFilter(), CorsFilter.class);
     }
 
     @Override
@@ -74,7 +80,8 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
                 //                .successHandler(new HeaderRefererAuthenticationSuccessHandler())
                 .successHandler(authenticationSuccessHandler)
                 .permitAll()
-                .and();
+                .and()
+                .addFilterAfter(jwtConfig.jwtFilter(), CorsFilter.class);
     }
 
     @Override
@@ -90,7 +97,8 @@ public class LocalEnvSpecificSecurityFilter implements IEnvSpecificSecurityFilte
                 HttpServletRequest request, HttpServletResponse response, Authentication authentication)
                 throws ServletException, IOException {
             // Inspired from SavedRequestAwareAuthenticationSuccessHandler.
-            // The difference is that the Referer header of the saved request is prioritized for the redirect URL, over its URL itself.
+            // The difference is that the Referer header of the saved request is prioritized for the redirect URL, over
+            // its URL itself.
             var savedRequest = requestCache.getRequest(request, response);
             if (savedRequest == null) {
                 super.onAuthenticationSuccess(request, response, authentication);
