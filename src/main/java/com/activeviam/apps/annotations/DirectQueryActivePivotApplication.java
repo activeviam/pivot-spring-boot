@@ -45,7 +45,6 @@ import com.qfs.service.store.impl.NoSecurityDatabaseServiceConfig;
         ActiveViamPropertyFromSpringConfig.class,
 
         // Core imports
-        // ActivePivotWithDatastoreConfig.class,
         ActivePivotServicesConfig.class,
 
         // Security

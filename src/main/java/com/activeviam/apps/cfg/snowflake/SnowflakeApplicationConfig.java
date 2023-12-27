@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
-import com.activeviam.apps.cfg.pivot.CubeConfig;
+import com.activeviam.apps.cfg.pivot.DistributedCubeConfig;
 import com.activeviam.apps.cfg.pivot.PivotManagerConfig;
 import com.activeviam.directquery.snowflake.api.ASnowflakeConfig;
 import com.activeviam.directquery.snowflake.api.Application;
@@ -28,7 +28,7 @@ public class SnowflakeApplicationConfig extends ASnowflakeConfig {
     private Environment env;
 
     @Autowired
-    private CubeConfig cubeConfig;
+    private DistributedCubeConfig cubeConfig;
 
     @Autowired
     private SnowflakeSchemaConfig databaseSchemaConfig;

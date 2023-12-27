@@ -40,16 +40,24 @@ public class PivotManagerConfig implements IActivePivotManagerDescriptionConfig 
     public static final String NATIVE_MEASURES = "Native Measures";
 
     private final DatabaseSelectionConfig databaseSelectionConfig;
-    private final CubeConfig cubeConfig;
+    private final DistributedCubeConfig cubeConfig;
 
     @Override
     public IActivePivotManagerDescription managerDescription() {
-        return StartBuilding.managerDescription(MANAGER_NAME)
-                .withCatalog(CATALOG_NAME)
-                .containingAllCubes()
-                .withSchema(SCHEMA_NAME)
-                .withSelection(databaseSelectionConfig.createSchemaSelectionDescription())
-                .withCube(cubeConfig.createCubeDescription())
-                .build();
+        if (cubeConfig.spec.isDatacube()) {
+            return StartBuilding.managerDescription(MANAGER_NAME)
+                    .withCatalog(CATALOG_NAME)
+                    .containingAllCubes()
+                    .withSchema(SCHEMA_NAME)
+                    .withSelection(databaseSelectionConfig.createSchemaSelectionDescription())
+                    .withCube(cubeConfig.createCubeDescription())
+                    .build();
+        } else {
+            return StartBuilding.managerDescription(MANAGER_NAME)
+                    .withCatalog(CATALOG_NAME)
+                    .containingAllCubes()
+                    .withDistributedCube(cubeConfig.createQueryCubeDescription())
+                    .build();
+        }
     }
 }

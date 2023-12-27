@@ -8,6 +8,7 @@ package com.activeviam.apps.cfg.datastore;
 
 import static com.qfs.literal.ILiteralType.DOUBLE;
 import static com.qfs.literal.ILiteralType.LOCAL_DATE;
+import static com.qfs.literal.ILiteralType.LONG;
 import static com.qfs.literal.ILiteralType.STRING;
 
 import java.util.Collection;
@@ -39,7 +40,7 @@ public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig,
                 .withStoreName(StoreAndFieldConstants.TRADES_STORE_NAME)
                 .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE)
                 .asKeyField()
-                .withField(StoreAndFieldConstants.TRADES_TRADEID, STRING)
+                .withField(StoreAndFieldConstants.TRADES_TRADEID, LONG)
                 .asKeyField()
                 .withField(StoreAndFieldConstants.TRADES_NOTIONAL, DOUBLE)
                 .build();

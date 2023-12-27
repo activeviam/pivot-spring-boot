@@ -1,0 +1,6 @@
+cube:
+  datacube: true
+  name: "data2"
+  year: 2023
+  month: 4
+  day: 24

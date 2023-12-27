@@ -4,22 +4,28 @@
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
+
 package com.activeviam.apps;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.activeviam.apps.annotations.DatastoreActivePivotApplication;
+import com.activeviam.apps.annotations.DirectQueryActivePivotApplication;
 
-@DatastoreActivePivotApplication
+/**
+ * COMMENT ME.
+ *
+ * @author ActiveViam
+ */
+@DirectQueryActivePivotApplication
 @EnableWebMvc
-@Profile("datastore")
-public class DatastoreSpringBootApplication {
-
+@Profile("snowflake")
+public class DqDataCubeApplication {
     public static void main(String[] args) {
-        System.setProperty("spring.profiles.default", "datastore");
+        System.setProperty("spring.profiles.default", "snowflake,data1");
         System.setProperty("server.port", "9091");
-        SpringApplication.run(DatastoreSpringBootApplication.class, args);
+        SpringApplication app = new SpringApplication(DqDataCubeApplication.class);
+        app.run(args);
     }
 }

@@ -1,0 +1,3 @@
+cube:
+  datacube: false
+  name: "query"
