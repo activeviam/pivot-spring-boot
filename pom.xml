@@ -15,11 +15,13 @@
 
   <properties>
     <java.version>17</java.version>
-    <spring-boot.version>2.7.15</spring-boot.version>
-    <spring-security.version>5.8.6</spring-security.version>
-    <activepivot.version>6.0.7</activepivot.version>
-    <activeui.version>5.1.8</activeui.version>
-    <admin-ui.version>5.1.2</admin-ui.version>
+    <spring-boot.version>2.7.18</spring-boot.version>
+    <spring-security.version>5.8.7</spring-security.version>
+    <activepivot.version>6.0.10</activepivot.version>
+    <activeui.version>5.1.13</activeui.version>
+    <admin-ui.version>5.1.5</admin-ui.version>
+    <!-- Logback 1.2.12 has vulnerability CVE-2023-6378   -->
+    <logback.version>1.2.13</logback.version>
 
     <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
     <palantir-java-format.version>2.35.0</palantir-java-format.version>
@@ -131,7 +133,6 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>com.activeviam.activepivot</groupId>
       <artifactId>activepivot-copper2-test</artifactId>
@@ -142,10 +143,16 @@
       <artifactId>datastore-test</artifactId>
     </dependency>
 
+    <!-- Other dependencies -->
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
       <version>${springdoc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
     </dependency>
   </dependencies>
 
