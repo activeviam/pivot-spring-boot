@@ -63,15 +63,16 @@ public class WebSecurityFiltersConfig {
                 .build();
     }
 
-    @Bean
-    @Order(7)
-    public SecurityFilterChain rootFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.securityMatcher(mvc.pattern(url("/")))
-                .headers(httpSecurityHeadersConfigurer ->
-                        httpSecurityHeadersConfigurer.frameOptions().disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .build();
-    }
+    //    @Bean
+    //    @Order(7)
+    //    public SecurityFilterChain rootFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception
+    // {
+    //        return http.securityMatcher(mvc.pattern(url("/")))
+    //                .headers(httpSecurityHeadersConfigurer ->
+    //                        httpSecurityHeadersConfigurer.frameOptions().disable())
+    //                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+    //                .build();
+    //    }
 
     @Bean
     @Order(8)
