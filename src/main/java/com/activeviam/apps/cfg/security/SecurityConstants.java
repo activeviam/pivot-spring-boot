@@ -1,5 +1,5 @@
 /*
- * Copyright (C) ActiveViam 2023
+ * Copyright (C) ActiveViam 2023-2024
  * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
@@ -31,4 +31,7 @@ public class SecurityConstants {
      * Content Server Root role
      */
     public static final String ROLE_CS_ROOT = IContentService.ROLE_ROOT;
+
+    public static final String AUTHENTICATION_TYPE_PROPERTY = "authentication.type";
+    public static final String LOCAL_AUTHENTICATION = "local";
 }
