@@ -1,6 +1,10 @@
 var baseUrl = window.location.href.split("/admin/ui")[0];
 
 window.env = {
+  jwtServer: {
+    "url": baseUrl,
+    "version": "6.0.7"
+  },
   contentServerUrl: baseUrl,
   contentServerVersion:  "6.0.7",
   // WARNING: Changing the keys of activePivotServers will break previously saved widgets and dashboards.
@@ -8,7 +12,7 @@ window.env = {
   activePivotServers: {
     "trainingActivePivot": {
       url: baseUrl,
-      version:  "6.0.7",
-    },
-  },
+      version:  "6.0.7"
+    }
+  }
 };

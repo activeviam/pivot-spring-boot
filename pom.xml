@@ -18,8 +18,8 @@
     <spring-boot.version>2.7.15</spring-boot.version>
     <spring-security.version>5.8.6</spring-security.version>
     <activepivot.version>6.0.7</activepivot.version>
-    <activeui.version>5.1.12</activeui.version>
-    <admin-ui.version>5.1.4</admin-ui.version>
+    <activeui.version>5.1.13</activeui.version>
+    <admin-ui.version>5.1.6</admin-ui.version>
 
     <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
     <palantir-java-format.version>2.35.0</palantir-java-format.version>
@@ -126,7 +126,6 @@
       <groupId>com.activeviam.activeui</groupId>
       <artifactId>activeui</artifactId>
       <version>${activeui.version}</version>
-      <classifier>no-auth</classifier>
     </dependency>
     <dependency>
       <groupId>com.activeviam.activeui</groupId>
