@@ -18,7 +18,7 @@
     <spring-boot.version>2.7.18</spring-boot.version>
     <spring-security.version>5.8.8</spring-security.version>
     <activepivot.version>6.0.11</activepivot.version>
-    <activeui.version>5.1.13</activeui.version>
+    <activeui.version>5.1.14</activeui.version>
     <admin-ui.version>5.1.6</admin-ui.version>
 
     <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
