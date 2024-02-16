@@ -16,13 +16,13 @@
   <properties>
     <java.version>17</java.version>
     <spring-boot.version>2.7.18</spring-boot.version>
-    <spring-security.version>5.8.8</spring-security.version>
+    <spring-security.version>5.8.9</spring-security.version>
     <activepivot.version>6.0.11</activepivot.version>
     <activeui.version>5.1.14</activeui.version>
     <admin-ui.version>5.1.6</admin-ui.version>
 
-    <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
-    <palantir-java-format.version>2.35.0</palantir-java-format.version>
+    <spotless-maven-plugin.version>2.41.0</spotless-maven-plugin.version>
+    <palantir-java-format.version>2.39.0</palantir-java-format.version>
     <springdoc.version>1.7.0</springdoc.version>
   </properties>
 
