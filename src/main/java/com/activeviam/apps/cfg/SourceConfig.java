@@ -1,5 +1,5 @@
 /*
- * Copyright (C) ActiveViam 2023
+ * Copyright (C) ActiveViam 2023-2024
  * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
@@ -15,6 +15,7 @@ import org.springframework.core.env.Environment;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
 import com.qfs.msg.csv.ICSVParserConfiguration;
+import com.qfs.msg.csv.ICSVSource;
 import com.qfs.msg.csv.filesystem.impl.FileSystemCSVTopicFactory;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
@@ -35,6 +36,10 @@ public class SourceConfig {
     private final Environment env;
     private final IDatastore datastore;
 
+    private static ICSVSource<Path> createCsvSource() {
+        return new CSVSource<Path>();
+    }
+
     /**
      * Topic factory bean. Allows to create CSV topics and watch changes to directories. Autocloseable.
      *
@@ -46,23 +51,28 @@ public class SourceConfig {
     }
 
     @Bean(destroyMethod = "close")
-    public CSVSource<Path> csvSource() {
-        var schemaMetadata = datastore.getQueryMetadata().getMetadata();
-        var csvTopicFactory = csvTopicFactory();
-        var csvSource = new CSVSource<Path>();
+    public ICSVSource<Path> csvSource() {
+        var tradesColumns = datastore
+                .getEntityResolver()
+                .getTable(StoreAndFieldConstants.TRADES_STORE_NAME)
+                .getFieldNames();
 
-        var tradesColumns = schemaMetadata.getFields(StoreAndFieldConstants.TRADES_STORE_NAME);
-        var tradesTopic = csvTopicFactory.createTopic(
-                TRADES_TOPIC, env.getProperty("file.trades"), createParserConfig(tradesColumns.size(), tradesColumns));
+        var csvSource = createCsvSource();
+        var tradesTopic = csvTopicFactory()
+                .createTopic(
+                        TRADES_TOPIC,
+                        env.getProperty("file.trades"),
+                        createParserConfig(tradesColumns.size(), tradesColumns));
         csvSource.addTopic(tradesTopic);
 
         // Allocate half the machine cores to CSV parsing
         var parserThreads = Math.max(2, IPlatform.CURRENT_PLATFORM.getProcessorCount() / 2);
-        log.info("Allocating " + parserThreads + " parser threads.");
+        log.info("Allocating {} parser threads.", parserThreads);
 
         var sourceConfigurationBuilder = new CSVSourceConfiguration.CSVSourceConfigurationBuilder<Path>();
         sourceConfigurationBuilder.parserThreads(parserThreads);
-        sourceConfigurationBuilder.synchronousMode(Boolean.valueOf(env.getProperty("synchronousMode", "false")));
+        sourceConfigurationBuilder.synchronousMode(
+                Boolean.parseBoolean(env.getProperty("synchronousMode", Boolean.FALSE.toString())));
         csvSource.configure(sourceConfigurationBuilder.build());
         return csvSource;
     }

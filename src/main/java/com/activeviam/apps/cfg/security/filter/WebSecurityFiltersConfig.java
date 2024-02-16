@@ -28,7 +28,6 @@ import com.activeviam.apps.cfg.security.dsl.AuthenticationDslProvider;
 import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
 import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
 import com.qfs.content.rest.impl.ARestContentServer;
-import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.service.store.IDatabaseRestService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,6 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityFiltersConfig {
-    private final IActivePivotConfig activePivotConfig;
     private final AuthenticationDslProvider authenticationDslProvider;
 
     @Bean
