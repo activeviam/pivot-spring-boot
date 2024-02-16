@@ -14,6 +14,7 @@ import static com.qfs.QfsWebUtils.url;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.PING_SUFFIX;
 import static com.qfs.server.cfg.impl.ActivePivotRestServicesConfig.REST_API_URL_PREFIX;
 import static com.qfs.server.cfg.impl.ActivePivotWebSocketServicesConfig.WEB_SOCKET_ENDPOINT;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +22,12 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 
 import com.activeviam.apps.cfg.security.dsl.AuthenticationDslProvider;
+import com.activeviam.apps.cfg.security.dsl.local.FormLoginActivePivotAuthenticationDsl;
 import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
 import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
 import com.qfs.content.rest.impl.ARestContentServer;
@@ -41,8 +44,7 @@ public class WebSecurityFiltersConfig {
     @Bean
     @Order(6)
     public SecurityFilterChain xmlaFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.apply(authenticationDslProvider.excel())
-                .and()
+        return http.with(authenticationDslProvider.excel(), withDefaults())
                 .securityMatcher(mvc.pattern(url("xmla", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern(HttpMethod.POST, url(WILDCARD)))
                         .authenticated())
@@ -53,8 +55,7 @@ public class WebSecurityFiltersConfig {
     @Order(8)
     public SecurityFilterChain embeddedCSFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.apply(authenticationDslProvider.ui())
-                .and()
+        return http.with(authenticationDslProvider.core(), withDefaults())
                 // Only these URLs must be handled by this HttpSecurity
                 .securityMatcher(mvc.pattern(url(ARestContentServer.CONTENT_NAMESPACE, WILDCARD)))
                 .authorizeHttpRequests(auth -> auth
@@ -70,11 +71,10 @@ public class WebSecurityFiltersConfig {
     @Bean
     @Order(9)
     public SecurityFilterChain activeUIFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.apply(authenticationDslProvider.ui())
-                .and()
+        return http.with(authenticationDslProvider.core(), withDefaults())
                 .securityMatcher(mvc.pattern(url(ActiveUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
                 .headers(httpSecurityHeadersConfigurer ->
-                        httpSecurityHeadersConfigurer.frameOptions().disable())
+                        httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .build();
     }
@@ -83,8 +83,8 @@ public class WebSecurityFiltersConfig {
     @Order(99)
     public SecurityFilterChain coreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.apply(authenticationDslProvider.core())
-                .and()
+        return http.with(authenticationDslProvider.core(), dsl -> ((FormLoginActivePivotAuthenticationDsl) dsl)
+                        .setMvc(mvc))
                 .authorizeHttpRequests(auth -> {
                     // Allow OPTIONS requests
                     auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(REST_API_URL_PREFIX, WILDCARD)))

@@ -19,24 +19,26 @@ import com.activeviam.apps.cfg.security.SpringBootJwtFilter;
 import com.activeviam.apps.cfg.security.dsl.AActivePivotAuthenticationDsl;
 import com.activeviam.apps.cfg.security.filter.SavedRequestAwareTargetUrlAuthenticationSuccessHandler;
 
+import lombok.Setter;
+
 /**
  * @author ActiveViam
  */
 public class FormLoginActivePivotAuthenticationDsl extends AActivePivotAuthenticationDsl {
     private final SavedRequestAwareTargetUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     private final Customizer<LogoutConfigurer<HttpSecurity>> logoutConfigurerCustomizer;
-    private final MvcRequestMatcher.Builder mvc;
+
+    @Setter
+    private MvcRequestMatcher.Builder mvc;
 
     public FormLoginActivePivotAuthenticationDsl(
             SpringBootJwtFilter jwtFilter,
             SpringBootContextValueFilter contextValueFilter,
             SavedRequestAwareTargetUrlAuthenticationSuccessHandler authenticationSuccessHandler,
-            @Autowired(required = false) Customizer<LogoutConfigurer<HttpSecurity>> logoutConfigurerCustomizer,
-            MvcRequestMatcher.Builder mvc) {
+            @Autowired(required = false) Customizer<LogoutConfigurer<HttpSecurity>> logoutConfigurerCustomizer) {
         super(jwtFilter, contextValueFilter);
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.logoutConfigurerCustomizer = logoutConfigurerCustomizer;
-        this.mvc = mvc;
     }
 
     @Override
@@ -47,6 +49,7 @@ public class FormLoginActivePivotAuthenticationDsl extends AActivePivotAuthentic
         if (logoutConfigurerCustomizer != null) {
             httpSecurity.logout(logoutConfigurerCustomizer);
         }
-        httpSecurity.formLogin().successHandler(authenticationSuccessHandler).permitAll();
+        httpSecurity.formLogin(
+                login -> login.successHandler(authenticationSuccessHandler).permitAll());
     }
 }

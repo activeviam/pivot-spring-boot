@@ -11,13 +11,6 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -34,6 +27,12 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.qfs.jwt.impl.JwtAuthentication;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -54,7 +53,7 @@ public class SpringBootJwtFilter extends GenericFilterBean implements SmartIniti
     /**
      * The bearer to use when creating Authorization headers.
      */
-    public static final String BEARER = ALLOWED_BEARERS.get(0);
+    public static final String BEARER = ALLOWED_BEARERS.getFirst();
 
     /**
      * the key of the claim containing the authorities in an array.

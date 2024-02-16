@@ -21,8 +21,6 @@
   <!-- # ALL (lowest filtering)                                                    # -->
   <!-- ############################################################################# -->
 
-  <logger name="brave.Tracer" level="ERROR"/>
-
   <root level="INFO">
     <appender-ref ref="CONSOLE"/>
   </root>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) ActiveViam 2023
+ * Copyright (C) ActiveViam 2023-2024
  * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
@@ -7,13 +7,12 @@
 package com.activeviam.apps.apm;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.activeviam.tracing.impl.Tracing;
-import com.activeviam.tracing.tracer.impl.DelegatingTracer;
 
+import io.opentelemetry.api.OpenTelemetry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,11 +34,11 @@ public class TracingConfig {
      * @return the initialized tracing
      */
     @Bean(name = com.activeviam.pivot.tracing.TracingConfig.TRACING_BEAN)
-    public Void initTracing(@Autowired(required = false) Tracer tracer) {
+    public Void initTracing(@Autowired(required = false) OpenTelemetry otel) {
         log.info("Initialisation of APM Tracing");
-        Tracing.setSpanLevel(tracingProperties.getSpanLevel().name());
-        if (tracer != null) {
-            Tracing.trySetTracer(new DelegatingTracer(tracer));
+        Tracing.setSpanLevel(tracingProperties.getSpanLevel());
+        if (otel != null) {
+            Tracing.setOtelInstance(otel);
         }
         return null;
     }

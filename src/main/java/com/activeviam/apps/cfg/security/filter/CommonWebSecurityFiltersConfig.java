@@ -8,6 +8,7 @@ package com.activeviam.apps.cfg.security.filter;
 
 import static com.activeviam.apps.cfg.security.SecurityConstants.ROLE_ACTUATOR;
 import static com.qfs.QfsWebUtils.url;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 
@@ -39,8 +41,7 @@ public class CommonWebSecurityFiltersConfig {
     protected SecurityFilterChain actuatorFilterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc)
             throws Exception {
         return httpSecurity
-                .apply(authenticationDslProvider.excel())
-                .and()
+                .with(authenticationDslProvider.excel(), withDefaults())
                 .securityMatcher(mvc.pattern(url("actuator", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.anyRequest().hasAnyAuthority(ROLE_ACTUATOR))
                 .build();
@@ -56,8 +57,7 @@ public class CommonWebSecurityFiltersConfig {
     @Bean
     @Order(2)
     protected SecurityFilterChain jwtFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.apply(authenticationDslProvider.nothing())
-                .and()
+        return http.with(authenticationDslProvider.nothing(), withDefaults())
                 .securityMatcher(mvc.pattern(url(JwtRestServiceConfig.REST_API_URL_PREFIX, WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .build();
@@ -78,11 +78,10 @@ public class CommonWebSecurityFiltersConfig {
     public SecurityFilterChain h2ConsoleSecurityFilterChain(
             HttpSecurity http, MvcRequestMatcher.Builder mvc, H2ConsoleProperties h2ConsoleProperties)
             throws Exception {
-        return http.apply(authenticationDslProvider.nothing())
-                .and()
+        return http.with(authenticationDslProvider.nothing(), withDefaults())
                 .securityMatcher(mvc.servletPath(h2ConsoleProperties.getPath()).pattern(url(WILDCARD)))
                 .headers(httpSecurityHeadersConfigurer ->
-                        httpSecurityHeadersConfigurer.frameOptions().sameOrigin())
+                        httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .build();
     }
@@ -91,11 +90,10 @@ public class CommonWebSecurityFiltersConfig {
     @Order(5)
     public SecurityFilterChain adminUISecurityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.apply(authenticationDslProvider.ui())
-                .and()
+        return http.with(authenticationDslProvider.core(), withDefaults())
                 .securityMatcher(mvc.pattern(url(AdminUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
                 .headers(httpSecurityHeadersConfigurer ->
-                        httpSecurityHeadersConfigurer.frameOptions().disable())
+                        httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .build();
     }

@@ -14,7 +14,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 
 import com.activeviam.apps.cfg.security.SpringBootContextValueFilter;
 import com.activeviam.apps.cfg.security.SpringBootJwtFilter;
@@ -38,15 +37,12 @@ public class LocalAuthenticationConfig {
             SpringBootJwtFilter jwtFilter,
             SpringBootContextValueFilter contextValueFilter,
             SavedRequestAwareTargetUrlAuthenticationSuccessHandler authenticationSuccessHandler,
-            @Autowired(required = false) Customizer<LogoutConfigurer<HttpSecurity>> logoutConfigurerCustomizer,
-            MvcRequestMatcher.Builder mvc) {
+            @Autowired(required = false) Customizer<LogoutConfigurer<HttpSecurity>> logoutConfigurerCustomizer) {
         var nothingDsl = new NothingActivePivotAuthenticationDsl();
-        var uiDsl = new FormLoginActivePivotAuthenticationDsl(
-                jwtFilter, contextValueFilter, authenticationSuccessHandler, logoutConfigurerCustomizer, null);
         var coreDsl = new FormLoginActivePivotAuthenticationDsl(
-                jwtFilter, contextValueFilter, authenticationSuccessHandler, logoutConfigurerCustomizer, mvc);
+                jwtFilter, contextValueFilter, authenticationSuccessHandler, logoutConfigurerCustomizer);
         var excelDsl = new BasicAuthActivePivotAuthenticationDsl(
                 null, contextValueFilter, new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-        return new AuthenticationDslProvider(nothingDsl, uiDsl, coreDsl, excelDsl);
+        return new AuthenticationDslProvider(nothingDsl, coreDsl, excelDsl);
     }
 }

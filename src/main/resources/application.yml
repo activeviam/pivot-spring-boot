@@ -24,6 +24,9 @@ spring:
       enabled: ALWAYS
   zipkin:
     enabled: false
+  threads:
+    virtual:
+      enabled: true
 
 # Spring Boot actuator config
 management:
