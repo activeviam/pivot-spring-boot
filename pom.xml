@@ -144,7 +144,7 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
-
+    
     <dependency>
       <groupId>com.activeviam.activepivot</groupId>
       <artifactId>activepivot-copper2-test</artifactId>
