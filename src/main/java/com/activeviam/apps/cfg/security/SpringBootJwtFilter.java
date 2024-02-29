@@ -53,7 +53,7 @@ public class SpringBootJwtFilter extends GenericFilterBean implements SmartIniti
     /**
      * The bearer to use when creating Authorization headers.
      */
-    public static final String BEARER = ALLOWED_BEARERS.getFirst();
+    public static final String BEARER = ALLOWED_BEARERS.get(0);
 
     /**
      * the key of the claim containing the authorities in an array.

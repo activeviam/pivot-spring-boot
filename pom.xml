@@ -14,7 +14,7 @@
   <description>Template project for Spring Boot</description>
 
   <properties>
-    <java.version>21</java.version>
+    <java.version>17</java.version>
     <spring-boot.version>3.2.2</spring-boot.version>
     <spring-security.version>6.2.1</spring-security.version>
     <activepivot.version>6.0.11-sb3</activepivot.version>
