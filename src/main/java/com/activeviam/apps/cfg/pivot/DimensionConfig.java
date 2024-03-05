@@ -31,7 +31,15 @@ public class DimensionConfig {
      */
     public ICanBuildCubeDescription<IActivePivotInstanceDescription> build(ICanStartBuildingDimensions builder) {
 
-        return builder.withSingleLevelDimensions(StoreAndFieldConstants.TRADES_TRADEID)
+        return builder.withSingleLevelDimensions(
+                        StoreAndFieldConstants.TRADE_PNL_TRADE_ID,
+                        StoreAndFieldConstants.TRADE_PNL_SCENARIO_SET,
+                        StoreAndFieldConstants.TRADE_PNL_CALCLATION_ID,
+                        StoreAndFieldConstants.TRADE_PNL_RISK_FACTOR,
+                        StoreAndFieldConstants.TRADE_PNL_RISK_CLASS,
+                        StoreAndFieldConstants.TRADE_PNL_SENSITIVITY_NAME,
+                        StoreAndFieldConstants.TRADE_PNL_LIQUIDITY_HORIZON,
+                        StoreAndFieldConstants.TRADE_PNL_CCY)
 
                 // Make the AsOfDate hierarchy slicing - we do not aggregate across dates
                 // Also show the dates in reverse order ie most recent date first

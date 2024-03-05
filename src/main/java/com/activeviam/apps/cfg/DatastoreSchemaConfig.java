@@ -6,7 +6,9 @@
  */
 package com.activeviam.apps.cfg;
 
+import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADE_PNL_TRADE_ID;
 import static com.qfs.literal.ILiteralType.DOUBLE;
+import static com.qfs.literal.ILiteralType.INT;
 import static com.qfs.literal.ILiteralType.LOCAL_DATE;
 import static com.qfs.literal.ILiteralType.STRING;
 
@@ -21,6 +23,7 @@ import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
+import com.qfs.desc.impl.DuplicateKeyHandlers;
 import com.qfs.desc.impl.StoreDescription;
 import com.qfs.server.cfg.IDatastoreSchemaDescriptionConfig;
 
@@ -30,14 +33,45 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig {
 
-    private IStoreDescription createTradesStoreDescription() {
+    public static final int NUM_HASH_PARTITIONS = Runtime.getRuntime().availableProcessors();
+
+    private IStoreDescription createTradePnLStoreDescription() {
+        //    Dataset => Westpac/Market Risk Reports/active_pivot_poc/trade_pnl_1d_var
+        //    AsOfDate         DATE
+        //    TradeId          VARCHAR
+        //    ScenarioSet      VARCHAR
+        //    CalculationId    VARCHAR
+        //    RiskFactor       VARCHAR
+        //    RiskClass        VARCHAR
+        //    SensitivityName  VARCHAR
+        //    LiquidityHorizon INTEGER
+        //    Ccy              VARCHAR
+        //    MTM              DOUBLE
+        //    PnL[]            DOUBLE[]
         return StoreDescription.builder()
-                .withStoreName(StoreAndFieldConstants.TRADES_STORE_NAME)
+                .withStoreName(StoreAndFieldConstants.TRADE_PNL_STORE_NAME)
                 .withField(StoreAndFieldConstants.ASOFDATE, LOCAL_DATE)
                 .asKeyField()
-                .withField(StoreAndFieldConstants.TRADES_TRADEID, STRING)
+                .withField(TRADE_PNL_TRADE_ID, STRING)
                 .asKeyField()
-                .withField(StoreAndFieldConstants.TRADES_NOTIONAL, DOUBLE)
+                .withField(StoreAndFieldConstants.TRADE_PNL_SCENARIO_SET, STRING)
+                .asKeyField()
+                .withField(StoreAndFieldConstants.TRADE_PNL_CALCLATION_ID, STRING)
+                .asKeyField()
+                .withField(StoreAndFieldConstants.TRADE_PNL_RISK_FACTOR, STRING)
+                .asKeyField()
+                .withField(StoreAndFieldConstants.TRADE_PNL_RISK_CLASS, STRING)
+                .dictionarized()
+                .withField(StoreAndFieldConstants.TRADE_PNL_SENSITIVITY_NAME, STRING)
+                .dictionarized()
+                .withField(StoreAndFieldConstants.TRADE_PNL_LIQUIDITY_HORIZON, INT)
+                .asKeyField()
+                .withField(StoreAndFieldConstants.TRADE_PNL_CCY, STRING)
+                .dictionarized()
+                .withField(StoreAndFieldConstants.TRADE_PNL_MTM, DOUBLE)
+//                .withVectorField(StoreAndFieldConstants.TRADE_PNL_PNL_VECTOR, DOUBLE)
+                .withModuloPartitioning(TRADE_PNL_TRADE_ID, NUM_HASH_PARTITIONS)
+                .withDuplicateKeyHandler(DuplicateKeyHandlers.LOG_WITHIN_TRANSACTION)
                 .build();
     }
 
@@ -48,7 +82,7 @@ public class DatastoreSchemaConfig implements IDatastoreSchemaDescriptionConfig 
     @Override
     public IDatastoreSchemaDescription datastoreSchemaDescription() {
         final Collection<IStoreDescription> stores = new LinkedList<>();
-        stores.add(createTradesStoreDescription());
+        stores.add(createTradePnLStoreDescription());
 
         return new DatastoreSchemaDescription(stores, references());
     }

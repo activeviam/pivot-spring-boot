@@ -30,7 +30,7 @@ public class DayController {
     public long getNumberOfDays() {
         return DatastoreQueryHelper.selectDistinct(
                         datastore.getMostRecentVersion(),
-                        StoreAndFieldConstants.TRADES_STORE_NAME,
+                        StoreAndFieldConstants.TRADE_PNL_STORE_NAME,
                         StoreAndFieldConstants.ASOFDATE)
                 .size();
     }

@@ -7,7 +7,7 @@
 package com.activeviam.apps.cfg.pivot;
 
 import static com.activeviam.apps.cfg.pivot.PivotManagerConfig.DOUBLE_FORMATTER;
-import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADES_NOTIONAL;
+import static com.activeviam.apps.constants.StoreAndFieldConstants.TRADE_PNL_MTM;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -20,10 +20,14 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 public class MeasureConfig {
 
-    public void build(final ICopperContext context) {
-        Copper.sum(TRADES_NOTIONAL)
-                .as(TRADES_NOTIONAL)
+    public void build(ICopperContext context) {
+        Copper.sum(TRADE_PNL_MTM)
+                .as(TRADE_PNL_MTM)
                 .withFormatter(DOUBLE_FORMATTER)
                 .publish(context);
+//        Copper.sum(TRADE_PNL_PNL)
+//                .as(TRADE_PNL_PNL)
+//                .withFormatter(DOUBLE_FORMATTER)
+//                .publish(context);
     }
 }

@@ -6,40 +6,31 @@
  */
 package com.activeviam.apps.cfg;
 
-import static com.activeviam.apps.cfg.SourceConfig.TRADES_TOPIC;
+import static com.activeviam.apps.cfg.westpac.FoundrySourceConfig.TRADE_PNL_TOPIC;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
 import com.activeviam.apps.constants.StoreAndFieldConstants;
-import com.qfs.msg.IMessageChannel;
-import com.qfs.msg.csv.ICSVSource;
-import com.qfs.msg.csv.IFileInfo;
-import com.qfs.msg.csv.ILineReader;
-import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.msg.jdbc.IJDBCSource;
+import com.qfs.source.impl.ArrayJDBCMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.util.timing.impl.StopWatch;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class LoadConfig {
     private final IDatastore datastore;
-    private final ICSVSource<Path> csvSource;
-    private final CSVMessageChannelFactory<Path> csvChannelFactory;
-
-    LoadConfig(IDatastore datastore, ICSVSource<Path> csvSource, CSVMessageChannelFactory<Path> csvChannelFactory) {
-        this.datastore = datastore;
-        this.csvSource = csvSource;
-        this.csvChannelFactory = csvChannelFactory;
-    }
+    private final ArrayJDBCMessageChannelFactory jdbcChannelFactory;
+    private final IJDBCSource<Object[]> jdbcSource;
 
     @EventListener(value = ApplicationReadyEvent.class)
     void onApplicationReady() throws Exception {
@@ -47,16 +38,17 @@ public class LoadConfig {
         initialLoad();
     }
 
-    private void initialLoad() throws Exception {
+    private void initialLoad() {
         log.info("Initial data load started.");
-        Collection<IMessageChannel<IFileInfo<Path>, ILineReader>> csvChannels = new ArrayList<>();
-        csvChannels.add(csvChannelFactory.createChannel(TRADES_TOPIC, StoreAndFieldConstants.TRADES_STORE_NAME));
+        // JDBC channel
+        var jdbcChannel = jdbcChannelFactory.createChannel(TRADE_PNL_TOPIC,
+                StoreAndFieldConstants.TRADE_PNL_STORE_NAME);
 
         // do the transactions
         var before = System.nanoTime();
 
         datastore.edit(t -> {
-            csvSource.fetch(csvChannels);
+            jdbcSource.fetch(Collections.singleton(jdbcChannel));
             t.forceCommit();
         });
 

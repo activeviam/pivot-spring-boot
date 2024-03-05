@@ -1,0 +1,13 @@
+# Westpac custom properties
+westpac:
+  jdbc:
+    driver: com.palantir.foundry.sql.jdbc.FoundryJdbcDriver
+    url: "jdbc:foundrysql://foundry.westpac.com.au"
+    query: SELECT AsOfDate,TradeId,ScenarioSet,CalculationId,RiskFactor,RiskClass,SensitivityName,LiquidityHorizon,Ccy,MTM FROM "Westpac/Market Risk Reports/active_pivot_poc/trade_pnl_1d_var"
+    properties:
+      Catalog: Westpac/Market Risk Reports
+      Branch: amiles/active_pivot_poc_parquet
+      Dialect: ANSI
+      AuthMethod: ClientCredentials
+      OauthClientId:
+      OauthClientSecret:

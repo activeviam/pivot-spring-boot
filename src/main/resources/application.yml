@@ -99,3 +99,11 @@ content-service:
 springdoc:
   swagger-ui:
     path: /activeviam/swagger-ui.html
+
+# Westpac custom properties
+westpac:
+  jdbc:
+    driver: org.h2.Driver
+    url: "jdbc:h2:mem:palantir;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM  'classpath:sql/create.sql'\\;RUNSCRIPT FROM 'classpath:sql/populate.sql'"
+    query: SELECT AsOfDate,TradeId,ScenarioSet,CalculationId,RiskFactor,RiskClass,SensitivityName,LiquidityHorizon,Ccy,MTM FROM TradePnL
+    properties: {}
