@@ -11,3 +11,4 @@ copyright/*.xml
 !copyright/profiles_settings.xml
 !runConfigurations/*.xml
 sonarlint
+httpRequests
