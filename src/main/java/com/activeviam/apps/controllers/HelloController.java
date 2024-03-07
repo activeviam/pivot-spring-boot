@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -61,7 +60,7 @@ public class HelloController {
 
     private void addRecord(LocalDate date, String tradeId, ITransactionManager transactionManager) {
         Double notional = new Random().nextDouble() * (100D - 1D); // random number between 1 and 100
-        var record = new Result(date, tradeId, notional);
+        var record = new Trade(date, tradeId, notional);
         transactionManager.add(StoreAndFieldConstants.TRADES_STORE_NAME, date, tradeId, notional);
         LOGGER.info("added "+record.toString());
     }
@@ -71,7 +70,7 @@ public class HelloController {
 
     @AllArgsConstructor
     @ToString
-    private static class Result {
+    private static class Trade {
         private final LocalDate date;
         private final String tradeId;
         private final Double notional;
