@@ -33,7 +33,8 @@ import java.util.concurrent.TimeUnit;
         DatastoreDescriptionConfig.class,
         PivotManagerConfig.class,
         LocalContentServiceConfig.class,
-        ActiveUIResourceServerConfig.class
+        ActiveUIResourceServerConfig.class,
+        ParquetLoaderConfig.class
 })
 public class ApplicationConfig {
 
