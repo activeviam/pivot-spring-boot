@@ -78,6 +78,7 @@ public class ParquetLoaderService {
 			} catch (InterruptedException e) {
 				loadingService.shutdownNow();
 			}
+			loadingService = null;
 		}
 	}
 
@@ -113,6 +114,7 @@ public class ParquetLoaderService {
 			} catch (InterruptedException e) {
 				copyFilesService.shutdownNow();
 			}
+			copyFilesService = null;
 		}
 	}
 
@@ -145,9 +147,9 @@ public class ParquetLoaderService {
 									.map(a -> Double.parseDouble((String) a))
 									.build()
 					);
-
+			LOGGER.info("Commit Transaction");
 			transactionManager.commitTransaction();
-		} catch (DatastoreTransactionException | IOException e) {
+		} catch (DatastoreTransactionException | NoTransactionException | IOException e) {
 			try {
 				LOGGER.info("going to rollback transaction");
 				transactionManager.rollbackTransaction();
@@ -157,7 +159,6 @@ public class ParquetLoaderService {
 				LOGGER.severe("Rollback failed");
 				rollbackException.printStackTrace();
 			}
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -168,21 +169,25 @@ public class ParquetLoaderService {
 	 */
 	private void copyParquetFiles() {
 		try {
+			LOGGER.info("Copy trades01.parquet");
 			Files.copy(
 					PARQUET_SAVED_FOLDER.resolve("trades01.parquet"),
 					PARQUET_LOAD_FOLDER.resolve("trades01.parquet"),
 					StandardCopyOption.REPLACE_EXISTING);
 
+			LOGGER.info("Copy trades02.parquet");
 			Files.copy(
 					PARQUET_SAVED_FOLDER.resolve("trades02.parquet"),
 					PARQUET_LOAD_FOLDER.resolve("trades02.parquet"),
 					StandardCopyOption.REPLACE_EXISTING);
 
 			if (randomEventHappen()) {
+				LOGGER.info("Delete trades03.parquet");
 				// remove trades03.parquet
 				Files.deleteIfExists(PARQUET_LOAD_FOLDER.resolve("trades03.parquet"));
 			}
 			else {
+				LOGGER.info("Copy trades03.parquet");
 				Files.copy(
 						PARQUET_SAVED_FOLDER.resolve("trades03.parquet"),
 						PARQUET_LOAD_FOLDER.resolve("trades03.parquet"),
@@ -190,7 +195,7 @@ public class ParquetLoaderService {
 			}
 		} catch (IOException e) {
 			LOGGER.severe("Failed to copy (or delete) parquet files.");
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 	}
 
