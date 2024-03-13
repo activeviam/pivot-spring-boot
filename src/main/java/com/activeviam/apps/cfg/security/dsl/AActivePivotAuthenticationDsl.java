@@ -12,7 +12,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
-import org.springframework.web.filter.CorsFilter;
 
 import com.activeviam.apps.cfg.security.SpringBootContextValueFilter;
 import com.activeviam.apps.cfg.security.SpringBootJwtFilter;
@@ -48,6 +47,6 @@ public abstract class AActivePivotAuthenticationDsl
         super.configure(builder);
         Optional.ofNullable(contextValueFilter).ifPresent(f -> builder.addFilterAfter(f, SwitchUserFilter.class));
         // To Allow authentication with JWT ( Needed for Active UI )
-        Optional.ofNullable(jwtFilter).ifPresent(f -> builder.addFilterAfter(f, CorsFilter.class));
+        // Optional.ofNullable(jwtFilter).ifPresent(f -> builder.addFilterAfter(f, CorsFilter.class));
     }
 }

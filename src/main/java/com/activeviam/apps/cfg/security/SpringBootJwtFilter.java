@@ -18,7 +18,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
@@ -30,7 +29,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.Assert;
-import org.springframework.web.filter.GenericFilterBean;
 
 import com.qfs.jwt.impl.JwtAuthentication;
 
@@ -40,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author ActiveViam
  */
 @Slf4j
-public class SpringBootJwtFilter extends GenericFilterBean implements SmartInitializingSingleton {
+public class SpringBootJwtFilter { // } extends GenericFilterBean implements SmartInitializingSingleton {
     /**
      * The list of bearers we allow for a Jwt token. We use Bearer to behave like Keycloak.
      *
@@ -98,12 +96,12 @@ public class SpringBootJwtFilter extends GenericFilterBean implements SmartIniti
     }
 
     // https://blog.trifork.com/2022/02/25/getting-out-of-a-codependent-relationship-or-how-i-moved-to-a-healthy-component-based-spring-security-configuration/
-    @Override
-    public void afterSingletonsInstantiated() {
-        authenticationManager = applicationContext.getBean(AuthenticationManager.class);
-    }
+    //    @Override
+    //    public void afterSingletonsInstantiated() {
+    //        authenticationManager = applicationContext.getBean(AuthenticationManager.class);
+    //    }
 
-    @Override
+    //    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         var req = (HttpServletRequest) request;
