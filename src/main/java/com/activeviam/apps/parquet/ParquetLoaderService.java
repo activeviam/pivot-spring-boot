@@ -19,8 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -127,7 +125,7 @@ public class ParquetLoaderService {
 
 			// If the storePath provided is too high-level (parent level) e.g. bucket level,
 			// consider setting recursive to false to prevent dive diving into unwanted subdirectories
-			LOGGER.info("Processing parquet file from [" + storePath + "]");
+//			LOGGER.info("Processing parquet file from [" + storePath + "]");
 			new ParquetParserBuilder(datastore)
 					.withNumberOfThreads(NUM_THREADS_PARSER)
 					.build()
@@ -147,13 +145,51 @@ public class ParquetLoaderService {
 									.map(a -> Double.parseDouble((String) a))
 									.build()
 					);
-			LOGGER.info("Commit Transaction");
+//			LOGGER.info("Commit Transaction");
 			transactionManager.commitTransaction();
-		} catch (DatastoreTransactionException | NoTransactionException | IOException e) {
+		} catch (DatastoreTransactionException e) {
+			LOGGER.warning("DatastoreTransactionException");
+			e.printStackTrace();
 			try {
-				LOGGER.info("going to rollback transaction");
+//				LOGGER.info("going to rollback transaction");
 				transactionManager.rollbackTransaction();
-				LOGGER.info("successfully rolled back");
+//				LOGGER.info("successfully rolled back");
+			}
+			catch (Exception rollbackException) {
+				LOGGER.severe("Rollback failed");
+				rollbackException.printStackTrace();
+			}
+		} catch (NoTransactionException | IOException e) {
+			e.printStackTrace();
+			try {
+//				LOGGER.info("going to rollback transaction");
+				transactionManager.rollbackTransaction();
+//				LOGGER.info("successfully rolled back");
+			}
+			catch (Exception rollbackException) {
+				LOGGER.severe("Rollback failed");
+				rollbackException.printStackTrace();
+			}
+		} catch (ActiveViamRuntimeException e) {
+			LOGGER.warning("ActiveViamRuntimeException");
+			e.printStackTrace();
+			// If don't rollback, will lead to DatastoreTransactionException when it tries to startTransaction next cycle
+			try {
+//				LOGGER.info("going to rollback transaction");
+				transactionManager.rollbackTransaction();
+//				LOGGER.info("successfully rolled back");
+			}
+			catch (Exception rollbackException) {
+				LOGGER.severe("Rollback failed");
+				rollbackException.printStackTrace();
+			}
+		} catch (IllegalStateException e) {
+			LOGGER.severe("IllegalStateException");
+			e.printStackTrace();
+			try {
+//				LOGGER.info("going to rollback transaction");
+				transactionManager.rollbackTransaction();
+//				LOGGER.info("successfully rolled back");
 			}
 			catch (Exception rollbackException) {
 				LOGGER.severe("Rollback failed");
@@ -169,13 +205,13 @@ public class ParquetLoaderService {
 	 */
 	private void copyParquetFiles() {
 		try {
-			LOGGER.info("Copy trades01.parquet");
+//			LOGGER.info("Copy trades01.parquet");
 			Files.copy(
 					PARQUET_SAVED_FOLDER.resolve("trades01.parquet"),
 					PARQUET_LOAD_FOLDER.resolve("trades01.parquet"),
 					StandardCopyOption.REPLACE_EXISTING);
 
-			LOGGER.info("Copy trades02.parquet");
+//			LOGGER.info("Copy trades02.parquet");
 			Files.copy(
 					PARQUET_SAVED_FOLDER.resolve("trades02.parquet"),
 					PARQUET_LOAD_FOLDER.resolve("trades02.parquet"),
@@ -187,7 +223,7 @@ public class ParquetLoaderService {
 				Files.deleteIfExists(PARQUET_LOAD_FOLDER.resolve("trades03.parquet"));
 			}
 			else {
-				LOGGER.info("Copy trades03.parquet");
+//				LOGGER.info("Copy trades03.parquet");
 				Files.copy(
 						PARQUET_SAVED_FOLDER.resolve("trades03.parquet"),
 						PARQUET_LOAD_FOLDER.resolve("trades03.parquet"),
