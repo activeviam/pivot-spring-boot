@@ -1,5 +1,5 @@
 /*
- * Copyright (C) ActiveViam 2023
+ * Copyright (C) ActiveViam 2023-2024
  * ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
  * property of ActiveViam Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
@@ -79,19 +79,9 @@ public class WebSecurityFiltersConfig {
     }
 
     @Bean
-    @Order(10)
-    public SecurityFilterChain rootFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.securityMatcher(mvc.pattern(url("/")))
-                .headers(httpSecurityHeadersConfigurer ->
-                        httpSecurityHeadersConfigurer.frameOptions().disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .build();
-    }
-
-    @Bean
     @Order(20)
-    public SecurityFilterChain activeUIFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.securityMatcher(mvc.pattern(url(ActiveUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
+    public SecurityFilterChain activeUIFilterChain(HttpSecurity http) throws Exception {
+        return http.securityMatcher(url("/"), url(ActiveUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD))
                 .headers(httpSecurityHeadersConfigurer ->
                         httpSecurityHeadersConfigurer.frameOptions().disable())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
