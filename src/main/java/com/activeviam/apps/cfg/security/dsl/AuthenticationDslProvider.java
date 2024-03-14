@@ -8,5 +8,5 @@ package com.activeviam.apps.cfg.security.dsl;
 
 public record AuthenticationDslProvider(
         AActivePivotAuthenticationDsl nothing,
-        AActivePivotAuthenticationDsl core,
-        AActivePivotAuthenticationDsl excel) {}
+        AActivePivotAuthenticationDsl formLogin,
+        AActivePivotAuthenticationDsl basicAuth) {}

@@ -44,7 +44,7 @@ public class WebSecurityFiltersConfig {
     @Bean
     @Order(6)
     public SecurityFilterChain xmlaFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.with(authenticationDslProvider.excel(), withDefaults())
+        return http.with(authenticationDslProvider.basicAuth(), withDefaults())
                 .securityMatcher(mvc.pattern(url("xmla", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern(HttpMethod.POST, url(WILDCARD)))
                         .authenticated())
@@ -55,7 +55,7 @@ public class WebSecurityFiltersConfig {
     @Order(8)
     public SecurityFilterChain embeddedCSFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.with(authenticationDslProvider.core(), withDefaults())
+        return http.with(authenticationDslProvider.formLogin(), withDefaults())
                 // Only these URLs must be handled by this HttpSecurity
                 .securityMatcher(mvc.pattern(url(ARestContentServer.CONTENT_NAMESPACE, WILDCARD)))
                 .authorizeHttpRequests(auth -> auth
@@ -71,7 +71,7 @@ public class WebSecurityFiltersConfig {
     @Bean
     @Order(9)
     public SecurityFilterChain activeUIFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.with(authenticationDslProvider.core(), withDefaults())
+        return http.with(authenticationDslProvider.formLogin(), withDefaults())
                 .securityMatcher(mvc.pattern(url(ActiveUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
                 .headers(httpSecurityHeadersConfigurer ->
                         httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
@@ -80,30 +80,40 @@ public class WebSecurityFiltersConfig {
     }
 
     @Bean
-    @Order(99)
-    public SecurityFilterChain coreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
+    @Order(98)
+    public SecurityFilterChain restCoreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.with(authenticationDslProvider.core(), dsl -> ((FormLoginActivePivotAuthenticationDsl) dsl)
-                        .setMvc(mvc))
+        return http.with(authenticationDslProvider.basicAuth(), withDefaults())
+                .securityMatcher(mvc.pattern(url(REST_API_URL_PREFIX, WILDCARD)))
                 .authorizeHttpRequests(auth -> {
                     // Allow OPTIONS requests
-                    auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(REST_API_URL_PREFIX, WILDCARD)))
+                    auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, WILDCARD))
                             .permitAll();
 
                     // The ping service is temporarily authenticated (see PIVOT-3149)
                     auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, PING_SUFFIX)))
                             .hasAnyAuthority(ROLE_USER, ROLE_TECH);
 
+                    // No existing constant for cube in the formLogin
+                    auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, "cube", WILDCARD)))
+                            .hasAnyAuthority(ROLE_USER);
+                })
+                .build();
+    }
+
+    @Bean
+    @Order(99)
+    public SecurityFilterChain coreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
+            throws Exception {
+        return http.with(authenticationDslProvider.formLogin(), dsl -> ((FormLoginActivePivotAuthenticationDsl) dsl)
+                        .setMvc(mvc))
+                .authorizeHttpRequests(auth -> {
                     // pivot websocket
                     auth.requestMatchers(mvc.pattern(url(WEB_SOCKET_ENDPOINT, WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
                     // datastore rest service
                     auth.requestMatchers(mvc.pattern(url(IDatabaseRestService.DATABASE_API_URL_PREFIX, WILDCARD)))
-                            .hasAnyAuthority(ROLE_USER);
-
-                    // No existing constant for cube in the core
-                    auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, "cube", WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
                     // One has to be an admin for all the other URLs

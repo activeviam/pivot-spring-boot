@@ -41,7 +41,7 @@ public class CommonWebSecurityFiltersConfig {
     protected SecurityFilterChain actuatorFilterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc)
             throws Exception {
         return httpSecurity
-                .with(authenticationDslProvider.excel(), withDefaults())
+                .with(authenticationDslProvider.basicAuth(), withDefaults())
                 .securityMatcher(mvc.pattern(url("actuator", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.anyRequest().hasAnyAuthority(ROLE_ACTUATOR))
                 .build();
@@ -90,7 +90,7 @@ public class CommonWebSecurityFiltersConfig {
     @Order(5)
     public SecurityFilterChain adminUISecurityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.with(authenticationDslProvider.core(), withDefaults())
+        return http.with(authenticationDslProvider.formLogin(), withDefaults())
                 .securityMatcher(mvc.pattern(url(AdminUIResourceServerConfig.DEFAULT_NAMESPACE, WILDCARD)))
                 .headers(httpSecurityHeadersConfigurer ->
                         httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

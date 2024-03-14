@@ -39,10 +39,10 @@ public class LocalAuthenticationConfig {
             SavedRequestAwareTargetUrlAuthenticationSuccessHandler authenticationSuccessHandler,
             @Autowired(required = false) Customizer<LogoutConfigurer<HttpSecurity>> logoutConfigurerCustomizer) {
         var nothingDsl = new NothingActivePivotAuthenticationDsl();
-        var coreDsl = new FormLoginActivePivotAuthenticationDsl(
+        var formLoginDsl = new FormLoginActivePivotAuthenticationDsl(
                 jwtFilter, contextValueFilter, authenticationSuccessHandler, logoutConfigurerCustomizer);
-        var excelDsl = new BasicAuthActivePivotAuthenticationDsl(
-                null, contextValueFilter, new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-        return new AuthenticationDslProvider(nothingDsl, coreDsl, excelDsl);
+        var basicDsl = new BasicAuthActivePivotAuthenticationDsl(
+                jwtFilter, contextValueFilter, new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+        return new AuthenticationDslProvider(nothingDsl, formLoginDsl, basicDsl);
     }
 }

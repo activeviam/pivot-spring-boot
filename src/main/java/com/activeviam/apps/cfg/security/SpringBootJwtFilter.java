@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -109,7 +110,7 @@ public class SpringBootJwtFilter extends GenericFilterBean implements SmartIniti
         var res = (HttpServletResponse) response;
 
         try {
-            var authorizationHeader = req.getHeader("Authorization");
+            var authorizationHeader = req.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorizationHeader == null) {
                 chain.doFilter(request, response);
                 return;
