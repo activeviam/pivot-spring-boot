@@ -43,10 +43,10 @@ public class LocalAuthenticationConfig {
         var nothingDsl = new NothingActivePivotAuthenticationDsl();
         var uiDsl = new FormLoginActivePivotAuthenticationDsl(
                 jwtFilter, contextValueFilter, authenticationSuccessHandler, logoutConfigurerCustomizer, null);
-        var coreDsl = new FormLoginActivePivotAuthenticationDsl(
+        var formLoginDsl = new FormLoginActivePivotAuthenticationDsl(
                 jwtFilter, contextValueFilter, authenticationSuccessHandler, logoutConfigurerCustomizer, mvc);
-        var excelDsl = new BasicAuthActivePivotAuthenticationDsl(
-                null, contextValueFilter, new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-        return new AuthenticationDslProvider(nothingDsl, uiDsl, coreDsl, excelDsl);
+        var basicDsl = new BasicAuthActivePivotAuthenticationDsl(
+                jwtFilter, contextValueFilter, new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+        return new AuthenticationDslProvider(nothingDsl, uiDsl, formLoginDsl, basicDsl);
     }
 }

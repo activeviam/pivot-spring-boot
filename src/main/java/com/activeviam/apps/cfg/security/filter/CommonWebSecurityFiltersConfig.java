@@ -39,7 +39,7 @@ public class CommonWebSecurityFiltersConfig {
     protected SecurityFilterChain actuatorFilterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc)
             throws Exception {
         return httpSecurity
-                .apply(authenticationDslProvider.excel())
+                .apply(authenticationDslProvider.basicAuth())
                 .and()
                 .securityMatcher(mvc.pattern(url("actuator", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.anyRequest().hasAnyAuthority(ROLE_ACTUATOR))

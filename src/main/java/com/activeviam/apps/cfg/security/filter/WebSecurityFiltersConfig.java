@@ -41,7 +41,7 @@ public class WebSecurityFiltersConfig {
     @Bean
     @Order(6)
     public SecurityFilterChain xmlaFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-        return http.apply(authenticationDslProvider.excel())
+        return http.apply(authenticationDslProvider.basicAuth())
                 .and()
                 .securityMatcher(mvc.pattern(url("xmla", WILDCARD)))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(mvc.pattern(HttpMethod.POST, url(WILDCARD)))
@@ -80,10 +80,10 @@ public class WebSecurityFiltersConfig {
     }
 
     @Bean
-    @Order(99)
-    public SecurityFilterChain coreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
+    @Order(98)
+    public SecurityFilterChain restCoreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
             throws Exception {
-        return http.apply(authenticationDslProvider.core())
+        return http.apply(authenticationDslProvider.basicAuth())
                 .and()
                 .authorizeHttpRequests(auth -> {
                     // Allow OPTIONS requests
@@ -94,16 +94,26 @@ public class WebSecurityFiltersConfig {
                     auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, PING_SUFFIX)))
                             .hasAnyAuthority(ROLE_USER, ROLE_TECH);
 
+                    // No existing constant for cube in the core
+                    auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, "cube", WILDCARD)))
+                            .hasAnyAuthority(ROLE_USER);
+                })
+                .build();
+    }
+
+    @Bean
+    @Order(99)
+    public SecurityFilterChain coreActivePivotFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
+            throws Exception {
+        return http.apply(authenticationDslProvider.formLogin())
+                .and()
+                .authorizeHttpRequests(auth -> {
                     // pivot websocket
                     auth.requestMatchers(mvc.pattern(url(WEB_SOCKET_ENDPOINT, WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
                     // datastore rest service
                     auth.requestMatchers(mvc.pattern(url(IDatabaseRestService.DATABASE_API_URL_PREFIX, WILDCARD)))
-                            .hasAnyAuthority(ROLE_USER);
-
-                    // No existing constant for cube in the core
-                    auth.requestMatchers(mvc.pattern(url(REST_API_URL_PREFIX, "cube", WILDCARD)))
                             .hasAnyAuthority(ROLE_USER);
 
                     // One has to be an admin for all the other URLs
