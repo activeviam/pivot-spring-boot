@@ -273,33 +273,35 @@ public class ParquetLoaderService {
 	 */
 	private void copyParquetFiles() {
 		try {
-//			LOGGER.info("Copy trades01.parquet");
-			Files.copy(
-					PARQUET_SAVED_FOLDER.resolve("trades01.parquet"),
-					PARQUET_LOAD_FOLDER.resolve("trades01.parquet"),
-					StandardCopyOption.REPLACE_EXISTING);
-
-//			LOGGER.info("Copy trades02.parquet");
-			Files.copy(
-					PARQUET_SAVED_FOLDER.resolve("trades02.parquet"),
-					PARQUET_LOAD_FOLDER.resolve("trades02.parquet"),
-					StandardCopyOption.REPLACE_EXISTING);
-
-			if (randomEventHappen()) {
-				LOGGER.info("Delete trades03.parquet");
-				// remove trades03.parquet
-				Files.deleteIfExists(PARQUET_LOAD_FOLDER.resolve("trades03.parquet"));
-			}
-			else {
-//				LOGGER.info("Copy trades03.parquet");
-				Files.copy(
-						PARQUET_SAVED_FOLDER.resolve("trades03.parquet"),
-						PARQUET_LOAD_FOLDER.resolve("trades03.parquet"),
-						StandardCopyOption.REPLACE_EXISTING);
-			}
+			copy("trades01.parquet");
+			copy("trades02.parquet");
+			copyOrDelete("trades03.parquet");
 		} catch (IOException e) {
 			LOGGER.severe("Failed to copy (or delete) parquet files.");
 			e.printStackTrace();
+		}
+	}
+
+	private void copy(String filename) throws IOException {
+//				LOGGER.info("Copy " + filename);
+		Files.copy(
+				PARQUET_SAVED_FOLDER.resolve(filename),
+				PARQUET_LOAD_FOLDER.resolve(filename),
+				StandardCopyOption.REPLACE_EXISTING);
+	}
+
+	private void copyOrDelete(String filename) throws IOException {
+		if (randomEventHappen()) {
+			LOGGER.info("Delete " + filename);
+			// remove trades03.parquet
+			Files.deleteIfExists(PARQUET_LOAD_FOLDER.resolve(filename));
+		}
+		else {
+//				LOGGER.info("Copy " + filename);
+			Files.copy(
+					PARQUET_SAVED_FOLDER.resolve(filename),
+					PARQUET_LOAD_FOLDER.resolve(filename),
+					StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 
