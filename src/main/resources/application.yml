@@ -47,7 +47,7 @@ authentication.type: local
 tech-user:
   passwords:
     pivot: "{bcrypt}$2a$10$87iR319r7HvSvs5k9.jutuDzjuKqO6riilSjl/9u2LGDpn4/7.1he"
-    sba: "{bcrypt}$2a$10$QX8Im2Qh3s/qS9ypLlpEnuaVXtQTUz1XNS7goa9Ya7ofcZyuo2IdW"
+    sba: "{bcrypt}$2a$10$Amc4vZU1Scv04XYuzHHsKOVfqcKa8Tr8kNkxuk1Smn9FmasQr7bwe"
 
 # Properties used to configure the authentication based on JWT.
 # You can execute JwtUtil to generate new keys.

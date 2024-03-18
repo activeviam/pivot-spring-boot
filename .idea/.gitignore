@@ -10,4 +10,5 @@ copyright/*.xml
 !copyright/ActiveViam.xml
 !copyright/profiles_settings.xml
 !runConfigurations/*.xml
+httpRequests
 sonarlint
