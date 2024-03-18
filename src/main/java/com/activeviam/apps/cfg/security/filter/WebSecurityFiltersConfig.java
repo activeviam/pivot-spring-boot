@@ -85,6 +85,7 @@ public class WebSecurityFiltersConfig {
             throws Exception {
         return http.apply(authenticationDslProvider.basicAuth())
                 .and()
+                .securityMatcher(mvc.pattern(url(REST_API_URL_PREFIX, WILDCARD)))
                 .authorizeHttpRequests(auth -> {
                     // Allow OPTIONS requests
                     auth.requestMatchers(mvc.pattern(HttpMethod.OPTIONS, url(REST_API_URL_PREFIX, WILDCARD)))
