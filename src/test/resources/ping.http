@@ -1,0 +1,3 @@
+GET http://localhost:9090/activeviam/pivot/rest/v8/ping
+Content-Type: text/plain
+Authorization: Basic YWRtaW46YWRtaW4=
