@@ -24,13 +24,29 @@ management:
   health:
     elasticsearch.enabled: false
 
-# Print the stores schema
-schema:
-  printer: false
+data-load:
+  default-scope:
+    BASE_PATH: "data/"
+  initial-load:
+    requests:
+      - data-sets: ALL,
+        scope:
+          AS_OF_DATE: 2019-01-01
+      - data-sets: ALL,
+        scope:
+          AS_OF_DATE: 2019-01-02
+      - data-sets: ALL,
+        scope:
+          AS_OF_DATE: 2019-01-03
+      - data-sets: ALL,
+        scope:
+          AS_OF_DATE: 2019-01-04
+  csv:
+    directory-pattern: "'' + #scope.get('BASE_PATH') + '/' + #scope.get('AS_OF_DATE') + '/'"
+    data:
+      Trades:
+        file-pattern: "'glob:trades.csv'"
 
-# File to parse
-file:
-  trades: "data/trades.csv"
 
 tech-user:
   passwords:

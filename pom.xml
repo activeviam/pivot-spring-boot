@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+  ~ Copyright (C) ActiveViam 2024
+  ~ ALL RIGHTS RESERVED. This material is the CONFIDENTIAL and PROPRIETARY
+  ~ property of ActiveViam Limited. Any unauthorized use,
+  ~ reproduction or transfer of this material is strictly prohibited
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -22,6 +30,8 @@
     <admin-ui.version>5.1.6</admin-ui.version>
     <!-- Logback 1.2.12 has vulnerability CVE-2023-6378   -->
     <logback.version>1.2.13</logback.version>
+    <atoti-server-config.version>6.0.9.8</atoti-server-config.version>
+    <atoti-server-tools.version>6.0.9.11</atoti-server-tools.version>
 
     <spotless-maven-plugin.version>2.41.0</spotless-maven-plugin.version>
     <palantir-java-format.version>2.39.0</palantir-java-format.version>
@@ -56,6 +66,16 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>com.activeviam.config</groupId>
+        <artifactId>atoti-server-config</artifactId>
+        <version>${atoti-server-config.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.activeviam.config</groupId>
+        <artifactId>atoti-server-tools</artifactId>
+        <version>${atoti-server-tools.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -87,6 +107,16 @@
       <groupId>com.activeviam.apm</groupId>
       <artifactId>apm</artifactId>
       <version>${activepivot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.activeviam.config</groupId>
+      <artifactId>atoti-server-config</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.activeviam.config</groupId>
+      <artifactId>atoti-server-tools</artifactId>
     </dependency>
 
     <!-- Dependencies for the content service persistence -->
