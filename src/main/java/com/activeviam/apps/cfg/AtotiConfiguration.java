@@ -10,12 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.activeviam.config.InitAndStartAtotiService;
+import com.activeviam.properties.cfg.impl.ActiveViamPropertyFromSpringConfig;
 import com.activeviam.spring.config.activeui.ActiveUIResourceServerConfig;
 import com.activeviam.spring.config.adminui.AdminUIResourceServerConfig;
 
 @Configuration
 @Import(
         value = {
+            ActiveViamPropertyFromSpringConfig.class,
             InitAndStartAtotiService.class,
             // Expose Admin UI web application
             AdminUIResourceServerConfig.class,

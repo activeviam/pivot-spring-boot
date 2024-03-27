@@ -38,8 +38,7 @@ public class CalculationsConfiguration {
         return AtotiConfigurationUtils.measuresChain(
                 decorator,
                 Copper.count().withinFolder(NATIVE_FOLDER),
-                Copper.timestamp().withAlias("Update.Timestamp").withinFolder(NATIVE_FOLDER),
-                Copper.sum(TRADES_NOTIONAL).as(TRADES_NOTIONAL));
+                Copper.timestamp().withAlias("Update.Timestamp").withinFolder(NATIVE_FOLDER));
     }
 
     @Bean
@@ -55,7 +54,6 @@ public class CalculationsConfiguration {
     }
 
     private static class TradesCalculations extends DecoratedMeasuresChain {
-
         public TradesCalculations(MeasureDecorator decorator) {
             super(decorator);
             add(Copper.sum(TRADES_NOTIONAL).as(TRADES_NOTIONAL));
