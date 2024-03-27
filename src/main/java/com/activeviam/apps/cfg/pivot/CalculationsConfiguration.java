@@ -34,7 +34,7 @@ public class CalculationsConfiguration {
     public static final String NATIVE_FOLDER = "Native measures";
 
     @Bean
-    MeasuresChain nativeCalculations(MeasureDecorator decorator) {
+    MeasuresChain nativeMeasures(MeasureDecorator decorator) {
         return AtotiConfigurationUtils.measuresChain(
                 decorator,
                 Copper.count().withinFolder(NATIVE_FOLDER),
@@ -42,7 +42,7 @@ public class CalculationsConfiguration {
     }
 
     @Bean
-    MeasuresChain tradeCalculations(MeasureDecorator decorator) {
+    MeasuresChain tradeMeasures(MeasureDecorator decorator) {
         return new TradesCalculations(decorator);
     }
 
